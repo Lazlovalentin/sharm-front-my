@@ -1,11 +1,10 @@
-import LoginPage from "@/components/admin/login";
-import {user} from "@/state";
+import LoginPage from "@/components/admin/Login/login";
+import IsLogin from "@/components/admin/IsLogin/IsLogin";
 
 export default function Home() {
     return (
-        <div>
-            {user && <div>Logged in as</div>}
-            <LoginPage/>
-        </div>
+        <>
+            hello
+        </>
     );
 }

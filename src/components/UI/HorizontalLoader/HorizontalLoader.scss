@@ -1,0 +1,28 @@
+.horizontal-loading-container {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #f0f0f0;
+
+  .loading-bar {
+    width: 30%;
+    height: 100%;
+    background-color: #007bff;
+    animation: move 1.5s linear infinite;
+  }
+
+  @keyframes move {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+
+}
+
+
+
