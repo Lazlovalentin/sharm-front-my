@@ -4,7 +4,8 @@ import IsLogin from "@/components/admin/IsLogin/IsLogin";
 export default function Home() {
     return (
         <>
-            hello
+            <div>theme change</div>
+            <div>language shange</div>
         </>
     );
 }

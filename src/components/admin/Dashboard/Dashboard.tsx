@@ -5,7 +5,10 @@ import Link from "next/link";
 const Dashboard = () => {
     return (
         <div className="container-dashboard-admin">
-            <Link href={"/admin/users"} className="">
+            <Link href={"/admin/users"}>
+                profile
+            </Link>
+            <Link href={"/admin/users"}>
                 statistic
             </Link>
             <Link href={"/admin/users"}>
@@ -18,6 +21,12 @@ const Dashboard = () => {
                 categories
             </Link>
             <Link href={"/admin/users"}>
+                products
+            </Link>
+            <Link href={"/admin/users"}>
+                pages
+            </Link>
+            <Link href={"/admin/users"}>
                 users
             </Link>
             <Link href={"/admin/users"}>
@@ -25,9 +34,6 @@ const Dashboard = () => {
             </Link>
             <Link href={"/admin/users"}>
                 seting
-            </Link>
-            <Link href={"/admin/users"}>
-                profile
             </Link>
             <div>
                 log out
