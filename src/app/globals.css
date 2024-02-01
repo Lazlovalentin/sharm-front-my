@@ -10,11 +10,12 @@ a {
 
 :root {
     --index: calc(1vw + 1vh);
-
+    background-color: #e9dbdb;
 }
 
 [data-theme="dark"] {
     --index: calc(1vw + 1vh);
+    background-color: #181818;
 }
 
 /*  font-size: calc(var(--index) * 1); */
