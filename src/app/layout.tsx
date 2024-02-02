@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
+import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -10,12 +11,14 @@ export default function RootLayout({
                                        params: {locale}
                                    }: Readonly<{
     children: React.ReactNode;
-    params: {locale: string};
+    params: { locale: string };
 }>) {
     return (
         <html lang={locale}>
         <body className={inter.className}>
-        {children}
+        <MyThemeProvider>
+            {children}
+        </MyThemeProvider>
         </body>
         </html>
     );

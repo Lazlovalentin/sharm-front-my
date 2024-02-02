@@ -1,13 +1,7 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
-import "../../globals.css";
 import IsLogin from "@/components/admin/IsLogin/IsLogin";
 import {ReactNode} from "react";
 import Dashboard from "@/components/admin/Dashboard/Dashboard";
-import {ThemeProvider} from "next-themes";
-import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
-
-const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -22,15 +16,13 @@ export default function RootLayout({
     params: { locale: string };
 }>) {
     return (
-        <section>
-            <MyThemeProvider>
-                <IsLogin>
-                    <main className="container-admin-main">
-                        <Dashboard/>
-                        {children}
-                    </main>
-                </IsLogin>
-            </MyThemeProvider>
-        </section>
+        <>
+            <IsLogin>
+                <main className="container-admin-main">
+                    <Dashboard/>
+                    {children}
+                </main>
+            </IsLogin>
+        </>
     );
 }

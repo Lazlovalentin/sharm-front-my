@@ -8,21 +8,21 @@ interface IsLoginProps {
     children: ReactNode;
 }
 
-const IsLogin: React.FC<IsLoginProps> = ({ children }) => {
-    const {role} = useUser()
-    const [isLogin, setIslogin] = useState<boolean>(false)
+const IsLogin: React.FC<IsLoginProps> = ({children}) => {
 
-    const item = window.localStorage.getItem("user-store");
+    const {role} = useUser()
+    const [isLogin, setIsLogin] = useState<boolean>(false)
+
+    const item = typeof window !== 'undefined' ? window.localStorage.getItem("user-store") : null;
     const item2 = item ? JSON.parse(item) : null;
 
     useLayoutEffect(() => {
         if (item2.state.role !== null) {
-            setIslogin(true)
+            setIsLogin(true)
         } else {
-         //   redirect("/admin")
+            setIsLogin(false)
         }
-    }, [item2]);
-
+    }, [role]);
 
 
     return (
@@ -39,3 +39,13 @@ const IsLogin: React.FC<IsLoginProps> = ({ children }) => {
 };
 
 export default IsLogin;
+/*
+    let isLogin = false
+    const item = typeof window !== 'undefined' ? window.localStorage.getItem("user-store") : null;
+    const item2 = item ? JSON.parse(item) : null;
+
+    if (item2?.state?.role !== null) {
+        isLogin = true
+    }
+
+ */

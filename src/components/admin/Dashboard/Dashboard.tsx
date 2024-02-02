@@ -1,11 +1,12 @@
 import React from 'react';
 import "./Dashboard.scss"
 import Link from "next/link";
+import LogOut from "@/components/admin/LogOut/LogOut";
 
 const Dashboard = () => {
     return (
         <div className="container-dashboard-admin">
-            <Link href={"/admin/users"}>
+            <Link href={"admin"}>
                 profile
             </Link>
             <Link href={"/admin/users"}>
@@ -32,12 +33,10 @@ const Dashboard = () => {
             <Link href={"/admin/users"}>
                 reviews
             </Link>
-            <Link href={"/admin/users"}>
-                seting
+            <Link href={"settings"}>
+                settings
             </Link>
-            <div>
-                log out
-            </div>
+            <LogOut/>
         </div>
     );
 };
