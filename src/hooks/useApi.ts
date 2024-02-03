@@ -15,8 +15,9 @@ export const useApi = <T = any>() => {
     const sendRequest = (endpoint: string, method: 'GET' | 'POST', data?: any): Promise<ApiResponse<T>> => {
         setLoading(true);
         setError(null);
-        const url = `${baseURL}${endpoint}`;
+        const url = `${baseURL}/api/${endpoint}`;
 
+        console.log('url', url);
         return axios({url, method, data, withCredentials: true})
             .then((response) => {
                 setLoading(false);

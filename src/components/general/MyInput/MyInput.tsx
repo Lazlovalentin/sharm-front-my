@@ -2,6 +2,7 @@ import React, {FC, useRef, useState} from 'react';
 import "./MyInput.scss"
 import {gsap} from 'gsap';
 import {useGSAP} from "@gsap/react";
+import {resolveCaa} from "node:dns";
 
 interface MyInputProps {
     type: string;
@@ -10,29 +11,39 @@ interface MyInputProps {
     placeholder: string;
     isPhone?: boolean
     error?: string | any;
+    register?: any;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const MyInput: FC<MyInputProps> = ({type, label, isRequired, placeholder, isPhone, error}) => {
+const MyInput: FC<MyInputProps> = ({
+                                       type,
+                                       label,
+                                       isRequired,
+                                       placeholder,
+                                       isPhone,
+                                       error,
+                                       register,
+                                       onChange,
+                                       ...props
+                                   }) => {
     const errorRef = useRef<HTMLDivElement>(null);
     const inputId = `input-${placeholder.replace(/\s+/g, '-').toLowerCase()}`;
+
+    const [input, setInput] = useState('');
 
     const formatPlaceholder = (placeholder: string) => {
         return placeholder.charAt(0).toUpperCase() + placeholder.slice(1);
     };
 
-    const [input, setInput] = useState('');
-
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
-        if (isPhone) {
-            // Видаляємо все, крім цифр, і форматуємо номер телефону
-            const x = value.replace(/\D/g, '').match(/(\d{3})(\d{0,3})(\d{0,3})(\d{0,4})/);
-            value = '+380 ';
-            if (x) {
-                value += (x[2] ? '(' + x[2] : '') + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '');
-            }
+        const x = value.replace(/\D/g, '').match(/(\d{3})(\d{0,3})(\d{0,3})(\d{0,4})/);
+        value = '+380 ';
+        if (x) {
+            value += (x[2] ? '(' + x[2] : '') + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '');
         }
         setInput(value);
+        if (onChange) onChange({...e, target: {...e.target, value: value}});
     };
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -42,8 +53,13 @@ const MyInput: FC<MyInputProps> = ({type, label, isRequired, placeholder, isPhon
     };
 
     useGSAP(() => {
-        gsap.to(errorRef.current, {opacity: 1, y: -10, duration: 0.5, ease: "power1.out"});
-    });
+        if (error) {
+            gsap.fromTo(errorRef.current,
+                {opacity: 0, y: -20},
+                {opacity: 1, y: 0, duration: 0.3, ease: "bounce.out"}
+            );
+        }
+    }, [error]);
 
 
     return (
@@ -57,6 +73,8 @@ const MyInput: FC<MyInputProps> = ({type, label, isRequired, placeholder, isPhon
                 name={label}
                 type={type}
                 placeholder={isPhone ? "+38 (0__) ___ ____" : formatPlaceholder(placeholder)}
+                {...register}
+                {...props}
             />
             {error ? <div ref={errorRef} className="error-my-input">{error}</div> : null}
         </div>

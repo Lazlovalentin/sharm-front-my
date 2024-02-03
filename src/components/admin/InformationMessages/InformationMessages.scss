@@ -1,0 +1,28 @@
+.container-error-messages {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+
+  .wrapper-messages {
+    width: 100%;
+    background-color: var(--stoke);
+  }
+
+  .error {
+    width: 100%;
+    background-color: var(--primary-red);
+    color: white;
+  }
+
+  .success {
+    width: 100%;
+    background-color: #56d90a;
+    color: white;
+  }
+
+  .warning {
+    width: 100%;
+    background-color: #df118a;
+    color: white;
+  }
+}
