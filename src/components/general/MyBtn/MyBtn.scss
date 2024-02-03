@@ -5,4 +5,9 @@
   color: var(--text-color-light);
   padding: 10px;
   height: 41px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--primary-red-hover);
+  }
 }

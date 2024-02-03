@@ -2,39 +2,50 @@ import React from 'react';
 import "./Dashboard.scss"
 import Link from "next/link";
 import LogOut from "@/components/admin/LogOut/LogOut";
+import Image from "next/image";
+import profile from "./img/profile.svg"
+import statistic from "./img/statistic.svg"
+import categories from "./img/categories.svg"
+import reviews from "./img/reviews.svg"
+import menu from "./img/menu.svg"
+import orders from "./img/orders.svg"
+import pages from "./img/pages.svg"
+import settings from "./img/settings.svg"
+import users from "./img/users.svg"
+import products from "./img/products.svg"
 
 const Dashboard = () => {
     return (
         <div className="container-dashboard-admin">
             <Link href={"admin"}>
-                profile
+                <Image src={profile} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                statistic
+                <Image src={statistic} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                orders
+                <Image src={orders} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                menu
+                <Image src={menu} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                categories
+                <Image src={categories} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                products
+                <Image src={products} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                pages
+                <Image src={pages} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                users
+                <Image src={users} alt={"logo"}/>
             </Link>
             <Link href={"/admin/users"}>
-                reviews
+                <Image src={reviews} alt={"logo"}/>
             </Link>
             <Link href={"settings"}>
-                settings
+                <Image src={settings} alt={"logo"}/>
             </Link>
             <LogOut/>
         </div>
