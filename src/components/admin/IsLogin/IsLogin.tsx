@@ -22,7 +22,7 @@ const IsLogin: React.FC<IsLoginProps> = ({children}) => {
         } else {
             setIsLogin(false)
         }
-    }, [role]);
+    }, [item2]);
 
 
     return (

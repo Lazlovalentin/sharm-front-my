@@ -1,10 +1,9 @@
-import type {Metadata} from "next";
 import {Inter} from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
 
-const inter = Inter({subsets: ["latin"]});
 
+const inter = Inter({subsets: ["latin"]});
 
 export default function RootLayout({
                                        children,
@@ -22,4 +21,12 @@ export default function RootLayout({
         </body>
         </html>
     );
+}
+
+export function generateStaticParams() {
+    return [
+        {params: {locale: "en"}},
+        {params: {locale: "ua"}},
+        {params: {locale: "ru"}},
+    ];
 }

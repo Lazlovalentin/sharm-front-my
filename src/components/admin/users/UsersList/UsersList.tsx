@@ -1,11 +1,22 @@
+"use server";
 import React from 'react';
+import {useApi} from "@/hooks/useApi";
+import {gerAllUsers} from "@/actions/getAllUsers";
 
-const UsersList = () => {
+
+
+export default async function UsersList() {
+
+    const allUsers = await gerAllUsers();
+
+    console.log("allUsers", allUsers)
+
     return (
         <div>
-            UsersList
+            {allUsers.data.map((user: any) =>
+                <div key={user.id}>{user.email}</div>
+            )}
         </div>
     );
 };
 
-export default UsersList;

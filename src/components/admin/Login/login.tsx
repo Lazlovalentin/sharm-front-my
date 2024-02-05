@@ -18,7 +18,7 @@ function LoginPage() {
             password: formData.get('password'),
         }
 
-        sendRequest('/api/auth/login', 'POST', data)
+        sendRequest('auth/login', 'POST', data)
             .then((response) => {
                 if (response.data) {
                     const {id, role, token, email} = response.data;

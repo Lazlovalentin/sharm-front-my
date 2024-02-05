@@ -4,7 +4,7 @@ import {useApi} from "@/hooks/useApi";
 import HorizontalLoader from "@/components/UI/HorizontalLoader/HorizontalLoader";
 import MyInput from "@/components/general/MyInput/MyInput";
 import React, {useState} from "react";
-import MyBtn from "@/components/general/MyBtn/MyBtn";
+import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {useForm, Controller} from 'react-hook-form';
 import InformationMessages from "@/components/admin/InformationMessages/InformationMessages";
 

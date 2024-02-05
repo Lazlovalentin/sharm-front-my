@@ -1,10 +1,10 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, InputHTMLAttributes, useRef, useState} from 'react';
 import "./MyInput.scss"
 import {gsap} from 'gsap';
 import {useGSAP} from "@gsap/react";
 import {resolveCaa} from "node:dns";
 
-interface MyInputProps {
+interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
     type: string;
     label?: string;
     isRequired?: boolean;
@@ -13,6 +13,7 @@ interface MyInputProps {
     error?: string | any;
     register?: any;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    ref?: React.Ref<HTMLInputElement>;
 }
 
 const MyInput: FC<MyInputProps> = ({
