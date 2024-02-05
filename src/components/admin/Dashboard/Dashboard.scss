@@ -1,7 +1,9 @@
 .container-dashboard-admin {
   background-color: var(--background-color-dark);
-  min-height: 100svh;
+  max-height: 100svh;
+  height: 100svh;
   padding: 10px;
+  overflow-y: auto;
 
   a {
     color: var(--text-color);

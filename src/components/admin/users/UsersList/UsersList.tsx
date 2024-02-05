@@ -1,20 +1,32 @@
-"use server";
+"use server"
 import React from 'react';
-import {useApi} from "@/hooks/useApi";
+import "./UsersList.scss";
 import {gerAllUsers} from "@/actions/getAllUsers";
-
-
+import UserItem from "@/components/admin/users/UserItem/UserItem";
 
 export default async function UsersList() {
-
     const allUsers = await gerAllUsers();
 
     console.log("allUsers", allUsers)
 
     return (
-        <div>
+        <div className="container-user-list">
+            <div className="headers-user-list">
+                <div className="id">id</div>
+                <div className="date">date</div>
+                <div className="date">date</div>
+                <div className="date">date</div>
+                <div className="boolean">isDelete</div>
+                <div className="date">name</div>
+                <div className="date">surname</div>
+                <div className="email">email</div>
+                <div className="boolean">isEmailVerified</div>
+                <div className="date">phone</div>
+                <div className="boolean">isPhoneVerified</div>
+                <div className="date">role</div>
+            </div>
             {allUsers.data.map((user: any) =>
-                <div key={user.id}>{user.email}</div>
+                <UserItem key={user.id} user={user}/>
             )}
         </div>
     );

@@ -1,3 +1,4 @@
+"use client"
 import React, {FC, useRef} from 'react';
 import "./MyBtn.scss"
 import {useGSAP} from "@gsap/react";

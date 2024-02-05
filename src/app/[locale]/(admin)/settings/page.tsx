@@ -1,22 +1,14 @@
-"use client"
 import "./settings.scss"
-import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
+import React from "react";
 import UsersList from "@/components/admin/users/UsersList/UsersList";
-import {Suspense, useState} from "react";
 
-export default function Home() {
-    const [tabs, setTabs] = useState(2)
+const Home = () => {
 
     return (
         <div className="container-settings-admin">
-            <div>
-                <button onClick={() => setTabs(1)}>create user</button>
-                <button onClick={() => setTabs(2)}>User List</button>
-            </div>
-            <Suspense>
-                {tabs === 1 && <CreateUser/>}
-                {tabs === 2 && <UsersList/>}
-            </Suspense>
+            <UsersList/>
         </div>
     );
 }
+
+export default Home

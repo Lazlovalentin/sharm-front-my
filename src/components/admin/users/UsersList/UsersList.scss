@@ -1,0 +1,36 @@
+.container-user-list {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: calc(100vw - 80px);
+
+  .headers-user-list {
+    display: flex;
+  }
+
+  .id, .date, .boolean, .email {
+    border: 1px solid black;
+    text-align: center;
+    overflow: auto;
+  }
+
+  .id {
+    width: 22px;
+    min-width: 22px;
+  }
+
+  .date {
+    width: 100px;
+    min-width: 100px;
+  }
+
+  .boolean {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .email {
+    width: 200px;
+    min-width: 200px;
+  }
+}
+
