@@ -27,7 +27,7 @@ const CreateUser = () => {
         sendRequest('users', 'POST', data)
             .then((response) => {
                 if (response.data) {
-                    const {id, role, token, email} = response.data;
+                   // const {id, role, token, email} = response.data;
                     setIsUserCreated(true);
                 }
             })
@@ -142,8 +142,8 @@ const CreateUser = () => {
                     })}
                 />
                 <MyBtn
-                    type={"submit"}
                     text={"Submit"}
+                    color={"primary"}
                 />
             </form>
         </div>

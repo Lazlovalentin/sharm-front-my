@@ -5,11 +5,11 @@ import {useGSAP} from "@gsap/react";
 import {gsap} from "gsap";
 
 interface MyBtnProps {
-    type: string;
     text: string;
+    color: "primary" | "attention" | "success"
 }
 
-const MyBtn: FC<MyBtnProps> = ({text}) => {
+const MyBtn: FC<MyBtnProps> = ({text, color}) => {
     const ref = useRef(null);
     const {contextSafe} = useGSAP();
 
@@ -23,7 +23,7 @@ const MyBtn: FC<MyBtnProps> = ({text}) => {
     return (
         <button
             type="submit"
-            className={"container-my-btn"}
+            className={`container-my-btn my-btn-${color}`}
             ref={ref}
             onMouseEnter={handleMouseEnter}
         >

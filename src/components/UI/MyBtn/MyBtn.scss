@@ -1,14 +1,38 @@
 .container-my-btn {
   cursor: pointer;
-  background-color: var(--primary-red);
   border: none;
-  color: var(--text-color-light);
   padding: 10px;
   height: 41px;
   transition: background-color, text-shadow 0.3s ease;
 
+}
+
+.my-btn-primary {
+  background-color: var(--primary-red);
+  color: var(--text-color-light);
+
   &:hover {
     background-color: var(--primary-red-hover);
+    text-shadow: 0 0 5px black;
+  }
+}
+
+.my-btn-attention {
+  background-color: red;
+  color: var(--text-color-light);
+
+  &:hover {
+    background-color: #ff7b00;
+    text-shadow: 0 0 5px black;
+  }
+}
+
+.my-btn-success {
+  background-color: green;
+  color: var(--text-color-light);
+
+  &:hover {
+    background-color: var(--success-green-hover);
     text-shadow: 0 0 5px black;
   }
 }

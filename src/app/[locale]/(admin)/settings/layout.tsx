@@ -1,7 +1,5 @@
 import type {Metadata} from "next";
-import IsLogin from "@/components/admin/IsLogin/IsLogin";
 import {ReactNode} from "react";
-import Dashboard from "@/components/admin/Dashboard/Dashboard";
 import Link from "next/link";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 
@@ -24,7 +22,14 @@ export default function RootLayout({
             <Link href={"/"}>
                 users list
             </Link>
-            <MyBtn type={"submit"} text={"create user"}/>
+            <MyBtn
+                color={"primary"}
+                text={"create user"}
+            />
+            <MyBtn
+                color={"attention"}
+                text={"delete user"}
+            />
             {children}
         </section>
     );

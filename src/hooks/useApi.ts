@@ -1,5 +1,5 @@
 // hooks/useApi.ts
-import axios, {AxiosRequestConfig} from 'axios';
+import axios from 'axios';
 import {useState} from 'react';
 
 interface ApiResponse<T> {
@@ -17,7 +17,6 @@ export const useApi = <T = any>() => {
         setError(null);
         const url = `${baseURL}/api/${endpoint}`;
 
-        console.log('url', url);
         return axios({url, method, data, withCredentials: true})
             .then((response) => {
                 setLoading(false);

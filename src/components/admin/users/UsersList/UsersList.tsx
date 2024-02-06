@@ -1,13 +1,11 @@
 "use server"
 import React from 'react';
 import "./UsersList.scss";
-import {gerAllUsers} from "@/actions/getAllUsers";
 import UserItem from "@/components/admin/users/UserItem/UserItem";
+import {getAllUsers} from "@/actions/getAllUsers";
 
 export default async function UsersList() {
-    const allUsers = await gerAllUsers();
-
-    console.log("allUsers", allUsers)
+    const allUsers = await getAllUsers("users", "1", "1")
 
     return (
         <div className="container-user-list">
