@@ -1,16 +1,25 @@
-"use client";
 import React from 'react';
-import {useUser} from "@/store/admin/user";
 import Image from "next/image";
 import logOut from "./logOut.svg"
+import {cookies} from "next/headers";
 
 const LogOut = () => {
-    const {resetUser} = useUser()
+
+    async function createInvoice() {
+        'use server'
+        cookies().delete('logIn')
+        cookies().delete('id')
+        cookies().delete('email')
+        cookies().delete('role')
+        cookies().delete('token')
+    }
 
     return (
-        <button onClick={() => resetUser()}>
-            <Image src={logOut} alt={"logo"}/>
-        </button>
+        <form action={createInvoice}>
+            <button>
+                <Image src={logOut} alt={"logo"}/>
+            </button>
+        </form>
     );
 };
 

@@ -1,16 +1,43 @@
-"use client"
 import axios from "axios";
-import {useUser} from "@/store/admin/user";
-import {useState} from "react";
-import HorizontalLoader from "@/components/UI/HorizontalLoader/HorizontalLoader";
-import {useApi} from "@/hooks/useApi";
+import "./login.scss";
+import {cookies} from 'next/headers'
+import MyBtn from "@/components/UI/MyBtn/MyBtn";
 
 function LoginPage() {
-    const {setUserProperty} = useUser()
-    const {sendRequest, loading, error} = useApi();
+    async function createInvoice(formData: FormData) {
+        'use server'
+        const rawFormData = {
+            email: formData.get('email'),
+            password: formData.get('password'),
+        }
 
-    const onSubmit = (e: any) => {
-        e.preventDefault()
+        await axios.post('http://localhost:3000/api/auth/login', rawFormData)
+            .then((response) => {
+                cookies().set('logIn', "true")
+                cookies().set('id', response.data.id)
+                cookies().set('email', response.data.email)
+                cookies().set('role', response.data.role)
+                cookies().set('token', response.data.token, {secure: true})
+            })
+            .catch((error) => {
+                console.log("login", error.response.data.message)
+            })
+    }
+
+    return (
+        <div className="container-login-admin">
+            <form action={createInvoice}>
+                <input type="email" name="email"/>
+                <input type="password" name="password"/>
+                <MyBtn text={"Submit"} color={"primary"}/>
+            </form>
+        </div>
+    )
+}
+
+export default LoginPage
+
+/*
         const formData = new FormData(e.target);
 
         const data = {
@@ -28,18 +55,4 @@ function LoginPage() {
                     setUserProperty('token', token);
                 }
             })
-    }
-
-    return (
-        <>
-            {loading && <HorizontalLoader/>}
-            <form onSubmit={onSubmit}>
-                <input type="email" name="email"/>
-                <input type="password" name="password"/>
-                <button type="submit">Submit</button>
-            </form>
-        </>
-    )
-}
-
-export default LoginPage
+ */

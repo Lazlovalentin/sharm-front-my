@@ -1,37 +1,25 @@
-"use client"
-import React, {ReactNode, useLayoutEffect, useState} from 'react';
-import {useUser} from "@/store/admin/user";
+import React, {ReactNode} from 'react';
 import LoginPage from "@/components/admin/Login/login";
 import {redirect} from "next/navigation";
+import {cookies} from 'next/headers'
 
 interface IsLoginProps {
     children: ReactNode;
 }
 
 const IsLogin: React.FC<IsLoginProps> = ({children}) => {
-
-    const {role} = useUser()
-    const [isLogin, setIsLogin] = useState<boolean>(false)
-
-    const item = typeof window !== 'undefined' ? window.localStorage.getItem("user-store") : null;
-    const item2 = item ? JSON.parse(item) : null;
-
-    useLayoutEffect(() => {
-        if (item2.state.role !== null) {
-            setIsLogin(true)
-        } else {
-            setIsLogin(false)
-        }
-    }, [item2]);
-
+    const cookieStore = cookies()
+    let role = cookieStore.get("logIn")
 
     return (
         <div>
-            {!isLogin ?
-                <LoginPage/>
-                :
+            {role?.value === "true" ?
                 <>
                     {children}
+                </>
+                :
+                <>
+                    <LoginPage/>
                 </>
             }
         </div>
@@ -39,13 +27,3 @@ const IsLogin: React.FC<IsLoginProps> = ({children}) => {
 };
 
 export default IsLogin;
-/*
-    let isLogin = false
-    const item = typeof window !== 'undefined' ? window.localStorage.getItem("user-store") : null;
-    const item2 = item ? JSON.parse(item) : null;
-
-    if (item2?.state?.role !== null) {
-        isLogin = true
-    }
-
- */

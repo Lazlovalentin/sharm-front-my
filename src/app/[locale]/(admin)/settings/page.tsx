@@ -9,7 +9,13 @@ const columns = [{
     id: 'id',
     headerName: 'ID',
     width: 90
-}]
+},
+    {
+        id: 'email',
+        headerName: 'Email',
+        width: 90
+    }
+]
 export default async function Home({
                                        searchParams
                                    }
@@ -20,7 +26,9 @@ export default async function Home({
 ) {
 
     const page = searchParams["page"] ?? "1"
-    const allUsers = await getAllUsers("users", page.toString(), "1")
+    const allUsers = await getAllUsers("users", page.toString(), "5")
+
+    //  console.log("allUsers", allUsers)
 
     const countObj = allUsers.total
     const currentPage = allUsers.currentPage

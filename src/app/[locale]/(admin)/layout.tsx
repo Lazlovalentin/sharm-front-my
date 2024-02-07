@@ -18,13 +18,13 @@ export default function RootLayout({
     params: { locale: string };
 }>) {
     return (
-        <>
+        <section>
             <IsLogin>
                 <main className="container-admin-main">
                     <Dashboard/>
                     {children}
                 </main>
             </IsLogin>
-        </>
+        </section>
     );
 }

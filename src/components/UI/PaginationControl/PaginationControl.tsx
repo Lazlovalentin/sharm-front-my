@@ -46,6 +46,7 @@ const PaginationControl: FC<PaginationControlProps> = ({totalPages}) => {
 
         buttons.push(
             <button
+                key={1}
                 ref={buttonRefs}
                 disabled={page === 1}
                 className={page === 1 ? 'button-active-pagination' : ''}
