@@ -1,6 +1,12 @@
 .container-data-table {
   margin-bottom: 20px;
 
+  .wrapper-management {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
   .wrapper-header-table {
     display: flex;
     text-align: center;

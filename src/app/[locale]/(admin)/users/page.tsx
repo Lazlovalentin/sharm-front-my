@@ -28,9 +28,7 @@ export default async function Home({
 
     return (
         <div className="container-settings-admin">
-            <MyBtn text={"create user"} color={"primary"}/>
             <UsersWrapper data={allUsers}/>
-
             <PaginationControl
                 totalPages={totalPages}
             />

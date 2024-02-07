@@ -7,9 +7,10 @@ import {gsap} from "gsap";
 interface MyBtnProps {
     text: string;
     color: "primary" | "attention" | "success"
+    click?: any
 }
 
-const MyBtn: FC<MyBtnProps> = ({text, color}) => {
+const MyBtn: FC<MyBtnProps> = ({text, color, click}) => {
     const ref = useRef(null);
     const {contextSafe} = useGSAP();
 
@@ -26,6 +27,7 @@ const MyBtn: FC<MyBtnProps> = ({text, color}) => {
             className={`container-my-btn my-btn-${color}`}
             ref={ref}
             onMouseEnter={handleMouseEnter}
+            onClick={click}
         >
             {text}
         </button>

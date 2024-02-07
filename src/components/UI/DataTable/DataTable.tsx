@@ -14,12 +14,15 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
 
     return (
         <div className="container-data-table">
-            <h1>users list</h1>
-            <CustomSelect
+            <div className="wrapper-management">
+                <CustomSelect
                 options={columns}
                 selectedOptions={selectedOptions}
                 setSelectedOptions={setSelectedOptions}
             />
+                <input type={"text"} placeholder={"search"}/>
+
+            </div>
             <div className="wrapper-header-table">
                 {selectedOptions.map((column) => (
                     <div
