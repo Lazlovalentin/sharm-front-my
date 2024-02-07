@@ -3,6 +3,7 @@ import React, {FC, useState} from 'react';
 import DataTable from "@/components/UI/DataTable/DataTable";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
+import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
 
 interface UsersWrapperProps {
     data: any;
@@ -78,9 +79,7 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
                 data={data.data}
             />
             <MyModal visible={openCreateUser} setVisible={setOpenCreateUser}>
-                <div>
-                    <h1>Create user</h1>
-                </div>
+                <CreateUser/>
             </MyModal>
         </>
     );

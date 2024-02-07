@@ -1,5 +1,8 @@
 .container-data-table {
   margin-bottom: 20px;
+  overflow: auto;
+  width: 90vw;
+  min-height: 80svh;
 
   .wrapper-management {
     display: flex;
