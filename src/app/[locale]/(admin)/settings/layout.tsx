@@ -20,16 +20,14 @@ export default function RootLayout({
     return (
         <section>
             <Link href={"/"}>
-                users list
+              tab 1
             </Link>
-            <MyBtn
-                color={"primary"}
-                text={"create user"}
-            />
-            <MyBtn
-                color={"attention"}
-                text={"delete user"}
-            />
+            <Link href={"/"}>
+              tab 2
+            </Link>
+            <Link href={"/"}>
+              tab 3
+            </Link>
             {children}
         </section>
     );

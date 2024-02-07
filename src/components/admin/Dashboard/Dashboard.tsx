@@ -20,28 +20,28 @@ const Dashboard = () => {
             <Link href={"admin"}>
                 <Image src={profile} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={statistic} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={orders} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={menu} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={categories} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={products} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={pages} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={users} alt={"logo"}/>
             </Link>
-            <Link href={"/admin/users"}>
+            <Link href={"users"}>
                 <Image src={reviews} alt={"logo"}/>
             </Link>
             <Link href={"settings"}>

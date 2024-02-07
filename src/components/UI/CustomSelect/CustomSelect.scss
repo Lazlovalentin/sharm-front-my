@@ -1,0 +1,12 @@
+.container-select-admin {
+  position: relative;
+
+  .select-options {
+    position: absolute;
+    width: max-content;
+    height: max-content;
+    padding: 20px 10px;
+    border: 1px solid black;
+    background-color: white;
+  }
+}

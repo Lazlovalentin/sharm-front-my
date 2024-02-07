@@ -1,0 +1,22 @@
+.container-data-table {
+  margin-bottom: 20px;
+
+  .wrapper-header-table {
+    display: flex;
+    text-align: center;
+
+    .datatable-header-cell {
+    }
+  }
+
+
+  .datatable-row {
+    display: flex;
+    text-align: center;
+
+    .datatable-cell {
+      overflow: auto;
+      border: 1px solid red;
+    }
+  }
+}
