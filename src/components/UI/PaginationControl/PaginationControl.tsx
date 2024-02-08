@@ -101,39 +101,43 @@ const PaginationControl: FC<PaginationControlProps> = ({totalPages}) => {
             buttons.push(<span key="right-ellipsis" className={"right-ellipsis"}>...</span>);
         }
 
-        buttons.push(
-            <button
-                ref={buttonRefs}
-                key={totalPages}
-                disabled={page === totalPages}
-                className={page === totalPages ? 'button-active-pagination' : ''}
-                onClick={(e) => goToPage(e, totalPages)}
-                onMouseEnter={({currentTarget}) => handleMouseEnter(currentTarget)}
-                onMouseLeave={({currentTarget}) => handleMouseLeave(currentTarget)}
-            >
-                {totalPages}
-                <div className="color-fill"></div>
-            </button>
-        );
-
+        if (page > 1) {
+            buttons.push(
+                <button
+                    ref={buttonRefs}
+                    key={totalPages}
+                    disabled={page === totalPages}
+                    className={page === totalPages ? 'button-active-pagination' : ''}
+                    onClick={(e) => goToPage(e, totalPages)}
+                    onMouseEnter={({currentTarget}) => handleMouseEnter(currentTarget)}
+                    onMouseLeave={({currentTarget}) => handleMouseLeave(currentTarget)}
+                >
+                    {totalPages}
+                    <div className="color-fill"></div>
+                </button>
+            );
+        }
         return buttons;
     };
 
     return (
         <div className="container-pagination-control">
-            <button
-                className={page === 1 ? "arrow-left-pagination button-disabled-pagination" : "arrow-left-pagination "}
-                disabled={page === 1}
-                onClick={(event) => goToPage(event, page - 1)}>
-                <Arrow/>
-            </button>
+            {totalPages > 1 && (
+                <button
+                    className={page === 1 ? "arrow-left-pagination button-disabled-pagination" : "arrow-left-pagination "}
+                    disabled={page === 1}
+                    onClick={(event) => goToPage(event, page - 1)}>
+                    <Arrow/>
+                </button>)}
             {renderPaginationButtons()}
-            <button
-                className={page === totalPages ? "arrow-right-pagination button-disabled-pagination" : "arrow-pagination arrow-right-pagination active"}
-                disabled={page === totalPages}
-                onClick={(event) => goToPage(event, page + 1)}>
-                <Arrow/>
-            </button>
+            {totalPages > 1 && (
+                <button
+                    className={page === totalPages ? "arrow-right-pagination button-disabled-pagination" : "arrow-pagination arrow-right-pagination active"}
+                    disabled={page === totalPages}
+                    onClick={(event) => goToPage(event, page + 1)}>
+                    <Arrow/>
+                </button>
+            )}
         </div>
     );
 };

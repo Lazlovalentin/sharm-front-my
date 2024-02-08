@@ -7,8 +7,10 @@ import React, {useState} from "react";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {useForm, Controller} from 'react-hook-form';
 import InformationMessages from "@/components/admin/InformationMessages/InformationMessages";
+import {useRouter} from "next/navigation";
 
-const CreateUser = () => {
+const CreateUser = ({setOpenCreateUser}) => {
+    const router = useRouter();
     const {sendRequest, loading, error} = useApi();
     const {control, register, handleSubmit, formState: {errors}} = useForm<any>();
     const [isUserCreated, setIsUserCreated] = useState(false);
@@ -27,8 +29,10 @@ const CreateUser = () => {
         sendRequest('users', 'POST', data)
             .then((response) => {
                 if (response.data) {
-                   // const {id, role, token, email} = response.data;
+                    // const {id, role, token, email} = response.data;
                     setIsUserCreated(true);
+                    router.refresh();
+                    setOpenCreateUser(false);
                 }
             })
     }

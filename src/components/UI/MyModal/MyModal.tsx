@@ -63,7 +63,8 @@ const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle
     };
 
     const style = {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: visible ? 'flex' : 'none',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
         justifyContent: positionStyle?.justifyContent ?? 'center',
         alignItems: positionStyle?.alignItems ?? 'center',
     };

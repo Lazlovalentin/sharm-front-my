@@ -24,8 +24,11 @@
     text-align: center;
 
     .datatable-cell {
-      overflow: auto;
       border: 1px solid red;
+
+      .wrapper-item {
+        overflow: auto;
+      }
     }
   }
 }

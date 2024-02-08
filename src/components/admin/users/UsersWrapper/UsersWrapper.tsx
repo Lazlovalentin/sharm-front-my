@@ -4,6 +4,10 @@ import DataTable from "@/components/UI/DataTable/DataTable";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
+import {useApi} from "@/hooks/useApi";
+import {useRouter} from "next/navigation";
+import CustomSelect from "@/components/UI/CustomSelect/CustomSelect";
+import ChangeRole from "@/components/admin/users/ChangeRole/ChangeRole";
 
 interface UsersWrapperProps {
     data: any;
@@ -11,6 +15,18 @@ interface UsersWrapperProps {
 }
 
 const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
+    const router = useRouter();
+    const {sendRequest, loading, error} = useApi();
+
+    const deleteUsers = (id: number) => {
+
+        sendRequest(`users/${id}`, 'DELETE', null)
+            .then((res) => {
+                console.log("res", res)
+                router.refresh();
+            })
+    }
+
 
     const columns = [
         {
@@ -34,12 +50,6 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
             width: 120
         },
         {
-            id: 'isEmailVerified',
-            headerName: 'isEmailVerified',
-            width: 120,
-            render: (item) => <div>{item.isEmailVerified ? "true" : "false"}</div>,
-        },
-        {
             id: 'Phone',
             headerName: 'Phone',
             width: 120
@@ -51,6 +61,14 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
             render: (item) => <div>{item.isPhoneVerified ? "true" : "false"}</div>,
         },
         {
+            id: 'Change Role',
+            headerName: 'Change Role',
+            width: 120,
+            render: (item) => <div>
+                <ChangeRole id={item.id} role={item.role}/>
+            </div>,
+        },
+        {
             id: 'role',
             headerName: 'Role',
             width: 50,
@@ -60,7 +78,7 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
             id: 'delete',
             headerName: 'delete',
             width: 50,
-            render: (item) => <button onClick={() => alert(`Editing ${item.id}`)}>delete</button>,
+            render: (item) => <button onClick={() => deleteUsers(item.id)}>delete</button>,
         }
     ]
 
@@ -79,7 +97,7 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
                 data={data.data}
             />
             <MyModal visible={openCreateUser} setVisible={setOpenCreateUser}>
-                <CreateUser/>
+                <CreateUser setOpenCreateUser={setOpenCreateUser}/>
             </MyModal>
         </>
     );

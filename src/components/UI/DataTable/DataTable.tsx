@@ -21,7 +21,6 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                 setSelectedOptions={setSelectedOptions}
             />
                 <input type={"text"} placeholder={"search"}/>
-
             </div>
             <div className="wrapper-header-table">
                 {selectedOptions.map((column) => (
@@ -44,7 +43,8 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                                 style={{width: column.width ? `${column.width}px` : 'auto'}}
                                 className="datatable-cell"
                             >
-                                {column.render ? column.render(item) : item[column.id]}
+                                {column.render ?
+                                    <>{column.render(item)}</> : <div className="wrapper-item">{item[column.id]}</div>}
                             </div>
                         ))}
                     </div>
