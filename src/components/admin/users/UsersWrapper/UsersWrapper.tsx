@@ -6,7 +6,6 @@ import MyModal from "@/components/UI/MyModal/MyModal";
 import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
 import {useApi} from "@/hooks/useApi";
 import {useRouter} from "next/navigation";
-import CustomSelect from "@/components/UI/CustomSelect/CustomSelect";
 import ChangeRole from "@/components/admin/users/ChangeRole/ChangeRole";
 
 interface UsersWrapperProps {
@@ -32,7 +31,7 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
         {
             id: 'id',
             headerName: 'ID',
-            width: 25
+            width: 45
         },
         {
             id: 'name',
@@ -58,13 +57,13 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
             id: 'isPhoneVerified',
             headerName: 'isPhoneVerified',
             width: 120,
-            render: (item) => <div>{item.isPhoneVerified ? "true" : "false"}</div>,
+            render: (item: any) => <div className="item-tablet-JSX">{item.isPhoneVerified ? "true" : "false"}</div>,
         },
         {
             id: 'Change Role',
             headerName: 'Change Role',
             width: 120,
-            render: (item) => <div>
+            render: (item: any) => <div className="item-tablet-JSX">
                 <ChangeRole id={item.id} role={item.role}/>
             </div>,
         },
@@ -72,13 +71,13 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
             id: 'role',
             headerName: 'Role',
             width: 50,
-            render: (item) => <div>{item.role}</div>,
+            render: (item: any) => <div className={"item-tablet-JSX"}>{item.role}</div>,
         },
         {
             id: 'delete',
             headerName: 'delete',
             width: 50,
-            render: (item) => <button onClick={() => deleteUsers(item.id)}>delete</button>,
+            render: (item: any) => <MyBtn text={"delte"} color={"attention"} click={() => deleteUsers(item.id)}/>,
         }
     ]
 

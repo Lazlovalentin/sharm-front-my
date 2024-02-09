@@ -18,9 +18,7 @@ export default async function Home({
 ) {
 
     const page = searchParams["page"] ?? "1"
-    const allUsers = await getAllUsers("users", page.toString(), "5")
-
-    console.log("allUsers", allUsers)
+    const allUsers = await getAllUsers("users", page.toString(), "1000")
 
     const countObj = allUsers.total
     const currentPage = allUsers.currentPage

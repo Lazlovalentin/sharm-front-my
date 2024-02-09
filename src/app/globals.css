@@ -10,9 +10,9 @@ a {
 
 :root {
     --index: calc(1vw + 1vh);
-    background-color: #fbfbfb;
-    --background-color-dark: #d7c7c7;
-    --text-color: black;
+    background-color: #ffffff;
+    --background-color-dark: #cfcfd5;
+    --text-color: #363636;
     --svg-img: brightness(0);
     --svg-img-hover: brightness(0) invert(1);
 

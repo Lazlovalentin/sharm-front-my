@@ -6,6 +6,7 @@ interface CustomSelectProps {
     selectedOptions: any;
     setSelectedOptions: any;
     isSingleSelect?: boolean;
+    text: string
 }
 
 const CustomSelect: FC<CustomSelectProps> = ({
@@ -13,6 +14,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
                                                  selectedOptions,
                                                  setSelectedOptions,
                                                  isSingleSelect = false,
+                                                 text
                                              }) => {
     const [openSelect, setOpenSelect] = useState(false);
 
@@ -20,14 +22,14 @@ const CustomSelect: FC<CustomSelectProps> = ({
         setOpenSelect(!openSelect);
     };
 
-    const handleOptionChange = (selectedOption: Option) => {
+    const handleOptionChange = (selectedOption: any) => {
         if (isSingleSelect) {
             setSelectedOptions([selectedOption]);
         } else {
-            setSelectedOptions(prev => {
-                const isOptionSelected = prev.find(option => option.id === selectedOption.id);
+            setSelectedOptions((prev: any) => {
+                const isOptionSelected = prev.find((option: any) => option.id === selectedOption.id);
                 if (isOptionSelected) {
-                    return prev.filter(option => option.id !== selectedOption.id);
+                    return prev.filter((option: any) => option.id !== selectedOption.id);
                 } else {
                     return [...prev, selectedOption];
                 }
@@ -37,7 +39,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
 
     return (
         <div className="container-select-admin">
-            <button onClick={openSelectHandler}>Choose columns</button>
+            <button onClick={openSelectHandler}>{text}</button>
             <div
                 className={"select-options"}
                 style={{display: openSelect ? "block" : "none"}}
@@ -47,10 +49,11 @@ const CustomSelect: FC<CustomSelectProps> = ({
                         <input
                             type="checkbox"
                             id={option.id}
-                            // Перевіряємо, чи об'єкт присутній в масиві, для встановлення checked статусу
-                            checked={selectedOptions.some(selected => selected.id === option.id)}
+                            checked={selectedOptions.some((selected) => selected.id === option.id)}
                             onChange={() => handleOptionChange(option)}
                         />
+                        <div className="custom-checkbox"></div>
+                        {/* Додавання кастомного чекбокса */}
                         <label htmlFor={option.id}>{option.headerName}</label>
                     </div>
                 ))}

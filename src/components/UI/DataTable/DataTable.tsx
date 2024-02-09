@@ -19,11 +19,19 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                 options={columns}
                 selectedOptions={selectedOptions}
                 setSelectedOptions={setSelectedOptions}
+                text={"Choose columns"}
             />
+                <CustomSelect
+                    options={columns}
+                    selectedOptions={selectedOptions}
+                    setSelectedOptions={setSelectedOptions}
+                    text={"Choose columns"}
+                />
+
                 <input type={"text"} placeholder={"search"}/>
             </div>
             <div className="wrapper-header-table">
-                {selectedOptions.map((column) => (
+                {selectedOptions.map((column: any) => (
                     <div
                         key={column.id}
                         style={{width: column.width ? `${column.width}px` : 'auto'}}
@@ -37,7 +45,7 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
             <div className="datatable-body">
                 {data.map((item, index) => (
                     <div key={index} className="datatable-row">
-                        {selectedOptions.map((column) => (
+                        {selectedOptions.map((column: any) => (
                             <div
                                 key={column.id}
                                 style={{width: column.width ? `${column.width}px` : 'auto'}}

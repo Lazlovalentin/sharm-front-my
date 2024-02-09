@@ -49,12 +49,14 @@ const ChangeRole: FC<ChangeRoleProps> = ({id, role}) => {
                 isSingleSelect={true}
                 selectedOptions={selectedOptions}
                 setSelectedOptions={setSelectedOptions}
+                text={"Choose role"}
             />
             <MyModal visible={visible1} setVisible={setVisible1}>
                 <>
                     are you sure you want to change role?
                     <button onClick={changeRoleHandler}>yes</button>
-                    <button onClick={() => setVisible1(false)}>No</button> {/* Виправлено */}
+                    <button onClick={() => setVisible1(false)}>No</button>
+                    {/* Виправлено */}
                 </>
             </MyModal>
         </div>
