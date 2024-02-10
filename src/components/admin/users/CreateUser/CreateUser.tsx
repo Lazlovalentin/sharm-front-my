@@ -3,13 +3,17 @@ import "./CreateUser.scss";
 import {useApi} from "@/hooks/useApi";
 import HorizontalLoader from "@/components/UI/HorizontalLoader/HorizontalLoader";
 import MyInput from "@/components/general/MyInput/MyInput";
-import React, {useState} from "react";
+import React, {FC, useState} from "react";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {useForm, Controller} from 'react-hook-form';
 import InformationMessages from "@/components/admin/InformationMessages/InformationMessages";
 import {useRouter} from "next/navigation";
 
-const CreateUser = ({setOpenCreateUser}) => {
+interface CreateUserProps {
+    setOpenCreateUser: (value: boolean) => void;
+}
+
+const CreateUser: FC<CreateUserProps> = ({setOpenCreateUser}) => {
     const router = useRouter();
     const {sendRequest, loading, error} = useApi();
     const {control, register, handleSubmit, formState: {errors}} = useForm<any>();

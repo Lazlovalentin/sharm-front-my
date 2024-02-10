@@ -1,12 +1,18 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useState } from 'react';
 import "./CustomSelect.scss";
-import arrow from "./arrow.svg"
+import arrow from "./arrow.svg";
 import Image from "next/image";
 
+// Визначення типу для опції
+interface Option {
+    id: string | number; // Унікальний ідентифікатор для кожної опції
+    headerName: string; // Текст, який буде відображатися
+}
+
 interface CustomSelectProps {
-    options: any[];
-    selectedOptions: any[];
-    setSelectedOptions: (options: any[]) => void;
+    options: Option[];
+    selectedOptions: Option[];
+    setSelectedOptions: (options: Option[] | ((prevState: Option[]) => Option[])) => void;
     isSingleSelect?: boolean;
     text: string;
 }
@@ -22,20 +28,20 @@ const CustomSelect: FC<CustomSelectProps> = ({
 
     const openSelectHandler = () => setOpenSelect(!openSelect);
 
-    const handleOptionChange = (selectedOption: any) => {
+    const handleOptionChange = (selectedOption: Option) => {
         if (isSingleSelect) {
             setSelectedOptions([selectedOption]);
         } else {
-            setSelectedOptions((prev: any[]) => {
-                const isOptionSelected = prev.find((option: any) => option.id === selectedOption.id);
+            setSelectedOptions((prev: Option[]) => {
+                const isOptionSelected = prev.find(option => option.id === selectedOption.id);
                 return isOptionSelected
-                    ? prev.filter((option: any) => option.id !== selectedOption.id)
+                    ? prev.filter(option => option.id !== selectedOption.id)
                     : [...prev, selectedOption];
             });
         }
     };
 
-    const handleOptionClick = (option: any, event: React.MouseEvent<HTMLDivElement>) => {
+    const handleOptionClick = (option: Option, event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
         handleOptionChange(option);
     };
@@ -44,10 +50,10 @@ const CustomSelect: FC<CustomSelectProps> = ({
         <div className="container-select-admin">
             <button onClick={openSelectHandler}>
                 {text}
-                {isSingleSelect ? <>{selectedOptions[0].headerName}</> : null}
+                {isSingleSelect && selectedOptions.length > 0 ? <>{selectedOptions[0].headerName}</> : null}
                 <div>
                     {isSingleSelect ? <div>({options.length})</div> : null}
-                    <Image src={arrow} alt={"arrow"}/>
+                    <Image src={arrow} alt="arrow"/>
                 </div>
             </button>
             <div className={"select-options"} style={{display: openSelect ? "block" : "none"}}>
@@ -55,12 +61,12 @@ const CustomSelect: FC<CustomSelectProps> = ({
                     <div key={option.id} className="option-checkbox" onClick={(e) => handleOptionClick(option, e)}>
                         <input
                             type="checkbox"
-                            id={option.id}
+                            id={`${option.id}`}
                             checked={selectedOptions.some(selected => selected.id === option.id)}
-                            onChange={(e) => e.stopPropagation()} // запобігає всплиттю події, коли клікають безпосередньо на чекбокс
+                            onChange={(e) => e.stopPropagation()} // Запобігає всплиттю події
                         />
                         <div className="custom-checkbox"></div>
-                        <label htmlFor={option.id}>{option.headerName}</label>
+                        <label htmlFor={`${option.id}`}>{option.headerName}</label>
                     </div>
                 ))}
             </div>

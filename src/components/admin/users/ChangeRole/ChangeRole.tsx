@@ -13,7 +13,7 @@ const ChangeRole: FC<ChangeRoleProps> = ({id, role}) => {
     const router = useRouter();
     const [visible1, setVisible1] = useState(false);
     const {sendRequest, loading, error} = useApi();
-    const [selectedOptions, setSelectedOptions] = useState([{id: `${role}`, headerName: `${role}`}]);
+    const [selectedOptions, setSelectedOptions] = useState<any>([{id: `${role}`, headerName: `${role}`}]);
 
     const roles = [
         {id: 'user', headerName: 'user'},
@@ -27,6 +27,7 @@ const ChangeRole: FC<ChangeRoleProps> = ({id, role}) => {
         if (selectedOptions[0].id !== role) {
             setVisible1(!visible1);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedOptions]);
 
     const changeRoleHandler = () => {

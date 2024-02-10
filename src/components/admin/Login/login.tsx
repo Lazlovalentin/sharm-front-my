@@ -7,14 +7,19 @@ function LoginPage() {
     const baseURL = process.env.NEXT_PUBLIC_API_URL;
     let error: null | string = null
     let loader: boolean = false
+    let id: any | string = cookies().get('logIn')
 
     async function createInvoice(formData: FormData) {
         'use server'
 
-        const rawFormData = {
-            email: formData.get('email')?.toLowerCase(),
-            password: formData.get('password'),
-        }
+        const emailEntry = formData.get('email');
+        const passwordEntry = formData.get('password');
+
+        // Переконайтеся, що emailEntry є строкою перед викликом toLowerCase()
+        const email = typeof emailEntry === 'string' ? emailEntry.toLowerCase() : '';
+        const password = typeof passwordEntry === 'string' ? passwordEntry : '';
+
+        const rawFormData = {email, password};
 
         await axios.post(`${baseURL}/api/auth/login`, rawFormData, {withCredentials: true})
             .then((response) => {

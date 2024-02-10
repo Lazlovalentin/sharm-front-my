@@ -19,16 +19,12 @@ export default async function Home({
 ) {
 
     const role = cookies().get('role')
-
     const page = searchParams["page"] ?? "1"
     const allUsers = await getAllUsers("users", page.toString(), "1000")
-
-    const countObj = allUsers.total
-    const currentPage = allUsers.currentPage
     const totalPages = allUsers.totalPages
 
     if (role?.value !== "admin") {
-        redirect("/admin");
+        redirect("admin");
     }
     return (
         <div className="container-settings-admin">
