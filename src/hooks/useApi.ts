@@ -26,7 +26,6 @@ export const useApi = <T = any>() => {
                 setLoading(false);
                 const message = error.response?.data.message || 'An error occurred';
                 setError(message);
-                // Потрібно повернути відхилення проміса, щоб зберегти ланцюжок помилок
                 return Promise.reject({error: message});
             });
     };

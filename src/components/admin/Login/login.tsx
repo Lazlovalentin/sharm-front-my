@@ -4,14 +4,19 @@ import {cookies} from 'next/headers'
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 
 function LoginPage() {
+    const baseURL = process.env.NEXT_PUBLIC_API_URL;
+    let error: null | string = null
+    let loader: boolean = false
+
     async function createInvoice(formData: FormData) {
         'use server'
+
         const rawFormData = {
-            email: formData.get('email'),
+            email: formData.get('email')?.toLowerCase(),
             password: formData.get('password'),
         }
 
-        await axios.post('http://localhost:3000/api/auth/login', rawFormData)
+        await axios.post(`${baseURL}/api/auth/login`, rawFormData, {withCredentials: true})
             .then((response) => {
                 cookies().set('logIn', "true")
                 cookies().set('id', response.data.id)
@@ -20,12 +25,15 @@ function LoginPage() {
                 cookies().set('token', response.data.token, {secure: true})
             })
             .catch((error) => {
+                error = error.response.data.message
                 console.log("login", error.response.data.message)
             })
     }
 
     return (
         <div className="container-login-admin">
+            {loader ? <div>loading...</div> : null}
+            {error ? <div>{error}</div> : null}
             <form action={createInvoice}>
                 <input type="email" name="email"/>
                 <input type="password" name="password"/>
@@ -36,23 +44,3 @@ function LoginPage() {
 }
 
 export default LoginPage
-
-/*
-        const formData = new FormData(e.target);
-
-        const data = {
-            email: formData.get('email'),
-            password: formData.get('password'),
-        }
-
-        sendRequest('auth/login', 'POST', data)
-            .then((response) => {
-                if (response.data) {
-                    const {id, role, token, email} = response.data;
-                    setUserProperty('id', id);
-                    setUserProperty('role', role);
-                    setUserProperty('email', email);
-                    setUserProperty('token', token);
-                }
-            })
- */

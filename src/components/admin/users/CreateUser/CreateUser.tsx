@@ -19,7 +19,7 @@ const CreateUser = ({setOpenCreateUser}) => {
         const data = {
             name: e.name,
             surname: e.surname,
-            email: e.email,
+            email: e.email.toLowerCase(),
             // isEmailVerified: true,
             phone: e.phone,
             // isPhoneVerified: true,

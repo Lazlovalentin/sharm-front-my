@@ -10,28 +10,32 @@ interface DataTableProps {
 }
 
 const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) => {
-    const [selectedOptions, setSelectedOptions] = useState(initialSelectedOptions);
+    const [choseColumnsOptions, setChoseColumnsOptions] = useState(initialSelectedOptions);
+
+    const [searsHOptions, setSearsHOptions] = useState([initialSelectedOptions[0]]);
 
     return (
         <div className="container-data-table">
             <div className="wrapper-management">
                 <CustomSelect
-                options={columns}
-                selectedOptions={selectedOptions}
-                setSelectedOptions={setSelectedOptions}
-                text={"Choose columns"}
-            />
-                <CustomSelect
                     options={columns}
-                    selectedOptions={selectedOptions}
-                    setSelectedOptions={setSelectedOptions}
+                    selectedOptions={choseColumnsOptions}
+                    setSelectedOptions={setChoseColumnsOptions}
                     text={"Choose columns"}
                 />
-
-                <input type={"text"} placeholder={"search"}/>
+                <div>
+                    <CustomSelect
+                        options={columns}
+                        selectedOptions={searsHOptions}
+                        setSelectedOptions={setSearsHOptions}
+                        text={"Search columns"}
+                        isSingleSelect={true}
+                    />
+                    <input type={"text"} placeholder={"search"}/>
+                </div>
             </div>
             <div className="wrapper-header-table">
-                {selectedOptions.map((column: any) => (
+                {choseColumnsOptions.map((column: any) => (
                     <div
                         key={column.id}
                         style={{width: column.width ? `${column.width}px` : 'auto'}}
@@ -45,7 +49,7 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
             <div className="datatable-body">
                 {data.map((item, index) => (
                     <div key={index} className="datatable-row">
-                        {selectedOptions.map((column: any) => (
+                        {choseColumnsOptions.map((column: any) => (
                             <div
                                 key={column.id}
                                 style={{width: column.width ? `${column.width}px` : 'auto'}}

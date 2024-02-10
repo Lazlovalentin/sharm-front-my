@@ -1,13 +1,32 @@
 .container-select-admin {
   position: relative;
+  height: 30px;
 
   button {
+    cursor: pointer;
     background-color: transparent;
     border: none;
     border-bottom: 1px solid var(--stoke);
     color: var(--text-color);
-    max-width: 200px;
-    padding: 0 10px;
+    min-width: 80px;
+    display: flex;
+    justify-content: space-between;
+    transition: color 0.3s;
+
+    > div {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    &:hover {
+      color: var(--primary-red);
+    }
+
+    img {
+      width: 15px;
+      height: 15px;
+      margin-top: 2px;
+    }
   }
 
   .select-options {
@@ -19,46 +38,50 @@
     border-bottom: 1px solid var(--stoke);
     background-color: white;
     color: var(--text-color);
+    top: 25px;
     left: 50%;
     transform: translate(-50%, 0%);
-  }
-}
-.option-checkbox {
-  display: flex;
-  align-items: center;
 
-  // Стилізація кастомного чекбокса
-  .custom-checkbox {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background-color: #ccc; // Сірий колір за замовчуванням
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    // Псевдоелемент для галочки
-    &:after {
-      content: '';
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: block;
-      background-color: transparent; // Початково прозорий
+    input {
+      display: none;
     }
-  }
 
-  // Стилі для вибраного стану
-  input:checked + .custom-checkbox {
-    background-color: green; // Зелений колір при виборі
+    .option-checkbox {
+      display: flex;
+      align-items: center;
 
-    &:after {
-      background-color: white; // Білий колір галочки
+      .custom-checkbox {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background-color: #ccc; // Сірий колір за замовчуванням
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        // Псевдоелемент для галочки
+        &:after {
+          content: '';
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          display: block;
+          background-color: transparent; // Початково прозорий
+        }
+      }
+
+      // Стилі для вибраного стану
+      input:checked + .custom-checkbox {
+        background-color: green; // Зелений колір при виборі
+
+        &:after {
+          background-color: white; // Білий колір галочки
+        }
+      }
+
+
     }
-  }
 
-  input {
-    display: none; // Приховуємо стандартний чекбокс
   }
 }

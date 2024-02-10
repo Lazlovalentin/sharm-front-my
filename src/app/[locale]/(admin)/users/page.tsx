@@ -6,7 +6,8 @@ import PaginationControl from "@/components/UI/PaginationControl/PaginationContr
 import {getAllUsers} from "@/actions/getAllUsers";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import UsersWrapper from "@/components/admin/users/UsersWrapper/UsersWrapper";
-
+import {cookies} from 'next/headers'
+import {redirect} from "next/navigation";
 
 export default async function Home({
                                        searchParams
@@ -17,6 +18,8 @@ export default async function Home({
                                        }
 ) {
 
+    const role = cookies().get('role')
+
     const page = searchParams["page"] ?? "1"
     const allUsers = await getAllUsers("users", page.toString(), "1000")
 
@@ -24,6 +27,9 @@ export default async function Home({
     const currentPage = allUsers.currentPage
     const totalPages = allUsers.totalPages
 
+    if (role?.value !== "admin") {
+        redirect("/admin");
+    }
     return (
         <div className="container-settings-admin">
             <UsersWrapper data={allUsers}/>

@@ -13,8 +13,10 @@ import pages from "./img/pages.svg"
 import settings from "./img/settings.svg"
 import users from "./img/users.svg"
 import products from "./img/products.svg"
+import {cookies} from "next/headers";
 
 const Dashboard = () => {
+    const role = cookies().get('role')
     return (
         <div className="container-dashboard-admin">
             <Link href={"admin"}>
@@ -26,7 +28,7 @@ const Dashboard = () => {
             <Link href={"users"}>
                 <Image src={orders} alt={"logo"}/>
             </Link>
-            <Link href={"users"}>
+            <Link href={"usefrs"}>
                 <Image src={menu} alt={"logo"}/>
             </Link>
             <Link href={"users"}>
@@ -38,9 +40,11 @@ const Dashboard = () => {
             <Link href={"users"}>
                 <Image src={pages} alt={"logo"}/>
             </Link>
-            <Link href={"users"}>
-                <Image src={users} alt={"logo"}/>
-            </Link>
+            {role?.value === "admin" ?
+                <Link href={"users"}>
+                    <Image src={users} alt={"users"}/>
+                </Link>
+                : null}
             <Link href={"users"}>
                 <Image src={reviews} alt={"logo"}/>
             </Link>

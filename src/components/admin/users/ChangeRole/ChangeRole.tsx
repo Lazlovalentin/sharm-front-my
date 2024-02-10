@@ -49,7 +49,7 @@ const ChangeRole: FC<ChangeRoleProps> = ({id, role}) => {
                 isSingleSelect={true}
                 selectedOptions={selectedOptions}
                 setSelectedOptions={setSelectedOptions}
-                text={"Choose role"}
+                text={""}
             />
             <MyModal visible={visible1} setVisible={setVisible1}>
                 <>
