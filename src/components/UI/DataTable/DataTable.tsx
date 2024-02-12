@@ -1,7 +1,8 @@
 "use client";
-import React, {FC, useState} from 'react';
+import React, {FC, useDeferredValue, useEffect, useState} from 'react';
 import "./DataTable.scss";
 import CustomSelect from "@/components/UI/CustomSelect/CustomSelect";
+import {useApi} from "@/hooks/useApi";
 
 interface DataTableProps {
     data: any[];
@@ -10,9 +11,27 @@ interface DataTableProps {
 }
 
 const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) => {
+    const {sendRequest, loading, error} = useApi();
+    const [dataToShow, setDataToShow] = useState(data);
     const [choseColumnsOptions, setChoseColumnsOptions] = useState(initialSelectedOptions);
-
     const [searsHOptions, setSearsHOptions] = useState([initialSelectedOptions[0]]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const deferredSearchTerm = useDeferredValue(searchTerm);
+
+    useEffect(() => {
+        if (deferredSearchTerm) {
+            const searchUrl = `users/search?field=${encodeURIComponent(searsHOptions[0].id)}&value=${deferredSearchTerm}`;
+            sendRequest(searchUrl, 'GET', null)
+                .then((res) => {
+                    if (res.data.length === 0) {
+                        setDataToShow(data);
+                    } else {
+                        setDataToShow(res.data);
+                    }
+                });
+        }
+    }, [deferredSearchTerm, searsHOptions]);
+
 
     return (
         <div className="container-data-table">
@@ -31,7 +50,12 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                         text={"Search columns"}
                         isSingleSelect={true}
                     />
-                    <input type={"text"} placeholder={"search"}/>
+                    <input
+                        type="text"
+                        placeholder="search"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
             </div>
             <div className="wrapper-header-table">
@@ -47,7 +71,7 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
             </div>
 
             <div className="datatable-body">
-                {data.map((item, index) => (
+                {dataToShow.map((item, index) => (
                     <div key={index} className="datatable-row">
                         {choseColumnsOptions.map((column: any) => (
                             <div

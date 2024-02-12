@@ -7,7 +7,6 @@ function LoginPage() {
     const baseURL = process.env.NEXT_PUBLIC_API_URL;
     let error: null | string = null
     let loader: boolean = false
-    let id: any | string = cookies().get('logIn')
 
     async function createInvoice(formData: FormData) {
         'use server'

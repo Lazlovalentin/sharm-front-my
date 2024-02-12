@@ -14,14 +14,13 @@ interface UsersWrapperProps {
 }
 
 const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
+
     const router = useRouter();
     const {sendRequest, loading, error} = useApi();
 
     const deleteUsers = (id: number) => {
-
         sendRequest(`users/${id}`, 'DELETE', null)
             .then((res) => {
-                console.log("res", res)
                 router.refresh();
             })
     }

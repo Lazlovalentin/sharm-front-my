@@ -1,5 +1,5 @@
 "use client"
-import React, {useRef} from 'react';
+import React, { useRef} from 'react';
 import {useTheme} from "next-themes";
 import {useGSAP} from "@gsap/react";
 import {gsap} from 'gsap';
@@ -22,7 +22,7 @@ const ThemeSwitcher = () => {
 
     const handleMouseEnter = contextSafe(() => {
         gsap.fromTo(svgRef.current,
-            { scale: 1 },
+            {scale: 1},
             {
                 scale: 0.6,
                 duration: 0.3,
