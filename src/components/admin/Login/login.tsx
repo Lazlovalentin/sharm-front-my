@@ -35,15 +35,22 @@ function LoginPage() {
     }
 
     return (
-        <div className="container-login-admin">
-            {loader ? <div>loading...</div> : null}
-            {error ? <div>{error}</div> : null}
-            <form action={createInvoice}>
-                <input type="email" name="email"/>
-                <input type="password" name="password"/>
-                <MyBtn text={"Submit"} color={"primary"}/>
-            </form>
-        </div>
+        <>
+            <div className="container-login-admin">
+                {loader ? <div>loading...</div> : null}
+                {error ? <div>{error}</div> : null}
+                <div>
+                    <div>admin account</div>
+                    <div>name: preview@gmail.com</div>
+                    <div>1234567</div>
+                </div>
+                <form action={createInvoice}>
+                    <input type="email" name="email"/>
+                    <input type="password" name="password"/>
+                    <MyBtn text={"Submit"} color={"primary"}/>
+                </form>
+            </div>
+        </>
     )
 }
 
