@@ -32,6 +32,7 @@ function LoginPage() {
                 error = error.response.data.message
                 console.log("login", error.response.data.message)
             })
+
     }
 
     return (
@@ -42,7 +43,7 @@ function LoginPage() {
                 <div>
                     <div>admin account</div>
                     <div>name: preview@gmail.com</div>
-                    <div>1234567</div>
+                    <div>Pass: 1234567</div>
                 </div>
                 <form action={createInvoice}>
                     <input type="email" name="email"/>

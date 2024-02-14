@@ -1,0 +1,30 @@
+.container-faq-card {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-stroke, #b8b8b8);;
+  cursor: pointer;
+
+  h6 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: start;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
+  }
+
+  p{
+    height: 0;
+    opacity: 0;
+    margin-top: 16px;
+  }
+
+  svg {
+    stroke: var(--color-stroke, #b8b8b8);
+  }
+}
