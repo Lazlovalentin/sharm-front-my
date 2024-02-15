@@ -1,0 +1,15 @@
+.active-link {
+  background-color: var(--text-color);
+  background-image: linear-gradient(to right, #E56466 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: right;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  transition: background-position 0.5s ease-out;
+
+  &:hover {
+    background-position: left;
+  }
+}

@@ -1,19 +1,23 @@
-import {FC, useRef, useState} from 'react';
-import "./FAQCard.scss";
-import Arrow from "@/components/svg/Arrow/Arrow";
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
+"use client";
+import React, {FC, useRef, useState} from 'react';
+import "./Accordion.scss"
 import {useGSAP} from "@gsap/react";
+import {gsap} from "gsap";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import Arrow from "@/components/svg/Arrow/Arrow";
 
-interface FAQCardProps {
-    data: any;
-    style: any
+interface AccordionProps {
+    style?: any
+    title?: string
+    children?: any
 }
 
-const FAQCard: FC<FAQCardProps> = ({
-                                       data,
-                                       style,
-                                   }) => {
+
+const Accordion: FC<AccordionProps> = ({
+                                           title,
+                                           style,
+                                           children
+                                       }) => {
     const answerRef = useRef<HTMLParagraphElement>(null);
     const arrowRef = useRef<SVGSVGElement>(null);
     const {contextSafe} = useGSAP()
@@ -37,16 +41,17 @@ const FAQCard: FC<FAQCardProps> = ({
     })
 
     return (
-        <button className="container-faq-card" style={style} onClick={() => toggleHeight()}>
+        <button className="container-accordion" style={style} onClick={() => toggleHeight()}>
             <h6>
-                {data.question}
+                {title}
                 <Arrow ref={arrowRef}/>
             </h6>
             <p ref={answerRef}>
-                <span>{data.answer}</span>
+                <span>{children}</span>
             </p>
         </button>
     );
 };
 
-export {FAQCard};
+
+export default Accordion;

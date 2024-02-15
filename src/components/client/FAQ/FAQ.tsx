@@ -1,10 +1,10 @@
 'use client';
 import {useRef} from 'react';
 import "./FAQ.scss"
-import {FAQCard} from './FAQCard/FAQCard';
 import {gsap} from 'gsap';
 import {faqSectionData} from "@/mokData/faqSection";
 import {useGSAP} from "@gsap/react";
+import Accordion from "@/components/UI/Accordion/Accordion";
 
 const Faq = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,6 @@ const Faq = () => {
             x: 0,
             stagger: 0.2,
         });
-
     });
 
     return (
@@ -38,12 +37,32 @@ const Faq = () => {
             <h5 className="title-main-faq">FAQ</h5>
             <ul className='wrapper-list-faq'>
                 <li>
-                    <FAQCard data={faqSectionData[0]} style={{transform: 'translate(-1000px, 0px)'}}/>
-                    <FAQCard data={faqSectionData[1]} style={{transform: 'translate(-1000px, 0px)'}}/>
+                    <Accordion
+                        title={faqSectionData[0].question}
+                        style={{transform: 'translate(-1000px, 0px)'}}
+                    >
+                        {faqSectionData[0].answer}
+                    </Accordion>
+                    <Accordion
+                        title={faqSectionData[1].question}
+                        style={{transform: 'translate(-1000px, 0px)'}}
+                    >
+                        {faqSectionData[1].answer}
+                    </Accordion>
                 </li>
                 <li>
-                    <FAQCard data={faqSectionData[2]} style={{transform: 'translate(1000px, 0px)'}}/>
-                    <FAQCard data={faqSectionData[3]} style={{transform: 'translate(1000px, 0px)'}}/>
+                    <Accordion
+                        title={faqSectionData[2].question}
+                        style={{transform: 'translate(1000px, 0px)'}}
+                    >
+                        {faqSectionData[2].answer}
+                    </Accordion>
+                    <Accordion
+                        title={faqSectionData[3].question}
+                        style={{transform: 'translate(1000px, 0px)'}}
+                    >
+                        {faqSectionData[3].answer}
+                    </Accordion>
                 </li>
             </ul>
         </section>
