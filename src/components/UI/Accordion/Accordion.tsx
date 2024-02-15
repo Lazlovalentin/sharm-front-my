@@ -46,9 +46,9 @@ const Accordion: FC<AccordionProps> = ({
                 {title}
                 <Arrow ref={arrowRef}/>
             </h6>
-            <p ref={answerRef}>
-                <span>{children}</span>
-            </p>
+            <div ref={answerRef}>
+               {children}
+            </div>
         </button>
     );
 };
