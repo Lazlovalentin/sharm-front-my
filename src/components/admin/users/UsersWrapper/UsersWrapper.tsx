@@ -82,9 +82,8 @@ const UsersWrapper: FC<UsersWrapperProps> = ({data}) => {
 
     const [openCreateUser, setOpenCreateUser] = useState(false);
 
-    const openCreateUserHandler = () => {
-        setOpenCreateUser(!openCreateUser);
-    }
+    const openCreateUserHandler = () => setOpenCreateUser(!openCreateUser);
+
 
     return (
         <>

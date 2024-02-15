@@ -1,5 +1,5 @@
 "use client";
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useRef} from 'react';
 import "./MyModal.scss";
 import {gsap} from "gsap";
 import {useGSAP} from "@gsap/react";
@@ -21,31 +21,30 @@ interface MyModalProps {
 }
 
 const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle}) => {
-    const modalRef = useRef(null);
+    const backgroundRef = useRef(null);
+    const contentRef = useRef(null);
 
     useGSAP(() => {
         if (visible) {
-            gsap.fromTo(".container-modal", {
-
+            gsap.fromTo(backgroundRef.current, {
                 opacity: 0,
             }, {
                 autoAlpha: 1,
                 opacity: 1,
                 duration: 0.5,
             });
-            gsap.to(".wrapper-content", {
+            gsap.to(contentRef.current, {
                 autoAlpha: 1,
                 duration: 0.5,
             });
 
-
         } else {
-            gsap.to('.container-modal', {
+            gsap.to(backgroundRef.current, {
                 autoAlpha: 0,
                 opacity: 0,
                 duration: 0.5,
             });
-            gsap.to(".wrapper-content", {
+            gsap.to(contentRef.current, {
                 autoAlpha: 1,
                 scale: 1,
                 duration: 0.5,
@@ -63,15 +62,24 @@ const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle
     };
 
     const style = {
-        display: visible ? 'flex' : 'none',
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         justifyContent: positionStyle?.justifyContent ?? 'center',
         alignItems: positionStyle?.alignItems ?? 'center',
     };
 
     return (
-        <div className="container-modal" style={style} onClick={handleClose}>
-            <div className="wrapper-content" style={{margin: 'auto', ...positionStyle}} onClick={handleContentClick}>
+        <div
+            ref={backgroundRef}
+            className="container-modal"
+            style={style}
+            onClick={handleClose}
+        >
+            <div
+                ref={contentRef}
+                className="wrapper-content"
+                style={{margin: 'auto', ...positionStyle}}
+                onClick={handleContentClick}
+            >
                 <button onClick={() => setVisible(!visible)}>close</button>
                 <div>
                     {children}

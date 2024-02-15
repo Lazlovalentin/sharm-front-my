@@ -31,8 +31,8 @@ const Dashboard = () => {
             <Link href={"usefrs"}>
                 <Image src={menu} alt={"logo"}/>
             </Link>
-            <Link href={"users"}>
-                <Image src={categories} alt={"logo"}/>
+            <Link href={"categories"}>
+                <Image src={categories} alt={"categories"}/>
             </Link>
             <Link href={"users"}>
                 <Image src={products} alt={"logo"}/>
