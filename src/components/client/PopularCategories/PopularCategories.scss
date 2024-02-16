@@ -1,0 +1,43 @@
+.container-popular-categories {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+
+  .wrapper-popular-categories {
+    text-align: center;
+    color: var(--placeholder);
+    position: relative;
+
+    .animate-border {
+      position: absolute;
+      border: 2px solid var(--placeholder);
+      border-radius: 10px;
+      width: 80px;
+      height: 80px;
+      left: 0;
+      top: 0;
+      z-index: -1;
+    }
+
+    .circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      background-color: transparent;
+      border: 2px solid var(--placeholder);
+      border-radius: 10px;
+      overflow: hidden;
+
+      span {
+        display: inline-block;
+        margin-top: 8px;
+      }
+    }
+
+
+  }
+
+
+}
