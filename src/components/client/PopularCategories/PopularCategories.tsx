@@ -50,6 +50,7 @@ const PopularCategories: FC<PopularCategoriesProps> = ({categories}) => {
         <section className={"container-popular-categories"}>
             {categories.map((category, index) => (
                 <div
+                    key={category.id}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                     className="wrapper-popular-categories"

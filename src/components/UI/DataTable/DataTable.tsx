@@ -30,6 +30,7 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                     }
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [deferredSearchTerm, searsHOptions]);
 
 
