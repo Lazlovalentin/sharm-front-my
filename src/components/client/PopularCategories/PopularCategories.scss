@@ -1,6 +1,8 @@
 .container-popular-categories {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   cursor: pointer;
 
   .wrapper-popular-categories {

@@ -1,5 +1,5 @@
 "use client"
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useRef} from 'react';
 import './PopularCategories.scss';
 import gsap from 'gsap';
 import {useGSAP} from "@gsap/react";
