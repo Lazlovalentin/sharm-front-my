@@ -52,8 +52,19 @@ a {
     display: flex;
 }
 
+.main-container {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 a {
     color: var(--color-text);
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
 }
 
 li {
