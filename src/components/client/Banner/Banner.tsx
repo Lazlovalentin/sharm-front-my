@@ -8,8 +8,8 @@ import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {BannerItem} from "@/mokData/bannerData";
 import {Arrow} from "@/components/general/svg/Arrow";
 import {useRouter} from "next/navigation";
-import Image from "next/legacy/image";
 import Link from "next/link";
+import Image from "next/image";
 
 gsap.registerPlugin(Draggable);
 
@@ -145,7 +145,7 @@ const Banner: FC<BannerProps> = ({data}) => {
                 delay: 0.3,
             }
         );
-    }, {dependencies: offset});
+    }, { dependencies: [offset] });
 
     return (
         <div className="container-banner" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -155,11 +155,13 @@ const Banner: FC<BannerProps> = ({data}) => {
                         {data.map((item, idx) => (
                             <li className={offset === idx ? "active" : ""} key={idx}>
                                 <Link href={item.link}>
-                                    <img
-                                        className="banner-slide"
-                                        src={item.image}
-                                        alt={item.title}
-                                    />
+                                    <div className="banner-slide">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            fill={true}
+                                        />
+                                    </div>
                                     {
                                         item.bottom &&
                                         <div className="banner-overlay"
