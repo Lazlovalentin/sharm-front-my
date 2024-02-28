@@ -116,23 +116,16 @@ const Banner: FC<BannerProps> = ({data}) => {
         });
 
         gsap.to(".banner-cover", {
-            css: {
-                display: "none",
-            },
-            duration: 0,
-            delay: 2.2,
+            display: "none",
+            duration: 1,
+            delay: 0.7,
         });
     })
 
     useGSAP(() => {
-        gsap.from(".banner-image", {
-            scale: 1,
-            ease: Power3.easeOut,
-            duration: 1,
-            delay: 1,
-        });
+
         gsap.fromTo(
-            ".banner-overlay",
+            ".banner-button",
             {
                 y: "-100%",
                 ease: Power3.easeOut,
@@ -156,8 +149,7 @@ const Banner: FC<BannerProps> = ({data}) => {
                         {data.map((item) => (
                             <li key={item.id}>
                                 <Link href={item.link}>
-                                    <div className="banner-slide">
-                                        {item.image}
+                                    <div className="wrapper-img-banner">
                                         <Image
                                             src={item.image}
                                             alt={item.title}
@@ -166,7 +158,7 @@ const Banner: FC<BannerProps> = ({data}) => {
                                     </div>
                                     {
                                         item.bottom &&
-                                        <div className="banner-overlay"
+                                        <div className="banner-button"
                                              style={{
                                                  top: `${item.top}%`,
                                                  left: `${item.left}%`,

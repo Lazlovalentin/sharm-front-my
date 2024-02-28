@@ -1,6 +1,7 @@
 .container-banner {
-  height: 280px;
+  height: 310px;
   margin: 10px auto;
+  position: relative;
 
   @media (min-width: 768px) {
     height: 570px;
@@ -19,53 +20,41 @@
         max-height: 530px;
       }
 
+      .banner-controls-prev,
       .banner-controls-next {
+        cursor: pointer;
         position: absolute;
         top: 229px;
-        right: 0;
         display: none;
-        z-index: 2;
-
+        z-index: 1;
         @media (min-width: 768px) {
           display: flex;
           cursor: pointer;
-          border: none;
-          outline: none;
-          background: inherit;
           padding: 24px;
         }
 
+        .banner-controls-prevArrow,
         .banner-controls-nextArrow {
           stroke-opacity: 0.6;
           stroke-width: 25%;
-          transform: rotate(-90deg);
           width: 24px;
           height: 24px;
         }
       }
 
-      .banner-controls-prev {
-        position: absolute;
-        top: 229px;
-        left: 0;
-        display: none;
-        z-index: 2;
+      .banner-controls-next {
+        right: 0;
 
-        @media (min-width: 768px) {
-          display: flex;
-          border: none;
-          cursor: pointer;
-          padding: 24px;
-          outline: none;
-          background: inherit;
+        .banner-controls-nextArrow {
+          transform: rotate(-90deg);
         }
+      }
+
+      .banner-controls-prev {
+        left: 0;
 
         .banner-controls-prevArrow {
-          stroke-opacity: 0.6;
-          stroke-width: 25%;
           transform: rotate(90deg);
-          width: 24px;
-          height: 24px;
         }
       }
 
@@ -75,9 +64,8 @@
 
         li {
           flex: 0 0 100%;
-          overflow: hidden;
 
-          .banner-slide {
+          .wrapper-img-banner {
             position: relative;
             height: 280px;
 
@@ -89,78 +77,17 @@
           }
         }
 
-        .banner-overlay {
+        .banner-button {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          gap: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          justify-content: flex-end;
-          opacity: 1;
-          transition: opacity 0.3s ease-in-out;
-          padding: 10%;
 
-          @media (min-width: 768px) {
-            align-items: flex-start;
-            justify-content: center;
-            gap: 40px;
+          button {
+            text-transform: uppercase;
           }
 
-          .banner-phrase-block {
-            width: 218px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 0;
-            padding: 10px 0;
-
-            @media (min-width: 768px) {
-              width: 496px;
-              gap: 12px;
-            }
-
-            .banner-phrase {
-              color: var(--primary-red);
-              text-transform: uppercase;
-              font-family: "Roboto", sans-serif;
-              font-size: 32px;
-              font-weight: 600;
-              line-height: 100%; /* 32px */
-              text-shadow: 0 4px 4px var(--placeholder);
-              @media (min-width: 768px) {
-                font-size: 40px;
-                font-weight: 700;
-                line-height: 117.2%; /* 46,88px */
-              }
-            }
-
-            .banner-additionalPhrase {
-              color: var(--svg-hover-pagintaion);
-              font-family: "Roboto", sans-serif;
-              font-size: 24px;
-              font-weight: 600;
-              line-height: 100%; /* 24px */
-              @media (min-width: 768px) {
-                font-size: 36px;
-                font-weight: 400;
-                line-height: 117.2%; /* 42.19px */
-              }
-            }
-          }
-
-          .banner-button {
-            display: none;
-            min-width: 330px !important;
-            @media (min-width: 768px) {
-              display: block;
-              min-width: 330px !important;
-            }
-          }
         }
       }
     }
@@ -169,11 +96,11 @@
       position: absolute;
       top: 0;
       left: 0;
-      height: 100%;
+      height: 93%;
       width: 100%;
       display: grid;
       grid-template-columns: 2fr 3fr;
-      z-index: 100;
+      z-index: 2;
 
       .banner-left,
       .banner-right {
@@ -199,7 +126,6 @@
       background-color: var(--text-color-light);
       border: 0.5px solid var(--svg-hover-pagintaion);
       cursor: pointer;
-      margin: 0;
       transition: background-color 0.3s ease-in-out;
       @media (min-width: 768px) {
         width: 14px;
