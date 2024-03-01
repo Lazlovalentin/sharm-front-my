@@ -3,7 +3,7 @@ import "./users.scss"
 import UsersList from "@/components/admin/users/UsersList/UsersList";
 import DataTable from "@/components/UI/DataTable/DataTable";
 import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
-import {getAllUsers} from "@/actions/getAllUsers";
+import {getAction} from "@/actions/getAction";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import UsersWrapper from "@/components/admin/users/UsersWrapper/UsersWrapper";
 import {cookies} from 'next/headers'
@@ -20,7 +20,7 @@ export default async function Home({
 
     const role = cookies().get('role')
     const page = searchParams["page"] ?? "1"
-    const allUsers = await getAllUsers("users", page.toString(), "1000")
+    const allUsers = await getAction("users", page.toString(), "1000")
     const totalPages = allUsers.totalPages
 
     if (role?.value !== "admin") {

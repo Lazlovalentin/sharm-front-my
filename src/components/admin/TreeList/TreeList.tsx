@@ -2,37 +2,31 @@
 import React, {FC, useState} from 'react';
 import "./TreeList.scss"
 
-type Category = {
-    id: number;
-    title: string;
-    url: string;
-    children?: Category[];
-};
 
 type CategoryProps = {
-    data: Category;
-    onCategoryClick: (category: Category) => void;
+    data: any;
+    onFolderClick: (item: any) => void;
 };
 
-const TreeList: FC<CategoryProps> = ({data, onCategoryClick}) => {
+const TreeList: FC<CategoryProps> = ({data, onFolderClick}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
-    const handleClick = () => onCategoryClick(data);
+    const handleClick = () => onFolderClick(data);
 
     return (
         <div className="container-tree-list">
-            <div className="">
-                <span onClick={toggle}>
+            <div className="wrapper-resuly-tree-list">
+                <div onClick={toggle}>
                     {isOpen ? '[-]' : '[+]'}{' '}
-                </span>
-                <span onClick={handleClick}>
-                    {data.title}
-                </span>
+                </div>
+                <div onClick={handleClick}>
+                    {data.translations[0].name}
+                </div>
             </div>
             {isOpen && data.children && (
                 <div style={{paddingLeft: '20px'}}>
-                    {data.children.map((child) => (
-                        <TreeList key={child.id} data={child} onCategoryClick={onCategoryClick}/>
+                    {data.children.map((child: any) => (
+                        <TreeList key={child.id} data={child} onFolderClick={onFolderClick}/>
                     ))}
                 </div>
             )}

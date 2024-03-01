@@ -20,33 +20,33 @@ const Dashboard = () => {
     return (
         <div className="container-dashboard-admin">
             <Link href={"admin"}>
-                <Image src={profile} alt={"logo"}/>
+                <Image src={profile} alt={"profile"}/>
             </Link>
             <Link href={"users"}>
-                <Image src={statistic} alt={"logo"}/>
+                <Image src={statistic} alt={"statistic"}/>
             </Link>
             <Link href={"users"}>
-                <Image src={orders} alt={"logo"}/>
+                <Image src={orders} alt={"orders"}/>
             </Link>
-            <Link href={"usefrs"}>
-                <Image src={menu} alt={"logo"}/>
+            <Link href={"menu"}>
+                <Image src={menu} alt={"menu"}/>
             </Link>
             <Link href={"categories"}>
                 <Image src={categories} alt={"categories"}/>
             </Link>
-            <Link href={"users"}>
-                <Image src={products} alt={"logo"}/>
+            <Link href={"products"}>
+                <Image src={products} alt={"products"}/>
             </Link>
-            <Link href={"users"}>
-                <Image src={pages} alt={"logo"}/>
+            <Link href={"pages"}>
+                <Image src={pages} alt={"pages"}/>
             </Link>
             {role?.value === "admin" ?
                 <Link href={"users"}>
                     <Image src={users} alt={"users"}/>
                 </Link>
                 : null}
-            <Link href={"users"}>
-                <Image src={reviews} alt={"logo"}/>
+            <Link href={"reviews"}>
+                <Image src={reviews} alt={"reviews"}/>
             </Link>
             <Link href={"settings"}>
                 <Image src={settings} alt={"logo"}/>

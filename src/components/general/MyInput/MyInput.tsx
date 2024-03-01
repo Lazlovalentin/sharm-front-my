@@ -14,6 +14,7 @@ interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
     register?: any;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     ref?: React.Ref<HTMLInputElement>;
+    name?: string
 }
 
 const MyInput: FC<MyInputProps> = ({
@@ -25,6 +26,7 @@ const MyInput: FC<MyInputProps> = ({
                                        error,
                                        register,
                                        onChange,
+                                       name,
                                        ...props
                                    }) => {
     const errorRef = useRef<HTMLDivElement>(null);
@@ -71,7 +73,7 @@ const MyInput: FC<MyInputProps> = ({
                 onChange={isPhone ? handleInput : undefined}
                 onFocus={isPhone ? handleFocus : undefined}
                 id={inputId}
-                name={label}
+                name={name}
                 type={type}
                 placeholder={isPhone ? "+38 (0__) ___ ____" : formatPlaceholder(placeholder)}
                 {...register}

@@ -72,7 +72,6 @@ const Banner: FC<BannerProps> = ({data}) => {
             );
         });
     };
-
     const handleDotClick = (index: number) => {
         setAutoPlayEnabled(false);
         setOffset(index);

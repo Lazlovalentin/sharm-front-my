@@ -2,10 +2,10 @@
 import React from 'react';
 import "./UsersList.scss";
 import UserItem from "@/components/admin/users/UserItem/UserItem";
-import {getAllUsers} from "@/actions/getAllUsers";
+import {getAction} from "@/actions/getAction";
 
 export default async function UsersList() {
-    const allUsers = await getAllUsers("users", "1", "1")
+    const allUsers = await getAction("users", "1", "1")
 
     return (
         <div className="container-user-list">

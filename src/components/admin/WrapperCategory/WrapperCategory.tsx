@@ -20,7 +20,8 @@ const WrapperCategory: FC<WrapperCategoryProps> = ({categories}) => {
 
     return (
         <>
-            <MyBtn text={"create category"} color={"primary"} click={openCreateCategoryHandler}/>
+            <MyBtn text={"create menu"} color={"primary"} click={openCreateCategoryHandler}/>
+            {categories.length === 0 ? <h3>no categories</h3> : null}
             <div className="container-wrapper-category">
                 <div>
                     {categories.map((category: any) => (
