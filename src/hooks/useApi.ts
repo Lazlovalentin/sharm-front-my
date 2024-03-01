@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {useState} from 'react';
 import Cookies from "js-cookie";
 
@@ -17,20 +16,27 @@ export const useApi = <T = any>() => {
         setError(null);
         const url = `${baseURL}/api/${endpoint}`;
 
-        return axios({
-            url, method, data, headers: {
+        return fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-            }
+            },
+            body: JSON.stringify(data),
         })
-            .then((response) => {
-                setLoading(false);
-                return {data: response.data};
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
             })
-            .catch((error) => {
+            .then(data => {
                 setLoading(false);
-                const message = error.response?.data.message || 'An error occurred';
+                return {data: data};
+            })
+            .catch(error => {
+                setLoading(false);
+                const message = error.message || 'An error occurred';
                 setError(message);
-                return Promise.reject({error: message});
+                return Promise.reject({error: message}); // Відхилення промісу з об'єктом помилки
             });
     };
 

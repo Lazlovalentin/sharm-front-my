@@ -4,6 +4,7 @@ import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {Line} from "@/components/UI/Line/Line";
 import {getAction} from "@/actions/postAction";
+import {useRouter} from "next/navigation";
 
 
 interface CreateMenuProps {
@@ -12,6 +13,7 @@ interface CreateMenuProps {
 }
 
 const CreateMenu: FC<CreateMenuProps> = ({parentId, setVisible}) => {
+    const router = useRouter();
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -19,6 +21,7 @@ const CreateMenu: FC<CreateMenuProps> = ({parentId, setVisible}) => {
         const formData = new FormData(form);
 
         const data = {
+            parentId: parentId,
             icons: "1",
             translations: [
                 {
@@ -39,8 +42,8 @@ const CreateMenu: FC<CreateMenuProps> = ({parentId, setVisible}) => {
             ]
         }
 
-        let test = getAction("menu", data)
-        console.log("etest", test)
+        getAction("menu", data)
+            .then(response => router.refresh())
         setVisible(false)
     }
 

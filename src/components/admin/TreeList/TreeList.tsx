@@ -13,6 +13,7 @@ const TreeList: FC<CategoryProps> = ({data, onFolderClick}) => {
     const toggle = () => setIsOpen(!isOpen);
     const handleClick = () => onFolderClick(data);
 
+
     return (
         <div className="container-tree-list">
             <div className="wrapper-resuly-tree-list">

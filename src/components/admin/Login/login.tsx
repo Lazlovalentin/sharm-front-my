@@ -1,4 +1,3 @@
-import axios from "axios";
 import "./login.scss";
 import {cookies} from 'next/headers'
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
@@ -14,25 +13,35 @@ function LoginPage() {
         const emailEntry = formData.get('email');
         const passwordEntry = formData.get('password');
 
-        // Переконайтеся, що emailEntry є строкою перед викликом toLowerCase()
         const email = typeof emailEntry === 'string' ? emailEntry.toLowerCase() : '';
         const password = typeof passwordEntry === 'string' ? passwordEntry : '';
 
         const rawFormData = {email, password};
 
-        await axios.post(`${baseURL}/api/auth/login`, rawFormData, {withCredentials: true})
+
+        fetch(`${baseURL}/api/auth/login`, {
+            method: 'POST',
+            credentials: 'include', // для включення cookies у запиті, як withCredentials: true в axios
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(rawFormData),
+        })
             .then((response) => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then((data) => {
                 cookies().set('logIn', "true")
-                cookies().set('id', response.data.id)
-                cookies().set('email', response.data.email)
-                cookies().set('role', response.data.role)
-                cookies().set('token', response.data.token, {secure: true})
+                cookies().set('id', data.id)
+                cookies().set('email', data.email)
+                cookies().set('role', data.role)
+                cookies().set('token', data.token, {secure: true})
             })
             .catch((error) => {
                 error = error.response.data.message
                 console.log("login", error.response.data.message)
-            })
-
+            });
     }
 
     return (

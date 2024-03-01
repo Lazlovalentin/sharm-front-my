@@ -18,6 +18,7 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({menu}) => {
     const handleMenuClick = (menu: any) => setSelectedMenu(menu);
     const openCreateCategoryHandler = () => setOpenModal(!openModal);
 
+    console.log(menu)
 
     return (
         <div className="container-wrapper-menu">

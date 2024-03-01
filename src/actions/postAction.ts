@@ -1,9 +1,8 @@
-import axios from 'axios';
 
-export const getAction = async (url: string, data: any, page?: string, limit?: string) => {
+export const getAction = async (url: string, data: any) => {
     const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-    return fetch(`${baseURL}/api/${url}?page=${page}&limit=${limit}`, {
+    return fetch(`${baseURL}/api/${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -11,7 +10,6 @@ export const getAction = async (url: string, data: any, page?: string, limit?: s
         body: JSON.stringify(data),
     })
         .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(data => data)
