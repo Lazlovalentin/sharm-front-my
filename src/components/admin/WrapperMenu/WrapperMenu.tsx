@@ -7,6 +7,9 @@ import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import CreateMenu from "@/components/admin/CreateMenu/CreateMenu";
 import MenuItem from "@/components/admin/MenuItem/MenuItem";
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+
 
 interface WrapperCategoryProps {
     menu: any
@@ -18,21 +21,27 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({menu}) => {
     const handleMenuClick = (menu: any) => setSelectedMenu(menu);
     const openCreateCategoryHandler = () => setOpenModal(!openModal);
 
-    console.log(menu)
+    const moveItem = (dragId: string, hoverId: string) => {
+        console.log("dragId", dragId)
+        console.log("hoverId", hoverId)
+    };
 
     return (
         <div className="container-wrapper-menu">
             <MyBtn text={"create menu"} color={"primary"} click={openCreateCategoryHandler}/>
             {menu.length === 0 ? <h3>no menu</h3> : null}
             <div className="wrapper-menu">
-                <div className="trea-list">
-                    {menu.map((menu: any) => (
-                        <TreeList
-                            key={menu.id}
-                            data={menu}
-                            onFolderClick={handleMenuClick}
-                        />
-                    ))}
+                <div className="container-tree-list">
+                    <DndProvider backend={HTML5Backend}>
+                        {menu.map((menu: any) => (
+                            <TreeList
+                                key={menu.id}
+                                data={menu}
+                                onFolderClick={handleMenuClick}
+                                onMoveItem={moveItem}
+                            />
+                        ))}
+                    </DndProvider>
                 </div>
                 {selectedMenu ? <MenuItem menu={selectedMenu}/> : null}
             </div>

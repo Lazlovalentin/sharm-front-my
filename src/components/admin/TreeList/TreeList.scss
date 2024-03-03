@@ -1,10 +1,26 @@
 .container-tree-list {
-  display: flex;
-  flex-direction: column;
+  padding: 10px;
+  width: 150px;
+  height: 100%;
+  max-height: 100vw;
+
+  .wrapper-tree-list {
+    display: flex;
+    flex-direction: column;
+  }
 
   .wrapper-resuly-tree-list {
     display: flex;
     gap: 5px;
     margin: 5px;
+
+    .open-tree {
+      cursor: pointer;
+    }
+
+    .name-tree {
+      cursor: pointer;
+      margin-left: 5px;
+    }
   }
 }
