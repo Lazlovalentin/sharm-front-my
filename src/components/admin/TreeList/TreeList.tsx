@@ -26,23 +26,19 @@ const TreeList: FC<CategoryProps> = ({data, onFolderClick, onMoveItem}) => {
         }),
     }));
 
-    const [, drop] = useDrop(() => ({
+    const [, drop] = useDrop({
         accept: ItemType,
-        hover(item: { id: string }) {
-
-        },
         drop(item: { id: string }, monitor) {
-            if (item.id !== data.id) {
-                console.log("item", item.id)
+            if (!monitor.didDrop() && item.id !== data.id) {
                 onMoveItem(item.id, data.id);
             }
         },
-    }));
+    });
 
     drag(drop(ref));
 
     return (
-        <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'grab' }}  className="wrapper-tree-list">
+        <div ref={ref} className="wrapper-tree-list">
             <div className="wrapper-resuly-tree-list">
                 {data.children.length > 0 ?
                     <div className="open-tree" onClick={toggle}>
@@ -53,7 +49,7 @@ const TreeList: FC<CategoryProps> = ({data, onFolderClick, onMoveItem}) => {
                 </div>
             </div>
             {isOpen && data.children && (
-                <div style={{paddingLeft: '20px'}}>
+                <div style={{paddingLeft: '10px'}}>
                     {data.children.map((child: any) => (
                         <TreeList key={child.id} data={child} onFolderClick={onFolderClick} onMoveItem={onMoveItem}/>
                     ))}
