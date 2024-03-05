@@ -1,16 +1,39 @@
 .container-accordion {
   width: 100%;
+  position: relative;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(--color-stroke, #b8b8b8);
-  border-top: 1px solid var(--color-stroke, #b8b8b8);
+  border-bottom: none;
+  border-top: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    height: 1px;
+    background-color: var(--color-stroke, #b8b8b8);
+    width: auto;
+    bottom: 0;
+  }
 
   cursor: pointer;
   padding: 20px 0px;
+
   @media (min-width: 768px) {
     border-bottom: 1px solid var(--color-stroke, #b8b8b8);
-    border-top: none;
     padding: 12px 0px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: -20px;
+      right: -20px;
+      height: 0;
+      background-color: var(--color-stroke, #b8b8b8);
+      width: auto;
+      bottom: 0;
+    }
   }
   h6 {
     display: flex;
