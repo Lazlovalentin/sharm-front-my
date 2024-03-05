@@ -3,17 +3,22 @@
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--color-stroke, #b8b8b8);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  padding: 12px 0px;
+  border-top: 1px solid var(--color-stroke, #b8b8b8);
 
+  cursor: pointer;
+  padding: 20px 0px;
+  @media (min-width: 768px) {
+    border-bottom: 1px solid var(--color-stroke, #b8b8b8);
+    border-top: none;
+    padding: 12px 0px;
+  }
   h6 {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     width: 100%;
     align-items: center;
-    text-align: start;
+    text-align: center;
     font-size: 12px;
     line-height: 150%;
     font-weight: 600;
@@ -21,6 +26,8 @@
 
     @media (min-width: 768px) {
       font-size: 14px;
+      flex-direction: row;
+      text-align: start;
     }
   }
 
@@ -30,7 +37,9 @@
     opacity: 0;
     font-size: 12px;
     font-weight: 400;
-      @media (min-width: 768px) {
+    overflow: hidden;
+
+    @media (min-width: 768px) {
       font-size: 14px;
     }
   }

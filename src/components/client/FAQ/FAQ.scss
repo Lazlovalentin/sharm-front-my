@@ -4,17 +4,27 @@
   color: var(--color-text);
   overflow: hidden;
   padding: 20px 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
+  width: 100%;
 
   @media (min-width: 768px) {
     padding: 92px 72px;
   }
+  @media (max-width: 1044px) {
+    width: 528px;
+    padding: 20px 0;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   .title-main-faq {
     padding: 0 0 10px;
-    font-family: "Roboto", sans-serif;
     font-size: 22px;
     font-weight: 600;
     line-height: 130%; /* 33.8px */
@@ -28,7 +38,7 @@
   .wrapper-list-faq {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-content: center;
     gap: 0px;
     @media (min-width: 768px) {
@@ -43,7 +53,7 @@
       max-width: unset;
       gap: 0;
       @media (min-width: 768px) {
-        max-width: 528px;
+        // max-width: 528px;
         gap: 32px;
       }
     }
