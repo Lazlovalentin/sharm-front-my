@@ -21,7 +21,7 @@ function LoginPage() {
 
         fetch(`${baseURL}/api/auth/login`, {
             method: 'POST',
-            credentials: 'include', // для включення cookies у запиті, як withCredentials: true в axios
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -32,6 +32,7 @@ function LoginPage() {
                 return response.json();
             })
             .then((data) => {
+                console.log("login", data.id)
                 cookies().set('logIn', "true")
                 cookies().set('id', data.id)
                 cookies().set('email', data.email)
@@ -39,8 +40,7 @@ function LoginPage() {
                 cookies().set('token', data.token, {secure: true})
             })
             .catch((error) => {
-                error = error.response.data.message
-                console.log("login", error.response.data.message)
+                console.log("login", error)
             });
     }
 

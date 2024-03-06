@@ -7,7 +7,7 @@ export const getAction = async (url: string, page?: string, limit?: string) => {
     return fetch(`${baseURL}/api/${url}?page=${page}&limit=${limit}`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token?.value}`,
             'Content-Type': 'application/json'
         },
     })

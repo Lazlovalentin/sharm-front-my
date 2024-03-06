@@ -10,7 +10,9 @@ interface IsLoginProps {
 const IsLogin: React.FC<IsLoginProps> = ({children}) => {
     const cookieStore = cookies()
     let role = cookieStore.get("logIn")
+    const token = cookies().get('token')
 
+    console.log("role", token?.value)
     // admin, consultant, manager,
     return (
         <div>
