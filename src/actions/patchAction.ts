@@ -1,15 +1,20 @@
-export const postAction = async (
+export const patchAction = async (
   url: string,
-  data: any,
-  lang?: string,
-  id?: string
+  data: Record<string, any>,
+  id?: string,
+  move?: boolean
 ) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const requestURL = id
-    ? `${baseURL}/api/${url}/${lang}/${id}`
-    : `${baseURL}/api/${url}`;
-  return fetch(requestURL, {
-    method: "POST",
+  let endpoint = `${baseURL}/api/${url}`;
+
+  if (id) {
+    endpoint += `/${id}`;
+  } else if (move) {
+    endpoint += "/move";
+  }
+
+  return fetch(endpoint, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
@@ -18,7 +23,7 @@ export const postAction = async (
     .then((response) => {
       return response.json();
     })
-    .then((data) => data)
+    .then((responseData) => responseData)
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
