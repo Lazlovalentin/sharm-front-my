@@ -2,6 +2,9 @@
 import React, { FC, useRef, useState } from "react";
 import "./TreeList.scss";
 import { useDrag, useDrop } from "react-dnd";
+import MyModal from "@/components/UI/MyModal/MyModal";
+import CreateMenu from "../CreateMenu/CreateMenu";
+import MenuItem from "../MenuItem/MenuItem";
 
 type CategoryProps = {
   data: any;
@@ -11,11 +14,13 @@ type CategoryProps = {
 
 const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
   const ref = useRef<HTMLDivElement>(null);
-
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
-
   const toggle = () => setIsOpen(!isOpen);
-  const handleClick = () => onFolderClick(data);
+  const handleClick = () => {
+    console.log("datd", data);
+    onFolderClick(data);
+  };
 
   const ItemType = "TREE_ITEM";
   const [{ isDragging }, drag, preview] = useDrag(() => ({
@@ -37,6 +42,10 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
 
   drag(drop(ref));
 
+  const handleAddChildrenClick = (data: string) => {
+    setOpenModal(true);
+  };
+
   return (
     <div ref={ref} className="wrapper-tree-list">
       <div className="wrapper-resuly-tree-list">
@@ -50,6 +59,11 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
             data.translations.length > 0 &&
             data.translations[0].name}
         </div>
+        <button
+          className="add-children-btn"
+          onClick={() => handleAddChildrenClick(data.id)}>
+          Add
+        </button>
       </div>
       {isOpen && data.children && (
         <div style={{ paddingLeft: "10px" }}>
@@ -63,6 +77,10 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
           ))}
         </div>
       )}
+
+      <MyModal visible={openModal} setVisible={setOpenModal}>
+        <CreateMenu parentId={data.id} setVisible={setOpenModal} />
+      </MyModal>
     </div>
   );
 };

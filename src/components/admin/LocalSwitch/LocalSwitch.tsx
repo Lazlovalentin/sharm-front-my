@@ -1,6 +1,6 @@
 "use client";
 import { useLocale } from "next-intl";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const LocaleSwitch = () => {
   const locale = useLocale();

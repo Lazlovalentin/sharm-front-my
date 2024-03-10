@@ -1,25 +1,32 @@
 export const patchAction = async (
   url: string,
-  data: Record<string, any>,
-  id?: string,
-  move?: boolean
+  options?: {
+    data?: Record<string, any>;
+    id?: string;
+    move?: boolean;
+  }
 ) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   let endpoint = `${baseURL}/api/${url}`;
 
-  if (id) {
-    endpoint += `/${id}`;
-  } else if (move) {
+  if (options?.id) {
+    endpoint += `/${options.id}`;
+  } else if (options?.move) {
     endpoint += "/move";
   }
 
-  return fetch(endpoint, {
+  const fetchOptions: RequestInit = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
-  })
+  };
+
+  if (options?.data) {
+    fetchOptions.body = JSON.stringify(options.data);
+  }
+
+  return fetch(endpoint, fetchOptions)
     .then((response) => {
       return response.json();
     })
