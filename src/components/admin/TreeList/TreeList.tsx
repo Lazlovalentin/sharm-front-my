@@ -10,6 +10,7 @@ type CategoryProps = {
   data: any;
   onFolderClick: (item: any) => void;
   onMoveItem: (dragId: string, hoverId: string) => void;
+  
 };
 
 const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
@@ -18,7 +19,6 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const handleClick = () => {
-    console.log("datd", data);
     onFolderClick(data);
   };
 
@@ -31,14 +31,17 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
     }),
   }));
 
-  const [, drop] = useDrop({
-    accept: ItemType,
-    drop(item: { id: string }, monitor) {
-      if (!monitor.didDrop() && item.id !== data.id) {
-        onMoveItem(item.id, data.id);
-      }
+  const [, drop] = useDrop(
+    {
+      accept: ItemType,
+      drop(item: { id: string }, monitor) {
+        if (!monitor.didDrop() && item.id !== data.id) {
+          onMoveItem(item.id, data.id);
+        }
+      },
     },
-  });
+    [data.id]
+  );
 
   drag(drop(ref));
 
@@ -47,37 +50,38 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
   };
 
   return (
-    <div ref={ref} className="wrapper-tree-list">
-      <div className="wrapper-resuly-tree-list">
-        {data.children.length > 0 ? (
-          <div className="open-tree" onClick={toggle}>
-            {isOpen ? "[-]" : "[+]"}
+    <div>
+      <div ref={ref} className="wrapper-tree-list">
+        <div className="wrapper-resuly-tree-list">
+          {data.children.length > 0 ? (
+            <div className="open-tree" onClick={toggle}>
+              {isOpen ? "[-]" : "[+]"}
+            </div>
+          ) : null}
+          <div className="name-tree" onClick={handleClick}>
+            {data.translations &&
+              data.translations.length > 0 &&
+              data.translations[0].name}
           </div>
-        ) : null}
-        <div className="name-tree" onClick={handleClick}>
-          {data.translations &&
-            data.translations.length > 0 &&
-            data.translations[0].name}
+          <button
+            className="add-children-btn"
+            onClick={() => handleAddChildrenClick(data.id)}>
+            Add
+          </button>
         </div>
-        <button
-          className="add-children-btn"
-          onClick={() => handleAddChildrenClick(data.id)}>
-          Add
-        </button>
+        {isOpen && data.children && (
+          <div style={{ paddingLeft: "10px" }}>
+            {data.children.map((child: any) => (
+              <TreeList
+                key={child.id}
+                data={child}
+                onFolderClick={onFolderClick}
+                onMoveItem={onMoveItem}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      {isOpen && data.children && (
-        <div style={{ paddingLeft: "10px" }}>
-          {data.children.map((child: any) => (
-            <TreeList
-              key={child.id}
-              data={child}
-              onFolderClick={onFolderClick}
-              onMoveItem={onMoveItem}
-            />
-          ))}
-        </div>
-      )}
-
       <MyModal visible={openModal} setVisible={setOpenModal}>
         <CreateMenu parentId={data.id} setVisible={setOpenModal} />
       </MyModal>

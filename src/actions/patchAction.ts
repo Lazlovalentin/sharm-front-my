@@ -1,7 +1,7 @@
 export const patchAction = async (
   url: string,
+  data: Record<string, any>,
   options?: {
-    data?: Record<string, any>;
     id?: string;
     move?: boolean;
   }
@@ -15,16 +15,13 @@ export const patchAction = async (
     endpoint += "/move";
   }
 
-  const fetchOptions: RequestInit = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  if (options?.data) {
-    fetchOptions.body = JSON.stringify(options.data);
-  }
+ const fetchOptions: RequestInit = {
+   method: "PATCH",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify(data),
+ };
 
   return fetch(endpoint, fetchOptions)
     .then((response) => {

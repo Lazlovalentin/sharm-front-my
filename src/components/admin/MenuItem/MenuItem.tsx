@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import "./MenuItem.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
@@ -7,14 +7,20 @@ import { useRouter } from "next/navigation";
 import { postAction } from "@/actions/postAction";
 import { useLocale } from "next-intl";
 import MyModal from "@/components/UI/MyModal/MyModal";
+import { useForm, SubmitHandler } from "react-hook-form";
+
 interface MenuItemProps {
   parentId: string;
   menu: any;
   setVisible: (visible: boolean) => void;
 }
 
+type FormData = {
+  name_input: string;
+  url_input: string;
+};
+
 const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
-  console.log("Current Menu:", menu);
   const router = useRouter();
   const locale = useLocale();
   const [confirmationModalVisible, setConfirmationModalVisible] =
@@ -22,28 +28,33 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   const [operationType, setOperationType] = useState<"delete" | "submit">(
     "submit"
   );
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormData>();
+
   const deleteHandler = () => {
     deleteAction("menu", menu.id).then((_) => router.refresh());
     setVisible(false);
   };
 
-  const submitHandler = (e?: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-    const form = e?.target as HTMLFormElement;
-    const formData = new FormData(form);
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log("Form data:", data);
+
     const updatedMenu = {
       icons: menu.icons,
       parentId: parentId,
       translations: [
         {
-          name: formData.get("name"),
-          url: formData.get("url"),
+          name: data.name_input,
+          url: data.url_input,
         },
       ],
     };
     postAction("menu", updatedMenu, locale, menu.id)
       .then((response) => {
-        console.log("Menu updated successfully:", response);
         router.refresh();
       })
       .catch((error) => {
@@ -56,35 +67,46 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
     if (operationType === "delete") {
       deleteHandler();
     } else if (operationType === "submit") {
-      submitHandler();
+      handleSubmit(onSubmit)();
     }
     setConfirmationModalVisible(false);
   };
+
   const handleCloseConfirmation = () => {
     setConfirmationModalVisible(false);
   };
 
+  const handleError = () => {
+    setOperationType("submit");
+    setConfirmationModalVisible(true);
+  };
   return (
     <div className="container-menu-item">
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handleSubmit(handleError)}>
         <MyInput
-          type={"text"}
-          name={"name"}
+          type="text"
           placeholder={menu.translations[0].name}
+          {...register("name_input", {
+            required: "This field is required",
+          })}
         />
+        {errors.name_input && (
+          <p className="error-message">{errors.name_input.message}</p>
+        )}
         <MyInput
-          type={"text"}
-          name={"url"}
+          type="text"
           placeholder={menu.translations[0].url}
+          {...register("url_input", {
+            required: "This field is required",
+          })}
         />
+        {errors.url_input && (
+          <p className="error-message">{errors.url_input.message}</p>
+        )}
         <MyBtn
           text="submit"
           color="primary"
           type="submit"
-          click={() => {
-            setOperationType("submit");
-            setConfirmationModalVisible(true);
-          }}
         />
         <MyBtn
           text="delete"

@@ -9,12 +9,15 @@ import MenuItem from "@/components/admin/MenuItem/MenuItem";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { patchAction } from "@/actions/patchAction";
+import { useRouter } from "next/navigation";
 
 interface WrapperCategoryProps {
   menu: any;
 }
 
 const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
+  const router = useRouter();
+
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
 
@@ -22,11 +25,17 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
   const openCreateCategoryHandler = () => setOpenModal(!openModal);
 
   const moveItem = (dragId: string, hoverId: string) => {
-    console.log("dragId", dragId);
-    console.log("hoverId", hoverId);
+    if (dragId === hoverId) {
+      return;
+    }
+    const moveData = {
+      nodeId: dragId,
+      parentId: hoverId,
+    };
     try {
-      const response = patchAction("menu", { move: true });
-      console.log("Item moved successfully:", response);
+      patchAction("menu", moveData, { move: true }).then((response) =>
+        router.refresh()
+      );
     } catch (error) {
       console.error("Error moving item:", error);
     }
@@ -62,7 +71,7 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
         ) : null}
       </div>
       <MyModal visible={openModal} setVisible={setOpenModal}>
-        <CreateMenu parentId={menu[0].id} setVisible={setOpenModal} />
+        <CreateMenu parentId={menu[0]?.id || null} setVisible={setOpenModal} />
       </MyModal>
     </div>
   );
