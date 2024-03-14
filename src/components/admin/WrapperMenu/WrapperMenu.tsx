@@ -10,6 +10,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { patchAction } from "@/actions/patchAction";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface WrapperCategoryProps {
   menu: any;
@@ -17,6 +18,7 @@ interface WrapperCategoryProps {
 
 const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
   const router = useRouter();
+  const t = useTranslations("Menu");
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
@@ -32,19 +34,19 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
       nodeId: dragId,
       parentId: hoverId,
     };
-    try {
-      patchAction("menu", moveData, { move: true }).then((response) =>
-        router.refresh()
-      );
-    } catch (error) {
-      console.error("Error moving item:", error);
-    }
+    patchAction("menu", moveData, { move: true })
+      .then((response) => {
+        router.refresh();
+      })
+      .catch((error) => {
+        console.error("Error moving item:", error);
+      });
   };
 
   return (
     <div className="container-wrapper-menu">
       <MyBtn
-        text={"create menu"}
+        text={t("create_menu")}
         color={"primary"}
         click={openCreateCategoryHandler}
       />

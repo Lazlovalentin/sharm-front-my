@@ -1,5 +1,10 @@
 {
   "Index": {
     "title": "привіт світ"
+  },
+  "Menu": {
+    "confirmation_message": "Ви впевнені?",
+    "required_field_error": "Це поле обов'язкове до заповнення",
+    "create_menu": "Створити меню"
   }
 }

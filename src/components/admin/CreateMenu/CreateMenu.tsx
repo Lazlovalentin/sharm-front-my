@@ -42,13 +42,14 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
         { name: name_en, url: url_en, lang: "en" },
       ],
     };
-    try {
-      await postAction("menu", requestData);
-      router.refresh();
-      setVisible(false);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    postAction("menu", requestData)
+      .then(() => {
+        router.refresh();
+        setVisible(false);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
   };
   return (
     <div className="container-create-menu">

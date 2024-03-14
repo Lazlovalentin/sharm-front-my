@@ -1,5 +1,10 @@
 {
   "Index": {
     "title": "привет мир"
+  },
+  "Menu": {
+    "confirmation_message": "Вы уверенны?",
+    "required_field_error": "Это поле обязательно для заполнения",
+    "create_menu": "Создать меню"
   }
 }

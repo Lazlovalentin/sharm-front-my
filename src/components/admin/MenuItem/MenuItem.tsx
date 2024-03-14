@@ -5,9 +5,9 @@ import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import { deleteAction } from "@/actions/deleteAction";
 import { useRouter } from "next/navigation";
 import { postAction } from "@/actions/postAction";
-import { useLocale } from "next-intl";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useLocale, useTranslations } from "next-intl";
 
 interface MenuItemProps {
   parentId: string;
@@ -28,7 +28,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   const [operationType, setOperationType] = useState<"delete" | "submit">(
     "submit"
   );
-
+  const t = useTranslations("Menu");
   const {
     handleSubmit,
     register,
@@ -38,6 +38,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   const deleteHandler = () => {
     deleteAction("menu", menu.id).then((_) => router.refresh());
     setVisible(false);
+    router.refresh();
   };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -61,6 +62,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
         console.error("Error updating menu:", error);
       });
     setVisible(false);
+    router.refresh();
   };
 
   const handleConfirmation = () => {
@@ -87,7 +89,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
           type="text"
           placeholder={menu.translations[0].name}
           {...register("name_input", {
-            required: "This field is required",
+            required: t("required_field_error"),
           })}
         />
         {errors.name_input && (
@@ -97,17 +99,13 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
           type="text"
           placeholder={menu.translations[0].url}
           {...register("url_input", {
-            required: "This field is required",
+            required: t("required_field_error"),
           })}
         />
         {errors.url_input && (
           <p className="error-message">{errors.url_input.message}</p>
         )}
-        <MyBtn
-          text="submit"
-          color="primary"
-          type="submit"
-        />
+        <MyBtn text="submit" color="primary" type="submit" />
         <MyBtn
           text="delete"
           color="attention"
@@ -129,7 +127,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
         setVisible={setConfirmationModalVisible}
         positionStyle={{ justifyContent: "center", alignItems: "center" }}>
         <div>
-          <p>Ви впевнені?</p>
+          <p>{t("confirmation_message")}</p>{" "}
           <MyBtn text="Yes" color="primary" click={handleConfirmation} />
           <MyBtn text="No" color="attention" click={handleCloseConfirmation} />
         </div>

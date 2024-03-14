@@ -1,6 +1,6 @@
 import "../globals.css";
 import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
-
+import { NextIntlClientProvider, useMessages } from "next-intl";
 export default function RootLayout({
   children,
   params: { locale },
@@ -8,6 +8,8 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }>) {
+  const messages = useMessages();
+
   return (
     <html lang={locale}>
       <head>
@@ -19,7 +21,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MyThemeProvider>{children}</MyThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <MyThemeProvider>{children}</MyThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
