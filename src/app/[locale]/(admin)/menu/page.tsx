@@ -1,13 +1,13 @@
-import {getAction} from "@/actions/getAction";
+import { getAction } from "@/actions/getAction";
 import WrapperMenu from "@/components/admin/WrapperMenu/WrapperMenu";
-
+import { useLocale } from "next-intl";
 
 export default async function Home() {
-    const allMenus = await getAction("menu/en")
-
-    return (
-        <>
-            <WrapperMenu menu={allMenus}/>
-        </>
-    );
+  const locale = useLocale();
+  const allMenus = await getAction(`menu/${locale}`);
+  return (
+    <>
+      <WrapperMenu menu={allMenus} />
+    </>
+  );
 }

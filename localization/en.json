@@ -1,5 +1,10 @@
 {
   "Index": {
     "title": "Hello world!"
+  },
+  "Menu": {
+    "confirmation_message": "Are you sure?",
+    "required_field_error": "This field is required",
+    "create_menu": "Create menu"
   }
 }

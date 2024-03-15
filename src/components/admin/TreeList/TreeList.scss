@@ -1,6 +1,7 @@
 .container-tree-list {
   padding: 10px;
-  width: 150px;
+  width: auto;
+  max-width: 200px;
   height: 100%;
   max-height: 100vw;
 
@@ -21,6 +22,16 @@
     .name-tree {
       cursor: pointer;
       margin-left: 5px;
+    }
+    .name-tree:hover {
+      color: rgb(33, 243, 33);
+    }
+    .add-children-btn {
+      margin-left: 10px;
+      color: darkgreen;
+    }
+    .add-children-btn:hover {
+      color: rgb(33, 243, 33);
     }
   }
 }
