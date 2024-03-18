@@ -10,7 +10,6 @@ type CategoryProps = {
   data: any;
   onFolderClick: (item: any) => void;
   onMoveItem: (dragId: string, hoverId: string) => void;
-  
 };
 
 const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
@@ -30,15 +29,35 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
       isDragging: !!monitor.isDragging(),
     }),
   }));
-
-  const [, drop] = useDrop(
+  const firstRef = useRef(null);
+  const [{ isOver, canDrop }, drop] = useDrop(
     {
       accept: ItemType,
+      hover(item: { id: string }, monitor) {
+        // monitor.isOver({ shallow: true });
+        // if (!firstRef.current) {
+        //   return;
+        // }
+        // if (!monitor.isOver() && item.id !== data.id) {
+        //   return;
+        // }
+        if (!monitor.isOver()) {
+          return;
+        }
+        if (item.id !== data.id) {
+          setIsOpen(true); 
+        }
+      },
       drop(item: { id: string }, monitor) {
+        setIsOpen(false);
         if (!monitor.didDrop() && item.id !== data.id) {
           onMoveItem(item.id, data.id);
         }
       },
+      collect: (monitor) => ({
+        isOver: monitor.isOver({ shallow: true }),
+        canDrop: monitor.canDrop(),
+      }),
     },
     [data.id]
   );
@@ -51,7 +70,7 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
 
   return (
     <div>
-      <div ref={ref} className="wrapper-tree-list">
+      <div ref={ref} className={`wrapper-tree-list ${isOver ? "hovered" : ""}`}>
         <div className="wrapper-resuly-tree-list">
           {data.children.length > 0 ? (
             <div className="open-tree" onClick={toggle}>
