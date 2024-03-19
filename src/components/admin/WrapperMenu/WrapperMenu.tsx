@@ -12,11 +12,11 @@ import { patchAction } from "@/actions/patchAction";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-interface WrapperCategoryProps {
+interface WrapperMenuProps {
   menu: any;
 }
 
-const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
+const WrapperMenu: FC<WrapperMenuProps> = ({ menu }) => {
   const router = useRouter();
   const t = useTranslations("Menu");
 
@@ -27,7 +27,7 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
   const openCreateCategoryHandler = () => setOpenModal(!openModal);
 
   const moveItem = (dragId: string, hoverId: string) => {
-    if (dragId === hoverId) {
+    if (dragId === hoverId || dragId === menu[0]?.id) {
       return;
     }
     const moveData = {
@@ -60,6 +60,7 @@ const WrapperMenu: FC<WrapperCategoryProps> = ({ menu }) => {
                 data={menuItem}
                 onFolderClick={handleMenuClick}
                 onMoveItem={moveItem}
+                modalType={"Menu"}
               />
             ))}
           </DndProvider>

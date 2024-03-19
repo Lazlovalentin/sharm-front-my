@@ -3,36 +3,35 @@ import React, { FC, useState } from "react";
 import "./WrapperCategory.scss";
 import TreeList from "@/components/admin/TreeList/TreeList";
 import MyModal from "@/components/UI/MyModal/MyModal";
-import CreateUser from "@/components/admin/users/CreateUser/CreateUser";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import { patchAction } from "@/actions/patchAction";
 import { useRouter } from "next/navigation";
-import CreateMenu from "@/components/admin/CreateMenu/CreateMenu";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import MenuItem from "../MenuItem/MenuItem";
 import CreateCategory from "../CreateCategory/CreateCategory";
+import CategoryItem from "../CategoryItem/CategoryItem";
 
 interface WrapperCategoryProps {
   categories: any;
 }
 
 const WrapperCategory: FC<WrapperCategoryProps> = ({ categories }) => {
+  console.log("categories", categories);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [category, setCategory] = useState<any>(null);
-  const handleCategoryClick = (category: any) => setCategory(category);
+  const handleCategoryClick = (categories: any) =>
+    setSelectedCategory(categories);
   const openCreateCategoryHandler = () => setOpenModal(!openModal);
   const moveItem = (dragId: string, hoverId: string) => {
-    if (dragId === hoverId) {
+    if (dragId === hoverId || dragId === categories[0]?.id) {
       return;
     }
     const moveData = {
       nodeId: dragId,
       parentId: hoverId,
     };
-    patchAction("menu", moveData, { move: true })
+    patchAction("categories", moveData, { move: true })
       .then((response) => {
         router.refresh();
       })
@@ -42,42 +41,45 @@ const WrapperCategory: FC<WrapperCategoryProps> = ({ categories }) => {
   };
   return (
     <>
-      <MyBtn
-        text={"create category"}
-        color={"primary"}
-        click={openCreateCategoryHandler}
-      />
-      {categories.length === 0 ? <h3>no categories</h3> : null}
+      {" "}
       <div className="container-wrapper-category">
-        <div className="container-tree-list">
-          <DndProvider backend={HTML5Backend}>
-            {categories.map((category: any) => (
-              <TreeList
-                key={category.id}
-                data={category}
-                onFolderClick={handleCategoryClick}
-                onMoveItem={moveItem}
-              />
-            ))}
-          </DndProvider>
-        </div>
-        <div className="container-category-choose">
-          {selectedCategory ? (
-            <MenuItem
-              parentId={category[0].id}
-              menu={selectedCategory}
-              setVisible={setSelectedCategory}
-            />
-          ) : null}
-        </div>
-      </div>
-      <MyModal visible={openModal} setVisible={setOpenModal}>
-        <CreateCategory
-          // parentId={category[0]?.id || null}
-          parentId="1"
-          setVisible={setOpenModal}
+        <MyBtn
+          text={"create category"}
+          color={"primary"}
+          click={openCreateCategoryHandler}
         />
-      </MyModal>
+        {categories.length === 0 ? <h3>no categories</h3> : null}
+        <div className="category-wrapper ">
+          <div className="container-tree-list">
+            <DndProvider backend={HTML5Backend}>
+              {categories.map((category: any) => (
+                <TreeList
+                  key={category.id}
+                  data={category}
+                  onFolderClick={handleCategoryClick}
+                  onMoveItem={moveItem}
+                  modalType={"Category"}
+                />
+              ))}
+            </DndProvider>
+          </div>
+          <div>
+            {selectedCategory ? (
+              <CategoryItem
+                parentId={categories[0].id}
+                category={selectedCategory}
+                setVisible={setSelectedCategory}
+              />
+            ) : null}
+          </div>
+        </div>
+        <MyModal visible={openModal} setVisible={setOpenModal}>
+          <CreateCategory
+            parentId={categories[0]?.id || null}
+            setVisible={setOpenModal}
+          />
+        </MyModal>
+      </div>
     </>
   );
 };

@@ -12,12 +12,6 @@ interface CreateCategoryProps {
   setVisible: (visible: boolean) => void;
 }
 
-interface TranslationData {
-  name: string;
-  url: string;
-  lang: string;
-}
-
 type FormData = {
   [key: string]: string;
 };
@@ -33,7 +27,7 @@ interface InputField {
   languages: string[];
 }
 
-const CreateMenu: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
+const CreateCategory: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
   const router = useRouter();
   const {
     handleSubmit,
@@ -70,31 +64,34 @@ const CreateMenu: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
   ];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const translations = [];
+    for (const lang of ["ua", "ru", "en"]) {
+      translations.push({
+        name: data[`name_${lang}`],
+        description: data[`descr_${lang}`],
+        metaTitle: data[`mTitle_${lang}`],
+        metaKeywords: data[`mKey_${lang}`],
+        metaDescription: data[`mDescr_${lang}`],
+        lang: lang,
+      });
+    }
     const requestData = {
       parentId: parentId,
-      metaImages: "1",
-      translations: Object.keys(data).map((key) => ({
-        name: data[key],
-        descr: data[key],
-        mTitle: data[key],
-        mKey: data[key],
-        mDescr: data[key],
-        lang: key.split("_")[1],
-      })),
+      metaImages: "145",
+      translations: translations,
     };
-    console.log(requestData);
-    // postAction("categories", requestData)
-    //   .then(() => {
-    //     router.refresh();
-    //     setVisible(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error submitting form:", error);
-    //   });
+    postAction("categories", requestData)
+      .then(() => {
+        router.refresh();
+        setVisible(false);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
   };
 
   return (
-    <div className="container-create-menu">
+    <div className="container-create-category">
       <form onSubmit={handleSubmit(onSubmit)}>
         {inputFields.map((field, index) => (
           <div key={index}>
@@ -127,4 +124,4 @@ const CreateMenu: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
     </div>
   );
 };
-export default CreateMenu;
+export default CreateCategory;
