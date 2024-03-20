@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface CreateMenuProps {
-  parentId: string | undefined;
+  parentId: string | null;
   setVisible: (visible: boolean) => void;
 }
 interface TranslationData {

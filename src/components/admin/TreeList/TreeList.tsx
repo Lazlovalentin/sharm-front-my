@@ -4,16 +4,21 @@ import "./TreeList.scss";
 import { useDrag, useDrop } from "react-dnd";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import CreateMenu from "../CreateMenu/CreateMenu";
-import MenuItem from "../MenuItem/MenuItem";
-
+import CreateCategory from "../CreateCategory/CreateCategory";
+type ModalType = "Menu" | "Category";
 type CategoryProps = {
   data: any;
   onFolderClick: (item: any) => void;
   onMoveItem: (dragId: string, hoverId: string) => void;
-  
+  modalType: ModalType;
 };
 
-const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
+const TreeList: FC<CategoryProps> = ({
+  data,
+  onFolderClick,
+  onMoveItem,
+  modalType,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -30,15 +35,27 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
       isDragging: !!monitor.isDragging(),
     }),
   }));
-
-  const [, drop] = useDrop(
+  const [{ isOver, canDrop }, drop] = useDrop(
     {
       accept: ItemType,
+      hover(item: { id: string }, monitor) {
+        if (!monitor.isOver()) {
+          return;
+        }
+        if (item.id !== data.id) {
+          setIsOpen(true);
+        }
+      },
       drop(item: { id: string }, monitor) {
+        setIsOpen(false);
         if (!monitor.didDrop() && item.id !== data.id) {
           onMoveItem(item.id, data.id);
         }
       },
+      collect: (monitor) => ({
+        isOver: monitor.isOver({ shallow: true }),
+        canDrop: monitor.canDrop(),
+      }),
     },
     [data.id]
   );
@@ -48,10 +65,15 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
   const handleAddChildrenClick = (data: string) => {
     setOpenModal(true);
   };
-
+  const modalComponent =
+    modalType === "Menu" ? (
+      <CreateMenu parentId={data.id} setVisible={setOpenModal} />
+    ) : (
+      <CreateCategory parentId={data.id} setVisible={setOpenModal} />
+    );
   return (
     <div>
-      <div ref={ref} className="wrapper-tree-list">
+      <div ref={ref} className={`wrapper-tree-list ${isOver ? "hovered" : ""}`}>
         <div className="wrapper-resuly-tree-list">
           {data.children.length > 0 ? (
             <div className="open-tree" onClick={toggle}>
@@ -70,20 +92,21 @@ const TreeList: FC<CategoryProps> = ({ data, onFolderClick, onMoveItem }) => {
           </button>
         </div>
         {isOpen && data.children && (
-          <div style={{ paddingLeft: "10px" }}>
+          <div className="tree-children">
             {data.children.map((child: any) => (
               <TreeList
                 key={child.id}
                 data={child}
                 onFolderClick={onFolderClick}
                 onMoveItem={onMoveItem}
+                modalType={modalType}
               />
             ))}
           </div>
         )}
       </div>
       <MyModal visible={openModal} setVisible={setOpenModal}>
-        <CreateMenu parentId={data.id} setVisible={setOpenModal} />
+        {modalComponent}
       </MyModal>
     </div>
   );

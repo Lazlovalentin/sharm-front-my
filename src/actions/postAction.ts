@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const postAction = async (
   url: string,
   data: any,
@@ -5,6 +7,8 @@ export const postAction = async (
   id?: string
 ) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const token = Cookies.get("token");
+
   const requestURL = id
     ? `${baseURL}/api/${url}/${lang}/${id}`
     : `${baseURL}/api/${url}`;
@@ -12,6 +16,7 @@ export const postAction = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   })

@@ -1,0 +1,16 @@
+.container-create-category {
+  gap: 20px;
+
+  input {
+    margin: 10px;
+  }
+  button {
+    margin-top: 10px;
+    width: 100%;
+  }
+  .error-message {
+    color: red;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+}
