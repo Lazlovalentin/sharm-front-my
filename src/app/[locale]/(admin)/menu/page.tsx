@@ -1,5 +1,5 @@
 import { getAction } from "@/actions/getAction";
-import WrapperMenu from "@/components/admin/WrapperMenu/WrapperMenu";
+import Wrapper from "@/components/admin/Wrapper/Wrapper";
 import { useLocale } from "next-intl";
 
 export default async function Home() {
@@ -7,7 +7,7 @@ export default async function Home() {
   const allMenus = await getAction(`menu/${locale}`);
   return (
     <>
-      <WrapperMenu menu={allMenus} />
+      <Wrapper data={allMenus} type="menu" />{" "}
     </>
   );
 }

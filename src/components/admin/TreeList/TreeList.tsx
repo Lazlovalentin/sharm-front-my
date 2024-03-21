@@ -28,14 +28,14 @@ const TreeList: FC<CategoryProps> = ({
   };
 
   const ItemType = "TREE_ITEM";
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
+  const [_, drag] = useDrag(() => ({
     type: ItemType,
     item: { id: data.id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [{ isOver }, drop] = useDrop(
     {
       accept: ItemType,
       hover(item: { id: string }, monitor) {
@@ -62,7 +62,7 @@ const TreeList: FC<CategoryProps> = ({
 
   drag(drop(ref));
 
-  const handleAddChildrenClick = (data: string) => {
+  const handleAddChildrenClick = () => {
     setOpenModal(true);
   };
   const modalComponent =
@@ -87,7 +87,7 @@ const TreeList: FC<CategoryProps> = ({
           </div>
           <button
             className="add-children-btn"
-            onClick={() => handleAddChildrenClick(data.id)}>
+            onClick={() => handleAddChildrenClick()}>
             Add
           </button>
         </div>
