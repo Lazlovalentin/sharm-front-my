@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, FormEvent } from "react";
 import "./CreateCategory.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
@@ -6,6 +6,7 @@ import { Line } from "@/components/UI/Line/Line";
 import { postAction } from "@/actions/postAction";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 interface CreateCategoryProps {
   parentId: string | null;
@@ -21,7 +22,7 @@ interface Placeholder {
   en: string;
 }
 
-interface InputField {
+export interface InputField {
   name: string;
   placeholder: Placeholder;
   languages: string[];
@@ -29,10 +30,12 @@ interface InputField {
 
 const CreateCategory: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
   const router = useRouter();
+  const t = useTranslations("Menu");
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
+    watch,
   } = useForm<FormData>();
 
   const inputFields: InputField[] = [
@@ -89,22 +92,40 @@ const CreateCategory: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
         console.error("Error submitting form:", error);
       });
   };
+  const watchedInputsArrey: string[] = [];
+  for (const field of inputFields) {
+    for (const lang of field.languages) {
+      watchedInputsArrey.push(`${field.name}_${lang}`);
+    }
+  }
+  const watchedInputs = watch(watchedInputsArrey);
+  const isInputValueRepeated = (_: keyof FormData, inputValue: string) => {
+    return (
+      Object.values(watchedInputs).filter((value) => value === inputValue)
+        .length > 1
+    );
+  };
+
+  const handleError = () => {
+    if (isValid) {
+      handleSubmit(onSubmit)();
+    }
+    return;
+  };
 
   return (
     <div className="container-create-category">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleError)}>
         {inputFields.map((field, index) => (
           <div key={index}>
             {field.languages.map((lang) => (
               <div key={field.name + "_" + lang}>
                 <MyInput
                   {...register(`${field.name}_${lang}`, {
-                    required:
-                      lang === "ua"
-                        ? "Поле обов'язкове до заповнення"
-                        : lang === "ru"
-                        ? "Поле обязательно для заполнения"
-                        : "Field is required",
+                    required: t("required_field_error"),
+                    validate: (value) =>
+                      !isInputValueRepeated(`${field.name}_${lang}`, value) ||
+                      t("input_value_repeat_error"),
                   })}
                   type="text"
                   placeholder={`${(field.placeholder as any)[lang]} (${lang})`}

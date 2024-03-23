@@ -5,6 +5,9 @@
   "Menu": {
     "confirmation_message": "Ви впевнені?",
     "required_field_error": "Це поле обов'язкове до заповнення",
-    "create_menu": "Створити меню"
+    "input_value_repeat_error": "Це значення вже використовується",
+
+    "create_menu": "Створити меню",
+    "create_category": "Створити категорію"
   }
 }

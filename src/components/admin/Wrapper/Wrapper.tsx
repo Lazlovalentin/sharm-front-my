@@ -38,7 +38,7 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
     };
     const endpoint = type === "menu" ? "menu" : "categories";
     patchAction(endpoint, moveData, { move: true })
-      .then((response) => {
+      .then((_) => {
         router.refresh();
       })
       .catch((error) => {
@@ -49,7 +49,9 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
   return (
     <div className="container-wrapper">
       <MyBtn
-        text={`create ${type === "categories" ? "category" : "menu"}`}
+        text={`${
+          type === "categories" ? t("create_category") : t("create_menu")
+        }`}
         color={"primary"}
         click={openCreateHandler}
       />

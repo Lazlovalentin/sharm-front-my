@@ -6,41 +6,53 @@ import { Line } from "@/components/UI/Line/Line";
 import { postAction } from "@/actions/postAction";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useTranslations } from "next-intl";
+import { InputField } from "../CreateCategory/CreateCategory";
 
 interface CreateMenuProps {
   parentId: string | null;
   setVisible: (visible: boolean) => void;
 }
-interface TranslationData {
-  name: string;
-  url: string;
-  lang: string;
-}
+
 type FormData = {
-  name_ua: string;
-  name_ru: string;
-  name_en: string;
-  url_ua: string;
-  url_ru: string;
-  url_en: string;
+  [key: string]: string;
 };
 const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
   const router = useRouter();
+  const t = useTranslations("Menu");
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
+    watch,
   } = useForm<FormData>();
+
+  const inputFields: InputField[] = [
+    {
+      name: "name",
+      placeholder: { ua: "назва", ru: "название", en: "name" },
+      languages: ["ua", "ru", "en"],
+    },
+    {
+      name: "url",
+      placeholder: { ua: "посилання", ru: "ссылка", en: "link" },
+      languages: ["ua", "ru", "en"],
+    },
+  ];
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { name_ua, name_ru, name_en, url_ua, url_ru, url_en } = data;
+    const translations = [];
+    for (const lang of ["ua", "ru", "en"]) {
+      translations.push({
+        name: data[`name_${lang}`],
+        url: data[`url_${lang}`],
+        lang: lang,
+      });
+    }
     const requestData = {
       parentId: parentId,
       icons: "1",
-      translations: [
-        { name: name_ua, url: url_ua, lang: "ua" },
-        { name: name_ru, url: url_ru, lang: "ru" },
-        { name: name_en, url: url_en, lang: "en" },
-      ],
+      translations: translations,
     };
     postAction("menu", requestData)
       .then(() => {
@@ -51,70 +63,51 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
         console.error("Error submitting form:", error);
       });
   };
+  const watchedInputsArrey: string[] = [];
+  for (const field of inputFields) {
+    for (const lang of field.languages) {
+      watchedInputsArrey.push(`${field.name}_${lang}`);
+    }
+  }
+  const watchedInputs = watch(watchedInputsArrey);
+  const isInputValueRepeated = (_: keyof FormData, inputValue: string) => {
+    return (
+      Object.values(watchedInputs).filter((value) => value === inputValue)
+        .length > 1
+    );
+  };
+  const handleError = () => {
+    if (isValid) {
+      handleSubmit(onSubmit)();
+    }
+    return;
+  };
   return (
     <div className="container-create-menu">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <MyInput
-          {...register("name_ua", {
-            required: "Поле обов'язкове до заповнення",
-          })}
-          type="text"
-          placeholder="назва"
-        />
-        {errors.name_ua && (
-          <p className="error-message">{errors.name_ua.message}</p>
-        )}{" "}
-        <MyInput
-          {...register("name_ru", {
-            required: "Поле обязательно для заполнения",
-          })}
-          type="text"
-          placeholder="название"
-        />
-        {errors.name_ru && (
-          <p className="error-message">{errors.name_ru.message}</p>
-        )}
-        <MyInput
-          {...register("name_en", {
-            required: "Field is required",
-          })}
-          type="text"
-          placeholder="name"
-        />
-        {errors.name_en && (
-          <p className="error-message">{errors.name_en.message}</p>
-        )}
-        <Line isAbsolute={false} />
-        <MyInput
-          {...register("url_ua", {
-            required: "Поле обов'язкове до заповнення",
-          })}
-          type="text"
-          placeholder="посилання"
-        />
-        {errors.url_ua && (
-          <p className="error-message">{errors.url_ua.message}</p>
-        )}
-        <MyInput
-          {...register("url_ru", {
-            required: "Поле обязательно для заполнения",
-          })}
-          type="text"
-          placeholder="ссылка"
-        />
-        {errors.url_ru && (
-          <p className="error-message">{errors.url_ru.message}</p>
-        )}
-        <MyInput
-          {...register("url_en", {
-            required: "Field is required",
-          })}
-          type="text"
-          placeholder="url"
-        />
-        {errors.url_en && (
-          <p className="error-message">{errors.url_en.message}</p>
-        )}
+      <form onSubmit={handleSubmit(handleError)}>
+        {inputFields.map((field, index) => (
+          <div key={index}>
+            {field.languages.map((lang) => (
+              <div key={field.name + "_" + lang}>
+                <MyInput
+                  {...register(`${field.name}_${lang}`, {
+                    required: t("required_field_error"),
+                    validate: (value) =>
+                      !isInputValueRepeated(`${field.name}_${lang}`, value) ||
+                      t("input_value_repeat_error"),
+                  })}
+                  type="text"
+                  placeholder={`${(field.placeholder as any)[lang]} (${lang})`}
+                />
+                {errors[`${field.name}_${lang}`] && (
+                  <p className="error-message">
+                    {errors[`${field.name}_${lang}`]?.message}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
         <Line isAbsolute={false} />
         <MyBtn type="submit" text="submit" color="primary" />
       </form>

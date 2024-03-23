@@ -39,11 +39,11 @@ const CategoryItem: FC<CategoryItemProps> = ({
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
+    watch,
   } = useForm<FormData>();
 
   const deleteHandler = () => {
-    console.log("category.id", category.id);
     deleteAction("categories", category.id).then((_) => router.refresh());
     setVisible(false);
     router.refresh();
@@ -64,7 +64,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
       ],
     };
     postAction("categories", updatedCategory, locale, category.id)
-      .then((response) => {
+      .then(() => {
         router.refresh();
       })
       .catch((error) => {
@@ -88,9 +88,27 @@ const CategoryItem: FC<CategoryItemProps> = ({
   };
 
   const handleError = () => {
-    setOperationType("submit");
-    setConfirmationModalVisible(true);
+    if (isValid) {
+      setOperationType("submit");
+      setConfirmationModalVisible(true);
+    }
   };
+
+  const watchedInputs = watch([
+    "name_input",
+    "descr_input",
+    "mTitle_input",
+    "mKey_input",
+    "mDescr_input",
+  ]);
+
+  const isInputValueRepeated = (inputValue: string, _: keyof FormData) => {
+    return (
+      Object.values(watchedInputs).filter((value) => value === inputValue)
+        .length > 1
+    );
+  };
+
   return (
     <div className="container-category-item">
       <form onSubmit={handleSubmit(handleError)}>
@@ -99,6 +117,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
           placeholder={category.translations[0].name}
           {...register("name_input", {
             required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "name_input") ||
+              t("input_value_repeat_error"),
           })}
         />
         {errors.name_input && (
@@ -109,6 +130,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
           placeholder={category.translations[0].description}
           {...register("descr_input", {
             required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "descr_input") ||
+              t("input_value_repeat_error"),
           })}
         />
         {errors.descr_input && (
@@ -119,6 +143,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
           placeholder={category.translations[0].metaTitle}
           {...register("mTitle_input", {
             required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mTitle_input") ||
+              t("input_value_repeat_error"),
           })}
         />
         {errors.mTitle_input && (
@@ -129,6 +156,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
           placeholder={category.translations[0].metaKeywords}
           {...register("mDescr_input", {
             required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mDescr_input") ||
+              t("input_value_repeat_error"),
           })}
         />
         {errors.mDescr_input && (
@@ -139,6 +169,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
           placeholder={category.translations[0].metaDescription}
           {...register("mKey_input", {
             required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mKey_input") ||
+              t("input_value_repeat_error"),
           })}
         />
         {errors.mKey_input && (

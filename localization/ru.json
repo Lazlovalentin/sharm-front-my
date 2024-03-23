@@ -5,6 +5,9 @@
   "Menu": {
     "confirmation_message": "Вы уверенны?",
     "required_field_error": "Это поле обязательно для заполнения",
-    "create_menu": "Создать меню"
+    "input_value_repeat_error": "Это значение уже используется",
+
+    "create_menu": "Создать меню",
+    "create_category": "Создать категорию"
   }
 }
