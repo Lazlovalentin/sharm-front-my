@@ -8,6 +8,7 @@
     "input_value_repeat_error": "Це значення вже використовується",
 
     "create_menu": "Створити меню",
-    "create_category": "Створити категорію"
+    "create_category": "Створити категорію",
+    "nothing_here": "Тут ще нічого немає."
   }
 }

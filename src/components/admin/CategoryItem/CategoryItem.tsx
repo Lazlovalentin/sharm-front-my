@@ -1,3 +1,4 @@
+"use client";
 import React, { FC, useState } from "react";
 import "./CategoryItem.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
@@ -12,7 +13,7 @@ import { useLocale, useTranslations } from "next-intl";
 interface CategoryItemProps {
   parentId: string;
   category: any;
-  setVisible: (visible: boolean) => void;
+  setVisible?: (visible: boolean) => void;
 }
 
 type FormData = {
@@ -42,7 +43,9 @@ const CategoryItem: FC<CategoryItemProps> = ({
     formState: { errors, isValid },
     watch,
   } = useForm<FormData>();
-
+  if (!setVisible) {
+    return null;
+  }
   const deleteHandler = () => {
     deleteAction("categories", category.id).then((_) => router.refresh());
     setVisible(false);
@@ -114,7 +117,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          placeholder={category.translations[0].name}
+          placeholder={category && category.translations[0].name}
           {...register("name_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -127,7 +130,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category.translations[0].description}
+          placeholder={category && category.translations[0].description}
           {...register("descr_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -140,7 +143,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category.translations[0].metaTitle}
+          placeholder={category && category.translations[0].metaTitle}
           {...register("mTitle_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -153,7 +156,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category.translations[0].metaKeywords}
+          placeholder={category && category.translations[0].metaKeywords}
           {...register("mDescr_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -166,7 +169,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category.translations[0].metaDescription}
+          placeholder={category && category.translations[0].metaDescription}
           {...register("mKey_input", {
             required: t("required_field_error"),
             validate: (value) =>

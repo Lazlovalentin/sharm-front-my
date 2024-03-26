@@ -14,7 +14,7 @@ interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
   label?: string;
   isRequired?: boolean;
-  placeholder: string;
+  placeholder?: string;
   isPhone?: boolean;
   error?: string | any;
   register?: any;
@@ -28,7 +28,7 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
       type,
       label,
       isRequired,
-      placeholder,
+      placeholder = "",
       isPhone,
       error,
       register,
@@ -39,11 +39,12 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
     ref
   ) => {
     const errorRef = useRef<HTMLDivElement>(null);
-    const inputId = `input-${placeholder.replace(/\s+/g, "-").toLowerCase()}`;
+    const inputId = `input-${placeholder?.replace(/\s+/g, "-").toLowerCase()}`;
 
     const [input, setInput] = useState("");
 
     const formatPlaceholder = (placeholder: string) => {
+      if (!placeholder) return "";
       return placeholder.charAt(0).toUpperCase() + placeholder.slice(1);
     };
 

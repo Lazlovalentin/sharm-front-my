@@ -5,19 +5,20 @@ import { useDrag, useDrop } from "react-dnd";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import CreateMenu from "../CreateMenu/CreateMenu";
 import CreateCategory from "../CreateCategory/CreateCategory";
-type ModalType = "Menu" | "Category";
-type CategoryProps = {
+import { ModalComponents } from "../Wrapper/WrapperTreeList";
+
+type TreeListProps = {
   data: any;
   onFolderClick: (item: any) => void;
   onMoveItem: (dragId: string, hoverId: string) => void;
-  modalType: ModalType;
+  type: string;
 };
 
-const TreeList: FC<CategoryProps> = ({
+const TreeList: FC<TreeListProps> = ({
   data,
   onFolderClick,
   onMoveItem,
-  modalType,
+  type,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -47,9 +48,9 @@ const TreeList: FC<CategoryProps> = ({
         }
       },
       drop(item: { id: string }, monitor) {
-        setIsOpen(false);
         if (!monitor.didDrop() && item.id !== data.id) {
           onMoveItem(item.id, data.id);
+          setIsOpen(true);
         }
       },
       collect: (monitor) => ({
@@ -61,16 +62,17 @@ const TreeList: FC<CategoryProps> = ({
   );
 
   drag(drop(ref));
-
-  const handleAddChildrenClick = () => {
-    setOpenModal(true);
+  const modalComponents: ModalComponents = {
+    menu: <CreateMenu parentId={data.id || null} setVisible={setOpenModal} />,
+    category: (
+      <CreateCategory parentId={data.id || null} setVisible={setOpenModal} />
+    ),
   };
-  const modalComponent =
-    modalType === "Menu" ? (
-      <CreateMenu parentId={data.id} setVisible={setOpenModal} />
-    ) : (
-      <CreateCategory parentId={data.id} setVisible={setOpenModal} />
-    );
+
+  const modalComponent = modalComponents[type] || null;
+  const handleAddChildrenClick = () => {
+    setOpenModal(!openModal);
+  };
   return (
     <div>
       <div ref={ref} className={`wrapper-tree-list ${isOver ? "hovered" : ""}`}>
@@ -99,7 +101,7 @@ const TreeList: FC<CategoryProps> = ({
                 data={child}
                 onFolderClick={onFolderClick}
                 onMoveItem={onMoveItem}
-                modalType={modalType}
+                type={type}
               />
             ))}
           </div>

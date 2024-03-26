@@ -1,3 +1,4 @@
+"use client";
 import React, { FC, useEffect, useState } from "react";
 import "./MenuItem.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
@@ -12,7 +13,7 @@ import { useLocale, useTranslations } from "next-intl";
 interface MenuItemProps {
   parentId: string;
   menu: any;
-  setVisible: (visible: boolean) => void;
+  setVisible?: (visible: boolean) => void;
 }
 
 type FormData = {
@@ -29,6 +30,9 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
     "submit"
   );
   const t = useTranslations("Menu");
+  if (!setVisible) {
+    return null;
+  }
   const {
     handleSubmit,
     register,
@@ -43,8 +47,6 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("Form data:", data);
-
     const updatedMenu = {
       icons: menu.icons,
       parentId: parentId,
@@ -99,7 +101,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          placeholder={menu.translations[0].name}
+          placeholder={menu?.translations[0].name}
           {...register("name_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -112,7 +114,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
         )}
         <MyInput
           type="text"
-          placeholder={menu.translations[0].url}
+          placeholder={menu?.translations[0].url}
           {...register("url_input", {
             required: t("required_field_error"),
             validate: (value) =>

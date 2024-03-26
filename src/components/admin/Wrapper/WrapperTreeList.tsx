@@ -1,25 +1,26 @@
 "use client";
 import React, { FC, useState } from "react";
-import "./Wrapper.scss";
+import "./WrapperTreeList.scss";
 import TreeList from "@/components/admin/TreeList/TreeList";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import CreateMenu from "@/components/admin/CreateMenu/CreateMenu";
-import MenuItem from "@/components/admin/MenuItem/MenuItem";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { patchAction } from "@/actions/patchAction";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import CategoryItem from "../CategoryItem/CategoryItem";
 import CreateCategory from "../CreateCategory/CreateCategory";
 
 interface WrapperProps {
   data: any;
-  type: "categories" | "menu";
+  type: string;
+  children: React.ReactNode;
 }
-
-const Wrapper: FC<WrapperProps> = ({ data, type }) => {
+export type ModalComponents = {
+  [key: string]: React.ReactNode;
+};
+const Wrapper: FC<WrapperProps> = ({ data, type, children }) => {
   const router = useRouter();
   const t = useTranslations("Menu");
 
@@ -27,6 +28,20 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const handleItemClick = (item: any) => setSelectedItem(item);
   const openCreateHandler = () => setOpenModal(!openModal);
+
+  const modalComponents: ModalComponents = {
+    menu: (
+      <CreateMenu parentId={data[0]?.id || null} setVisible={setOpenModal} />
+    ),
+    category: (
+      <CreateCategory
+        parentId={data[0]?.id || null}
+        setVisible={setOpenModal}
+      />
+    ),
+  };
+
+  const modalComponent = modalComponents[type] || null;
 
   const moveItem = (dragId: string, hoverId: string) => {
     if (dragId === hoverId || dragId === data[0]?.id) {
@@ -36,7 +51,7 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
       nodeId: dragId,
       parentId: hoverId,
     };
-    const endpoint = type === "menu" ? "menu" : "categories";
+    const endpoint = type === "category" ? "categories" : type;
     patchAction(endpoint, moveData, { move: true })
       .then((_) => {
         router.refresh();
@@ -49,14 +64,12 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
   return (
     <div className="container-wrapper">
       <MyBtn
-        text={`${
-          type === "categories" ? t("create_category") : t("create_menu")
-        }`}
+        text={`${t(`create_${type}`)}`}
         color={"primary"}
         click={openCreateHandler}
       />
-      {data.length === 0 ? <h3>no {type}</h3> : null}
-      <div className="wrapper-menu">
+      {data.length === 0 ? <h3>{t("nothing_here")}</h3> : null}
+      <div className="wrapper-tree">
         <div className="container-tree-list">
           <DndProvider backend={HTML5Backend}>
             {data.map((item: any) => (
@@ -65,37 +78,25 @@ const Wrapper: FC<WrapperProps> = ({ data, type }) => {
                 data={item}
                 onFolderClick={handleItemClick}
                 onMoveItem={moveItem}
-                modalType={type === "menu" ? "Menu" : "Category"}
+                type={type}
               />
             ))}
           </DndProvider>
         </div>
-        {selectedItem && type === "menu" ? (
-          <MenuItem
-            parentId={data[0].id}
-            menu={selectedItem}
-            setVisible={setSelectedItem}
-          />
-        ) : selectedItem && type === "categories" ? (
-          <CategoryItem
-            parentId={data[0].id}
-            category={selectedItem}
-            setVisible={setSelectedItem}
-          />
-        ) : null}
+        {selectedItem &&
+          React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, {
+                parentId: data[0].id,
+                [type]: selectedItem,
+                setVisible: setSelectedItem,
+              } as any);
+            }
+            return null;
+          })}
       </div>
       <MyModal visible={openModal} setVisible={setOpenModal}>
-        {type === "menu" ? (
-          <CreateMenu
-            parentId={data[0]?.id || null}
-            setVisible={setOpenModal}
-          />
-        ) : (
-          <CreateCategory
-            parentId={data[0]?.id || null}
-            setVisible={setOpenModal}
-          />
-        )}
+        {modalComponent}
       </MyModal>
     </div>
   );

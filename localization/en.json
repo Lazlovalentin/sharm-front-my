@@ -7,6 +7,7 @@
     "required_field_error": "This field is required",
     "input_value_repeat_error": "This value is already taken",
     "create_menu": "Create menu",
-    "create_category": "Create category"
+    "create_category": "Create category",
+    "nothing_here": "There is nothing here yet."
   }
 }

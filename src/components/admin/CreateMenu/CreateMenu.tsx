@@ -56,13 +56,16 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
     };
     postAction("menu", requestData)
       .then(() => {
-        router.refresh();
+        console.log("CreateMenu postAction then block");
         setVisible(false);
+
+        router.refresh();
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
   };
+
   const watchedInputsArrey: string[] = [];
   for (const field of inputFields) {
     for (const lang of field.languages) {
