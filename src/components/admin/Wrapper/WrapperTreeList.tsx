@@ -20,7 +20,7 @@ interface WrapperProps {
 export type ModalComponents = {
   [key: string]: React.ReactNode;
 };
-const Wrapper: FC<WrapperProps> = ({ data, type, children }) => {
+const WrapperTreeList: FC<WrapperProps> = ({ data, type, children }) => {
   const router = useRouter();
   const t = useTranslations("Menu");
 
@@ -102,4 +102,4 @@ const Wrapper: FC<WrapperProps> = ({ data, type, children }) => {
   );
 };
 
-export default Wrapper;
+export default WrapperTreeList;
