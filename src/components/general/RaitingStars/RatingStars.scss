@@ -1,0 +1,25 @@
+.star-rating {
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+}
+
+.back-stars {
+  display: flex;
+  position: relative;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.front-stars-wrapper {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+.front-stars {
+  font-size: 14px;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  transition: all 0.5s;
+}
