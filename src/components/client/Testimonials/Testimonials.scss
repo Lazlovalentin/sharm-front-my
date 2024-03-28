@@ -8,7 +8,6 @@
   overflow: hidden;
   padding-left: 0;
   padding-right: 0;
-  border: 1px solid green;
 
   @media (min-width: 768px) {
     padding: 92px 50px;
@@ -46,7 +45,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      border: 1px solid red;
       .item-top-part {
         display: flex;
         flex-direction: column;
@@ -115,18 +113,15 @@
     }
   }
   .arrow-block {
-    border: 1px solid red;
     display: flex;
     margin: 0 0 0 auto;
     flex-direction: row;
     justify-content: space-between;
     width: 90px;
     .arrow-forward-button {
-      border: 1px solid blue;
       cursor: pointer;
     }
     .arrow-back-button {
-      border: 1px solid blue;
       cursor: pointer;
     }
 
