@@ -5,7 +5,11 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { TestimonialsItem } from "@/mokData/testimonialsData";
 import { ArrowLong } from "@/components/svg/Arrow/Arrow-long";
 import { useGSAP } from "@gsap/react";
-import { gsap, Power3 } from "gsap";
+import { gsap } from "gsap";
+import Image from "next/image";
+import Draggable from "gsap/Draggable";
+import Link from "next/link";
+
 type TestimonialsData = TestimonialsItem[];
 
 interface TestimonialsProps {
@@ -13,14 +17,34 @@ interface TestimonialsProps {
 }
 
 const Testimonials: FC<TestimonialsProps> = ({ data }) => {
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    function handleResize() {
+      const newWindowWidth = window.innerWidth;
+      setWindowWidth(newWindowWidth);
+      setIsMobile(newWindowWidth <= 768);
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  console.log("isMobile", isMobile);
   let itemsList = useRef<HTMLUListElement | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  const itemsPerPage = 3;
-  const [offset, setOffset] = useState<number>(0);
+  const itemsPerPage = isMobile ? 2 : 3;
   const [startReached, setStartReached] = useState<boolean>(true);
   const [endReached, setEndReached] = useState<boolean>(false);
-  useEffect(() => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  useGSAP(() => {
     if (itemsList.current) {
       gsap.fromTo(
         itemsList.current.children,
@@ -41,74 +65,163 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
         }
       );
     }
-  }, [data]);
-
-  useGSAP(
-    () => {
-      const shift =
-        itemsList.current?.children[0]?.getBoundingClientRect().width || 0;
-      Array.from(itemsList.current?.children || []).forEach((el, _) => {
-        gsap.to(el as HTMLElement, {
-          x: -(shift * offset),
-          ease: Power3.easeOut,
-          duration: 1,
-        });
-      });
-    },
-    { dependencies: [offset] }
-  );
+  }, [data, currentPage]);
 
   useEffect(() => {
-    setStartReached(offset === 0);
-  }, [offset]);
-
+    setStartReached(currentPage === 1);
+  }, [currentPage]);
   useEffect(() => {
-    setEndReached(offset >= data.length - itemsPerPage);
-  }, [offset, data]);
+    setEndReached(currentPage === totalPages);
+  }, [currentPage, totalPages]);
 
   const handleArrowClick = (direction: "next" | "prev") => {
-    setOffset((prevOffset) => {
-      let newOffset =
-        prevOffset + (direction === "next" ? itemsPerPage : -itemsPerPage);
-
-      if (newOffset < 0) {
-        newOffset = 0;
-      } else if (newOffset >= data.length) {
-        newOffset = data.length - itemsPerPage;
+    setCurrentPage((prevPage) => {
+      if (direction === "next" && prevPage < totalPages) {
+        return prevPage + 1;
+      } else if (direction === "prev" && prevPage > 1) {
+        return prevPage - 1;
       }
-      return newOffset;
+      return prevPage;
     });
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+  }, []);
+  useGSAP(() => {
+    let startX = 0;
+    let startY = 0;
+    Draggable.create(itemsList.current, {
+      type: isMobile ? "y" : "x",
+      bounds: ".container-testimonials",
+      edgeResistance: 0.65,
+      throwProps: true,
+      onDragStart: function (e) {
+        console.log("isMobile Draggable", isMobile);
+
+        if (isMobile) {
+          startY = e.clientY || e.touches[0].clientY;
+        } else {
+          startX = e.clientX || e.touches[0].clientX;
+        }
+      },
+
+      onDragEnd: function (e) {
+        if (isMobile) {
+          const dragDistance =
+            e.clientY - startY || e.touches[0].clientY - startY;
+          if (dragDistance > 20) {
+            handleArrowClick("prev");
+          } else if (dragDistance < -20) {
+            handleArrowClick("next");
+          }
+        } else {
+          const dragDistance =
+            e.clientX - startX || e.touches[0].clientX - startX;
+          console.log(dragDistance);
+          if (dragDistance > 50) {
+            handleArrowClick("prev");
+          } else if (dragDistance < -50) {
+            handleArrowClick("next");
+          }
+        }
+      },
+    });
+  });
+ 
   return (
     <section className="container-testimonials" ref={sectionRef}>
       <h5 className="title-testimonials">Відгуки наших покупців</h5>
       <ul className="main-testimonials-wrapper" ref={itemsList}>
-        {data.map((item) => (
-          <li key={item.id}>
-            <div className="testimonials-item">
-              <div className="item-top-part">
-                <div className="item-name">
-                  <span className="item-name">
-                    {item.name.toUpperCase()}, {item.date}
-                  </span>
-                  <StarRating rating={item.rating} />
-                </div>
-                <span className="item-text">{item.testimonial}</span>
+        {data
+          .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+          .map((item) => (
+            <li key={item.id}>
+              <div className="testimonials-item">
+                {isMobile ? (
+                  <>
+                    <div className="item-top-part">
+                      <div className="item-name">
+                        <span className="item-name">
+                          {item.name.toUpperCase()}, {item.date}
+                        </span>
+                        <StarRating rating={item.rating} />
+                      </div>
+                      <Link href={item.linkToProduct}>
+                        <div className="item-bottom-part">
+                          <div className="product-img">
+                            <Image
+                              src={item.image}
+                              alt={item.title}
+                              width={40}
+                              height={30}
+                            />
+                          </div>
+                          <div className="product-info">
+                            <span className="product-title">
+                              {item.title.toUpperCase()}
+                            </span>
+                            <span className="product-category">
+                              {item.category}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <Link href={item.linkToTestimonial}>
+                      <span className="item-text">{item.testimonial}</span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <div className="item-top-part">
+                      <div className="item-name">
+                        <span className="item-name">
+                          {item.name.toUpperCase()}, {item.date}
+                        </span>
+                        <StarRating rating={item.rating} />
+                      </div>
+                      <Link href={item.linkToTestimonial}>
+                        <span className="item-text">{item.testimonial}</span>
+                      </Link>
+                    </div>
+                    <Link href={item.linkToProduct}>
+                      <div className="item-bottom-part">
+                        <div className="product-img">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
+                        <div className="product-info">
+                          <span className="product-title">
+                            {item.title.toUpperCase()}
+                          </span>
+                          <span className="product-category">
+                            {item.category}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </>
+                )}
               </div>
-              <div className="item-bottom-part">
-                <img src={item.image} alt="Image" className="product-img" />
-
-                <div className="product-info">
-                  <span className="product-title">
-                    {item.title.toUpperCase()}
-                  </span>
-                  <span className="product-category">{item.category}</span>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
       <div className="arrow-block">
         <button
@@ -118,7 +231,7 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
           title="arrow-control"
           disabled={startReached}
           onClick={() => handleArrowClick("prev")}>
-          <ArrowLong className="arrow-back" />{" "}
+          <ArrowLong className="arrow-back" isMobile={isMobile} />{" "}
         </button>
         <button
           className="arrow-forward-button"
@@ -127,7 +240,7 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
           title="arrow-control"
           disabled={endReached}
           onClick={() => handleArrowClick("next")}>
-          <ArrowLong className="arrow-forward" />{" "}
+          <ArrowLong className="arrow-forward" isMobile={isMobile} />{" "}
         </button>
       </div>
     </section>
