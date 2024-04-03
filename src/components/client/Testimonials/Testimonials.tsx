@@ -24,18 +24,14 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
     function handleResize() {
       const newWindowWidth = window.innerWidth;
       setWindowWidth(newWindowWidth);
-      setIsMobile(newWindowWidth <= 768);
+      setIsMobile(newWindowWidth <= 1172);
     }
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  console.log("isMobile", isMobile);
   let itemsList = useRef<HTMLUListElement | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = isMobile ? 2 : 3;
@@ -47,7 +43,7 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
   useGSAP(() => {
     if (itemsList.current) {
       gsap.fromTo(
-        itemsList.current.children,
+        ".testimonials-item",
         {
           autoAlpha: 0,
           y: 70,
@@ -105,7 +101,8 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
     let startY = 0;
     Draggable.create(itemsList.current, {
       type: isMobile ? "y" : "x",
-      bounds: ".container-testimonials",
+      // bounds: ".container-testimonials",
+      bounds: { minX: 10, maxX: 10, minY: 10, maxY: 10 },
       edgeResistance: 0.65,
       throwProps: true,
       onDragStart: function (e) {
@@ -120,16 +117,18 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
 
       onDragEnd: function (e) {
         if (isMobile) {
-          const dragDistance =
-            e.clientY - startY || e.touches[0].clientY - startY;
+          const dragDistance = e.touches
+            ? e.touches[0].clientY - startY
+            : e.clientY - startY;
           if (dragDistance > 20) {
             handleArrowClick("prev");
           } else if (dragDistance < -20) {
             handleArrowClick("next");
           }
         } else {
-          const dragDistance =
-            e.clientX - startX || e.touches[0].clientX - startX;
+          const dragDistance = e.touches
+            ? e.touches[0].clientX - startX
+            : e.clientX - startX;
           console.log(dragDistance);
           if (dragDistance > 50) {
             handleArrowClick("prev");
@@ -140,7 +139,6 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
       },
     });
   });
- 
   return (
     <section className="container-testimonials" ref={sectionRef}>
       <h5 className="title-testimonials">Відгуки наших покупців</h5>
@@ -165,8 +163,8 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
                             <Image
                               src={item.image}
                               alt={item.title}
-                              width={40}
-                              height={30}
+                              width={50}
+                              height={50}
                             />
                           </div>
                           <div className="product-info">

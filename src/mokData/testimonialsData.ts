@@ -56,14 +56,14 @@ export const testimonialsData: TestimonialsItem[] = [
   },
   {
     id: 4,
-    name: "Світлана",
+    name: "Ліза",
     date: "26/07/2023",
     linkToTestimonial: "/goToTestimonial",
 
     rating: 4.0,
     testimonial:
       "Ідеальний продукт, найкращий з мого арсеналу косметики. підлаштовується під тон шкіри, матує, тримається протягом всього дня.",
-    image: "/images-for-categories/kidsGoods.jpg",
+    image: "/images-for-categories/hair.jpg",
     title: "Dior Diorskin Forever Undercover 24H Full Coverage Foundation",
     category: "Тональна основа",
     linkToProduct: "/goToProduct",
