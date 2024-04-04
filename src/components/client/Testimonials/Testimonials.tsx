@@ -9,6 +9,7 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import Draggable from "gsap/Draggable";
 import Link from "next/link";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 type TestimonialsData = TestimonialsItem[];
 
@@ -17,21 +18,11 @@ interface TestimonialsProps {
 }
 
 const Testimonials: FC<TestimonialsProps> = ({ data }) => {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
+  const size = useWindowSize();
   useEffect(() => {
-    function handleResize() {
-      const newWindowWidth = window.innerWidth;
-      setWindowWidth(newWindowWidth);
-      setIsMobile(newWindowWidth <= 1172);
-    }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+    setIsMobile(size.width !== null && size.width <= 1172);
+  }, [size.width]);
   let itemsList = useRef<HTMLUListElement | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = isMobile ? 2 : 3;
@@ -81,33 +72,15 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
     });
   };
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", handleResize);
-    }
-
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", handleResize);
-      }
-    };
-  }, []);
   useGSAP(() => {
     let startX = 0;
     let startY = 0;
     Draggable.create(itemsList.current, {
       type: isMobile ? "y" : "x",
-      // bounds: ".container-testimonials",
       bounds: { minX: 10, maxX: 10, minY: 10, maxY: 10 },
       edgeResistance: 0.65,
       throwProps: true,
       onDragStart: function (e) {
-        console.log("isMobile Draggable", isMobile);
-
         if (isMobile) {
           startY = e.clientY || e.touches[0].clientY;
         } else {
@@ -129,7 +102,6 @@ const Testimonials: FC<TestimonialsProps> = ({ data }) => {
           const dragDistance = e.touches
             ? e.touches[0].clientX - startX
             : e.clientX - startX;
-          console.log(dragDistance);
           if (dragDistance > 50) {
             handleArrowClick("prev");
           } else if (dragDistance < -50) {
