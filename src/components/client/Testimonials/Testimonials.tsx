@@ -9,7 +9,7 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import Draggable from "gsap/Draggable";
 import Link from "next/link";
-import { useWindowSize } from "@uidotdev/usehooks";
+import { useWindowWidth } from "@/hooks/useWindowWidth";
 
 type TestimonialsData = TestimonialsItem[];
 
@@ -19,10 +19,11 @@ interface TestimonialsProps {
 
 const Testimonials: FC<TestimonialsProps> = ({ data }) => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const size = useWindowSize();
+  const size = useWindowWidth();
   useEffect(() => {
-    setIsMobile(size.width !== null && size.width <= 1172);
-  }, [size.width]);
+    setIsMobile(size !== null && size <= 1172);
+  }, [size]);
+
   let itemsList = useRef<HTMLUListElement | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = isMobile ? 2 : 3;
