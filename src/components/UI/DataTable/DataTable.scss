@@ -1,8 +1,7 @@
 .container-data-table {
   margin-bottom: 20px;
   overflow: auto;
-  width: 90vw;
-  height: 80svh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +42,9 @@
       border: 1px solid var(--background-color-dark);
       margin: 2px;
       border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       .wrapper-item {
         padding: 0 5px;
