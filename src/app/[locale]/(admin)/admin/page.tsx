@@ -1,6 +1,11 @@
+import LocalSwitch from "@/components/admin/LocalSwitch/LocalSwitch";
+
 const Admin = () => {
   return (
-    <div>Admin Dashboard page</div>
+    <>
+      <div>Admin Dashboard page</div>
+      {/* <LocalSwitch/> */}
+    </>
   )
 }
 
