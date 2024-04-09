@@ -19,7 +19,7 @@ interface LinkItemProps {
 const MenuLink: React.FC<LinkItemProps> = ({item}) => {
   const locale = useLocale();
   const pathName = usePathname();
-  const path = `/${locale}/dashboard${item.path}`;
+  const path = `/${locale}/admin${item.path}`;
 
   return (
     <Link href={path} className={`${styles.container} ${pathName === path && styles.active}`}>
