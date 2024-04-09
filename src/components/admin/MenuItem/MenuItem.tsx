@@ -30,16 +30,16 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
     "submit"
   );
   const t = useTranslations("Menu");
-  if (!setVisible) {
-    return null;
-  }
+
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
     watch,
   } = useForm<FormData>();
-
+  if (!setVisible) {
+    return null;
+  }
   const deleteHandler = () => {
     deleteAction("menu", menu.id).then((_) => router.refresh());
     setVisible(false);
