@@ -23,8 +23,7 @@ export default function RootLayout({
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-          {/* <MyThemeProvider>{children}</MyThemeProvider> */}
-          <div>{children}</div>
+          <MyThemeProvider>{children}</MyThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
