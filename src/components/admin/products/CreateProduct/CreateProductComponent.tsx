@@ -2,9 +2,12 @@
 import React, {FC, useState} from "react";
 import {useApi} from "@/hooks/useApi";
 
-import './CreateProductComponent.scss'
 import { useRouter } from "next/navigation";
+import { productMock } from "@/mokData/productData";
+import MyInput from "@/components/general/MyInput/MyInput";
+import MyBtn from "@/components/UI/MyBtn/MyBtn";
 
+import styles from './CreateProductComponent.module.scss';
 
 interface FormField {
   name: keyof ProductState;
@@ -122,56 +125,7 @@ const CreateProductComponent = () => {
     
     console.log('product', product);
 
-    const fakeProduct = {
-      "isLux": true,
-      "img": "summer-dress-blue.jpg",
-      "url": "summer-dress-blue",
-      "items": [
-        {
-          "name": "Elegant Summer Dress - Size M",
-          "sku": "ESD123M",
-          "prise": 49.99,
-          "oldPrise": 59.99,
-          "count": 100,
-          "color": "Blue",
-          "img": "summer-dress-blue.jpg"
-        }
-      ],
-      "translations": [
-        {
-          "title": "EN Elegant Summer Dress",
-          "subTitle": "EN Light and airy for hot summer days",
-          "description": "EN This elegant summer dress is perfect for those hot days when you want to feel cool and look great. Made with 100% organic cotton.",
-          "shortDescription": "EN Elegant and comfortable summer dress",
-          "metaTitle": "Elegant Summer Dress - Summer Collection",
-          "metaKeywords": "summer, dress, elegant, cotton, organic",
-          "metaDescription": "An elegant summer dress made of organic cotton to keep you cool during the hot days.",
-          "lang": "en"
-        },
-        {
-          "title": "UA Elegant Summer Dress",
-          "subTitle": "UA Light and airy for hot summer days",
-          "description": "UA This elegant summer dress is perfect for those hot days when you want to feel cool and look great. Made with 100% organic cotton.",
-          "shortDescription": "UA Elegant and comfortable summer dress",
-          "metaTitle": "Elegant Summer Dress - Summer Collection",
-          "metaKeywords": "summer, dress, elegant, cotton, organic",
-          "metaDescription": "An elegant summer dress made of organic cotton to keep you cool during the hot days.",
-          "lang": "ua"
-        },
-        {
-          "title": "RU Elegant Summer Dress",
-          "subTitle": "RU Light and airy for hot summer days",
-          "description": "RU This elegant summer dress is perfect for those hot days when you want to feel cool and look great. Made with 100% organic cotton.",
-          "shortDescription": "RU Elegant and comfortable summer dress",
-          "metaTitle": "Elegant Summer Dress - Summer Collection",
-          "metaKeywords": "summer, dress, elegant, cotton, organic",
-          "metaDescription": "An elegant summer dress made of organic cotton to keep you cool during the hot days.",
-          "lang": "ru"
-        }
-      ]
-    }
-    
-    console.log('fakeProduct', fakeProduct);
+    // console.log('fakeProduct', productMock);
 
     sendRequest('products', 'POST', product)
     .then((response) => {
@@ -182,32 +136,32 @@ const CreateProductComponent = () => {
 };
 
   return (
-    <form onSubmit={handleSubmit} className="form">      
-      <section className="form-section-fields">
-      <h3>Form fields</h3>
+    <form onSubmit={handleSubmit} className={styles.form}>      
+      <section className={styles.section}>
+      <h3 className={styles.title}>Form fields</h3>
       {formFields.map((formField, index) => (
-        <div className="form-fields" key={index}>
-          <label htmlFor={`formField-${index}`}>{formField.label}</label>
+        <div className={styles.formFields} key={index}>
           {formField.type === 'checkbox' ? (
             <>
+              <label className={styles.labelItem} htmlFor={`formField-${index}`}>{formField.label}</label>
               <input
+                className={styles.checkboxField}
                 id={`formField-${index}`}
-                type="checkbox"
+                type={formField.type}
                 name={formField.name}
                 checked={!!product[formField.name]}
                 onChange={(e) => handleChange(e, index, 'formFields')}
               />
-              
             </>
           ) : (
             <>
-              <input
+              <MyInput
                 id={`formField-${index}`}
                 type={formField.type}
-                name={formField.name}
+                label={formField.label}
+                placeholder={formField.name}
                 value={product[formField.name] as string}
                 onChange={(e) => handleChange(e, index, 'formFields')}
-                placeholder={formField.name}
               />
             </>
           )}
@@ -215,12 +169,13 @@ const CreateProductComponent = () => {
       ))}
       </section>
      
-      <section className="form-section-translations">
-        <h3>Translations</h3>
+      <section className={styles.section}>
+        <h3 className={styles.title}>Translations</h3>
         {product.translations.map((translation: any, index) => (
-          <div className="form-translations" key={index}>
-            <label className="label-translation">Language</label>
+          <div className={styles.formTranslations} key={index}>
+            <label className={styles.labelTranslation}>Language</label>
             <select
+              className={styles.selectTranslation}
               name="select-language"
               value={translation.language}
               onChange={(e) => handleLanguageChange(e, index)}
@@ -233,47 +188,47 @@ const CreateProductComponent = () => {
             
             {translationFields.map((el: any, indexEl: any) => (
               <React.Fragment key={indexEl}>
-              <label className="label-translation" htmlFor={el.label}>{el.label}</label>
-                <input
+                <MyInput
+                  id={el.name}
                   key={indexEl}
                   type={el.type}
                   name={el.name}
+                  label={el.label}
+                  placeholder={el.name}
                   value={translation[el.name]}
                   onChange={(e) => handleChange(e, index, 'translations')}
-                  placeholder={el.name}
                 />
                 </React.Fragment>
             ))}
 
           </div>
         ))}
-        <button className="translation-btn" type="button" onClick={addTranslation}>Add Translation</button>
+        <MyBtn text={"Add Translation"} color={"primary"} click={addTranslation} type={"button"} />
       </section>
 
-      <section className="form-section-items">
-        <h3>Items</h3>
+      <section className={styles.section}>
+        <h3 className={styles.title}>Items</h3>
         {product.items.map((item: any, index) => (
-          <div className="form-items" key={index}>
+          <div className={styles.formItems} key={index}>
             {itemFields.map((el: any, indexEl: any) => (
               <React.Fragment key={indexEl}>
-                <label className="label-item" htmlFor={el.label}>{el.label}</label>
-                <input
+                <MyInput
                   id={el.name}
                   key={indexEl}
                   type={el.type}
-                  name={el.name}
+                  label={el.label}
+                  placeholder={el.name}
                   value={item[el.name]}
                   onChange={(e) => handleChange(e, index, 'items')}
-                  placeholder={el.name}
                 />
               </React.Fragment>
             ))}
           </div>
         ))}
-        <button className="item-btn" type="button" onClick={addItem}>Add Item</button>
+        <MyBtn text={"Add Item"} color={"primary"} click={addItem} type={"button"} />
       </section>
 
-      <button className="submit-btn" type="submit">Submit Product</button>
+      <MyBtn text={"Submit Product"} color={"primary"} />
     </form>
   );
 };
