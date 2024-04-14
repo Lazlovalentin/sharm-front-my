@@ -1,234 +1,126 @@
 'use client';
-import React, {FC, useState} from "react";
-import {useApi} from "@/hooks/useApi";
-
+import React from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from "next/navigation";
-import { productMock } from "@/mokData/productData";
-import MyInput from "@/components/general/MyInput/MyInput";
-import MyBtn from "@/components/UI/MyBtn/MyBtn";
+import MyInput from '@/components/general/MyInput/MyInput';
+import MyBtn from '@/components/UI/MyBtn/MyBtn';
+import { useApi } from '@/hooks/useApi';
 
 import styles from './CreateProductComponent.module.scss';
-
-interface FormField {
-  name: keyof ProductState;
-  type: string;
-  label: string;
-}
-
-interface Translation {
-  lang: string;
-}
 
 interface ProductState {
   isLux: boolean;
   img: string;
   url: string;
-  items: any[]; 
+  items: Item[];
   translations: Translation[];
 }
 
-const CreateProductComponent = () => {
+interface Item {
+  name: string;
+  sku: string;
+  prise: string;
+  oldPrise: string;
+  count: string;
+  color: string;
+  img: string;
+}
+
+interface Translation {
+  lang: string;
+  title: string;
+  subTitle: string;
+  description: string;
+  shortDescription: string;
+  metaTitle: string;
+  metaKeywords: string;
+  metaDescription: string;
+}
+
+const Translation = { lang: 'en', title: '', subTitle: '', description: '', shortDescription: '', metaTitle: '', metaKeywords: '', metaDescription: '' };
+
+const Item = { name: '', sku: '', prise: '', oldPrise: '', count: '', color: '', img: '' };
+
+const CreateProductComponent: React.FC = () => {
   const router = useRouter();
-  const {sendRequest, loading, error} = useApi();
-  const [product, setProduct] = useState<ProductState>({
-    isLux: false,
-    img: '',
-    url: '',
-    items: [],
-    translations: []
+  const { sendRequest } = useApi();
+  const { control, register, handleSubmit, watch, formState: { errors } } = useForm<ProductState>({
+    defaultValues: {
+      isLux: false,
+      img: '',
+      url: '',
+      items: [],
+      translations: [],
+    }
   });
 
-  const formFields: FormField[]= [
-    {name: 'isLux', type: 'checkbox', label: 'Luxury'},
-    {name: 'img', type: 'text', label: 'Image'},
-    {name: 'url', type: 'text', label: 'URL'}
-  ]
-
-  const translationFields: any = [
-    {name: 'title', type: 'text', label: 'Title'},
-    {name: 'subTitle', type: 'text', label: 'Sub Title'},
-    {name: 'description', type: 'text', label: 'Description'},
-    {name: 'shortDescription', type: 'text', label: 'Short Description' },
-    {name: 'metaTitle', type: 'text', label: 'Meta Title'},
-    {name: 'metaKeywords', type: 'text', label: 'Meta Keywords'},
-    {name: 'metaDescription', type: 'text', label:'Meta Description'}
-  ]
-
-  const addTranslation = () => {
-    setProduct((prevProduct: any) => ({
-      ...prevProduct,
-      translations: [...prevProduct.translations, {
-        title: '', subTitle: '', description: '', shortDescription: '',
-        metaTitle: '', metaKeywords: '', metaDescription: '', lang: 'en'
-      }]
-    }));
-  };
-
-  const itemFields: any = [
-    {name: 'name', type: 'text', label:'Name'},
-    {name: 'sku', type: 'text', label:'SKU'},
-    {name: 'prise', type: 'number', label: 'Price'},
-    {name: 'oldPrise', type: 'number', label:'Old Price'},
-    {name: 'count', type: 'number', label:'Count'},
-    {name: 'color', type: 'text', label: 'Color'},
-    {name: 'img', type: 'text', label: 'Image'}
-  ]
-
-  const addItem = () => {
-    setProduct((prevProduct: any) => ({
-      ...prevProduct,
-      items: [...prevProduct.items, { name: '', sku: '', prise: 0, oldPrise: 0, count: 0, color: '', img: '' }]
-    }));
-  };
-
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
-    const newLanguage = e.target.value;
-    console.log(newLanguage)
-    setProduct(prevProduct => {
-    const updatedTranslations: Translation[] = [...prevProduct.translations];
-    
-    updatedTranslations[index] = {
-      ...updatedTranslations[index],
-      lang: newLanguage, 
-    };
-    console.log({...prevProduct,
-      translations: updatedTranslations,})
-    return {
-      ...prevProduct,
-      translations: updatedTranslations,
-    };
+  const { fields: itemFields, append: appendItem } = useFieldArray<any>({
+    control,
+    name: "items"
   });
+
+  const { fields: translationFields, append: appendTranslation } = useFieldArray<any>({
+    control,
+    name: "translations"
+  });
+
+  const onSubmit = (data: any) => {
+    console.log('Submitted Data:', data);
+    sendRequest('products', 'POST', data)
+      .then(response => {
+        if (response.data) {
+          router.push('products');
+        }
+      });
   };
-
-  const handleChange = (e: any, index: any, arrayType: any) => {
-    const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    setProduct((prevProduct: any) => {
-      if (['items', 'translations'].includes(arrayType)) {
-        const updatedArray = prevProduct[arrayType].map((item: any, i: any) => {
-          if (i === index) {
-            return { ...item, [name]: value };
-          }
-          return item;
-        });
-        return { ...prevProduct, [arrayType]: updatedArray };
-      } else {
-        return { ...prevProduct, [name]: value };
-      }
-    });
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    
-    console.log('product', product);
-
-    // console.log('fakeProduct', productMock);
-
-    sendRequest('products', 'POST', product)
-    .then((response) => {
-      if (response.data) {
-        router.push('products');
-      }
-    })
-};
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>      
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <section className={styles.section}>
-      <h3 className={styles.title}>Form fields</h3>
-      {formFields.map((formField, index) => (
-        <div className={styles.formFields} key={index}>
-          {formField.type === 'checkbox' ? (
-            <>
-              <label className={styles.labelItem} htmlFor={`formField-${index}`}>{formField.label}</label>
-              <input
-                className={styles.checkboxField}
-                id={`formField-${index}`}
-                type={formField.type}
-                name={formField.name}
-                checked={!!product[formField.name]}
-                onChange={(e) => handleChange(e, index, 'formFields')}
-              />
-            </>
-          ) : (
-            <>
-              <MyInput
-                id={`formField-${index}`}
-                type={formField.type}
-                label={formField.label}
-                placeholder={formField.name}
-                value={product[formField.name] as string}
-                onChange={(e) => handleChange(e, index, 'formFields')}
-              />
-            </>
-          )}
-        </div>
-      ))}
+        <h3 className={styles.title}>Main fields</h3>
+        <MyInput type="checkbox" label="Luxury" {...register('isLux')} />
+        <MyInput type="text" label="Image" {...register('img')} />
+        <MyInput type="text" label="URL" {...register('url')} />
       </section>
-     
+
       <section className={styles.section}>
         <h3 className={styles.title}>Translations</h3>
-        {product.translations.map((translation: any, index) => (
-          <div className={styles.formTranslations} key={index}>
-            <label className={styles.labelTranslation}>Language</label>
-            <select
-              className={styles.selectTranslation}
-              name="select-language"
-              value={translation.language}
-              onChange={(e) => handleLanguageChange(e, index)}
-              id={`select-lang-${index}`}
-             >
-              <option value="en">en</option>
-              <option value="ua">ua</option>
-              <option value="ru">ru</option>
+        {translationFields.map((field, index) => (
+          <div className={styles.formTranslations} key={field.id}>
+            <select className={styles.selectTranslation} {...register(`translations.${index}.lang`)}>
+              <option value="en">EN</option>
+              <option value="ua">UA</option>
+              <option value="ru">RU</option>
             </select>
-            
-            {translationFields.map((el: any, indexEl: any) => (
-              <React.Fragment key={indexEl}>
-                <MyInput
-                  id={el.name}
-                  key={indexEl}
-                  type={el.type}
-                  name={el.name}
-                  label={el.label}
-                  placeholder={el.name}
-                  value={translation[el.name]}
-                  onChange={(e) => handleChange(e, index, 'translations')}
-                />
-                </React.Fragment>
-            ))}
-
+            <MyInput type="text" label="Title" {...register(`translations.${index}.title`)} />
+            <MyInput type="text" label="Subtitle" {...register(`translations.${index}.subTitle`)} />
+            <MyInput type="text" label="Description" {...register(`translations.${index}.description`)} />
+            <MyInput type="text" label="Short description" {...register(`translations.${index}.shortDescription`)} />
+            <MyInput type="text" label="Meta Title" {...register(`translations.${index}.metaTitle`)} />
+            <MyInput type="text" label="Meta Keywords" {...register(`translations.${index}.metaKeywords`)} />
+            <MyInput type="text" label="Meta Description" {...register(`translations.${index}.metaDescription`)} />
           </div>
         ))}
-        <MyBtn text={"Add Translation"} color={"primary"} click={addTranslation} type={"button"} />
+        <MyBtn text="Add translation" color="primary" click={() => appendTranslation(Translation)} type="button" />
       </section>
 
       <section className={styles.section}>
-        <h3 className={styles.title}>Items</h3>
-        {product.items.map((item: any, index) => (
-          <div className={styles.formItems} key={index}>
-            {itemFields.map((el: any, indexEl: any) => (
-              <React.Fragment key={indexEl}>
-                <MyInput
-                  id={el.name}
-                  key={indexEl}
-                  type={el.type}
-                  label={el.label}
-                  placeholder={el.name}
-                  value={item[el.name]}
-                  onChange={(e) => handleChange(e, index, 'items')}
-                />
-              </React.Fragment>
-            ))}
+        <h3 className={styles.title}>Products</h3>
+        {itemFields.map((item, index) => (
+          <div className={styles.formItems} key={item.id}>
+            <MyInput type="text" label="Name" {...register(`items.${index}.name`)} />
+            <MyInput type="text" label="SKU" {...register(`items.${index}.sku`)} />
+            <MyInput type="number" label="Price" {...register(`items.${index}.prise`)} />
+            <MyInput type="number" label="Old price" {...register(`items.${index}.oldPrise`)} />
+            <MyInput type="number" label="Count" {...register(`items.${index}.count`)} />
+            <MyInput type="text" label="Color" {...register(`items.${index}.color`)} />
+            <MyInput type="text" label="Image" {...register(`items.${index}.img`)} />
           </div>
         ))}
-        <MyBtn text={"Add Item"} color={"primary"} click={addItem} type={"button"} />
+        <MyBtn text="Add product" color="primary" click={() => appendItem(Item)} type="button" />
       </section>
 
-      <MyBtn text={"Submit Product"} color={"primary"} />
+      <MyBtn text="Create product" color="primary" type="submit" />
     </form>
   );
 };

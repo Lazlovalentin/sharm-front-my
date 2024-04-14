@@ -7,14 +7,14 @@ export const productsMock = [
 export const productMock = {
   "isLux": true,
   "img": "summer-dress-blue.jpg",
-  "url": "summer-dress-blue",
+  "url": "http://test.com/summer-dress-blue",
   "items": [
     {
       "name": "Elegant Summer Dress - Size M",
       "sku": "ESD123M",
-      "prise": 49.99,
-      "oldPrise": 59.99,
-      "count": 100,
+      "prise": '49',
+      "oldPrise": '59',
+      "count": '100',
       "color": "Blue",
       "img": "summer-dress-blue.jpg"
     }
