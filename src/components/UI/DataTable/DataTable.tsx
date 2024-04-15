@@ -3,6 +3,7 @@ import React, {FC, useDeferredValue, useEffect, useState} from 'react';
 import "./DataTable.scss";
 import CustomSelect from "@/components/UI/CustomSelect/CustomSelect";
 import {useApi} from "@/hooks/useApi";
+import Image from 'next/image';
 
 interface DataTableProps {
     data: any[];
@@ -80,8 +81,19 @@ const DataTable: FC<DataTableProps> = ({data, columns, initialSelectedOptions}) 
                                 style={{width: column.width ? `${column.width}px` : 'auto'}}
                                 className="datatable-cell"
                             >
-                                {column.render ?
-                                    <>{column.render(item)}</> : <div className="wrapper-item">{item[column.id]}</div>}
+                                {column.id === 'image' ? (
+                                    <Image 
+                                        src={item[column.id]}
+                                        alt={item.name}
+                                        width={100} 
+                                        height={100} 
+                                        objectFit="contain" 
+                                    />
+                                ) : column.render ? (
+                                    <>{column.render(item)}</>
+                                ) : (
+                                    <div className="wrapper-item">{item[column.id]}</div>
+                                )}
                             </div>
                         ))}
                     </div>

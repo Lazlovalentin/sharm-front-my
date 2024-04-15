@@ -1,6 +1,7 @@
 import "../globals.css";
 import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+
 export default function RootLayout({
   children,
   params: { locale },

@@ -1,0 +1,56 @@
+.container {
+  position: sticky;
+  top: 40px;
+  height: 100vh;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.userImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userDetail {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 500;
+}
+
+.userRole {
+  font-size: 12px;
+}
+
+.userLogout img {
+  width: 20px;
+  height: 20px;
+  filter: var(--svg-img);
+  transition: filter 0.3s ease;
+
+  &:hover {
+    filter: var(--svg-img-hover);
+    cursor: pointer;
+  }
+}
+
+.list {
+  list-style: none;
+}
+
+
+
+// .link a {
+
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
