@@ -62,7 +62,7 @@ const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle
     };
 
     const style = {
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        // backgroundColor: "rgba(0, 0, 0, 0.2)",
         justifyContent: positionStyle?.justifyContent ?? 'center',
         alignItems: positionStyle?.alignItems ?? 'center',
     };
@@ -71,7 +71,7 @@ const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle
         <div
             ref={backgroundRef}
             className="container-modal"
-            style={style}
+            style={{...style}}
             onClick={handleClose}
         >
             <div
@@ -80,7 +80,7 @@ const MyModal: FC<MyModalProps> = ({children, visible, setVisible, positionStyle
                 style={{margin: 'auto', ...positionStyle}}
                 onClick={handleContentClick}
             >
-                <button onClick={() => setVisible(!visible)}>close</button>
+                <button className='modal-close' onClick={() => setVisible(!visible)}>&times;</button>
                 <div>
                     {children}
                 </div>

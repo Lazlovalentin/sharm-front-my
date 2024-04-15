@@ -8,9 +8,7 @@ export default async function Home() {
 
     return (
         <>
-            <ThemeSwitcher/>
-            <div><h1>{t('title')}</h1></div>
-            <LocalSwitch/>
+            <h1>{t('title')}</h1>
         </>
     );
 }

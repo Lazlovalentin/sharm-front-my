@@ -6,9 +6,17 @@
     "confirmation_message": "Ви впевнені?",
     "required_field_error": "Це поле обов'язкове до заповнення",
     "input_value_repeat_error": "Це значення вже використовується",
-
-    "create_menu": "Створити меню",
-    "create_category": "Створити категорію",
-    "nothing_here": "Тут ще нічого немає."
+    "create_menu_btn": "Створити меню",
+    "create_category_btn": "Створити категорію",
+    "create_menu": "Створити меню в",
+    "create_category": "Створити категорію в ",
+    "change_menu": "Змінити меню",
+    "change_category": "Змінити категорію",
+    "nothing_here": "Тут ще нічого немає.",
+    "close": "Закрити",
+    "delete": "Видалити",
+    "change": "Змінити",
+    "create": "Створити",
+    "yes": "так"
   }
 }

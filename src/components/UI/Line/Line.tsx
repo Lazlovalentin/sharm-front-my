@@ -8,6 +8,8 @@ interface LineType {
 
 export const Line: FC<LineType> = ({isAbsolute, isMobile}) => {
     return (
-        <div className={isAbsolute ? "container-line-absolute" : `container-line ${isMobile && "is-mobile"}`}/>
+        <div className={isAbsolute ? "container-line-absolute" : `container-line${isMobile ? " is-mobile" : ""}`
+            }
+        />
     );
 };

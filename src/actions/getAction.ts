@@ -16,7 +16,7 @@ export const getAction = async (url: string, page?: string, limit?: string) => {
       return response.json();
     })
     .then((data) => {
-      console.log("Server response:", data);
+      // console.log("Server response:", data);
       return data;
     })
     .catch((error) => {

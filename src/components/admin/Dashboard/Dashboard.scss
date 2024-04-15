@@ -1,14 +1,24 @@
 .container-dashboard-admin {
   background-color: var(--background-color-dark);
-  max-height: 100svh;
-  height: 100svh;
+  min-height: 100svh;
   padding: 10px;
+  padding-right: 0;
   overflow-y: auto;
 
   a {
     color: var(--text-color);
     display: block;
-    padding: 5px 0;
+    padding: 5px;
+    padding-right: 10px;
+
+    &.active {
+      background-color: var(--background-color);
+      border-radius: 10px 0 0 10px;
+
+      &>img:hover {
+        filter: none;
+      }
+    }
   }
 
   img {

@@ -1,9 +1,67 @@
 .container-menu-item {
-  width: 100%;
-  margin: 5px auto;
+    flex: 1 0 66%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    transition: flex-grow 0.5s;
+    color: var(--text-color);
+    h2 > span {
+        display: inline-block;
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+    form {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .container-my-input {
+            width: 100%;
+            & > label {
+                margin-bottom: 5px;
+            }
+        }
+        input {
+            min-width: 100%;
+        }
+        //for better display of error messages
+        & > div:not(:first-of-type) {
+            margin-top: 20px;
+        }
+    }
+}
+.menu-item-actions {
+    display: flex;
+    align-self: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: -10px;
+
+    button::first-letter {
+        text-transform: uppercase;
+    }
 }
 .error-message {
-  color: red;
-  font-size: 10px;
-  margin-top: 3px;
+    align-self: start;
+    color: red;
+    font-size: 10px;
+    margin-top: 3px;
+}
+.menu-item-confirmation {
+    width: 30vw;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    .menu-item-actions {
+        align-self: center;
+    }
+}
+.container-my-btn {
+    min-width: 80px;
 }
