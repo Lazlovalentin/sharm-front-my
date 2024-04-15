@@ -1,0 +1,71 @@
+.products-container {
+  width: 100%;
+  // padding: 30px;
+}
+
+.products-title {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.create-product-btn {
+  border-radius: 6px;
+  border: 2px solid rgb(14, 100, 23);
+  padding: 10px 15px;
+  cursor: pointer; 
+}
+
+.create-product-btn:hover {
+  background-color: rgb(14, 100, 23);
+  color: white;
+}
+
+.delete-product-btn {
+  border-radius: 6px;
+  border: 2px solid rgb(240, 59, 59);
+  color: rgb(245, 117, 117);;
+  padding: 10px 15px;
+  cursor: pointer; 
+}
+
+.delete-product-btn:hover {
+  background-color: rgb(240, 59, 59);
+  color: white;
+}
+
+.products-wrapper {
+  overflow-x: auto; 
+}
+
+.products-table {
+  border: 1px solid white;
+  width: 100%; 
+  border-collapse: collapse;
+
+}
+
+th, td {
+  text-align: left;
+  padding: 8px; 
+}
+
+th {
+  background-color: #f2f2f2; 
+}
+
+.products-columns {
+  th {
+    color: black;
+  }
+}
+
+.status {
+&.enabled {
+color: green; 
+}
+&.disabled {
+color: red; 
+}
+}

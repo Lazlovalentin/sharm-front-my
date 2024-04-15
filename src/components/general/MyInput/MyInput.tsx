@@ -36,10 +36,12 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
       register,
       onChange,
       name,
+      
       ...props
     },
     ref
   ) => {
+    MyInput.displayName = "MyInput";
     const errorRef = useRef<HTMLDivElement>(null);
     const inputId = `input-${placeholder?.replace(/\s+/g, "-").toLowerCase()}`;
 
@@ -83,7 +85,8 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
     }, [error]);
 
     return (
-      <div className="container-my-input">
+      <div className={`container-my-input ${type === 'checkbox' && 'checkbox-style'}`}>
+
         {label ? (
           <label htmlFor={inputId}>
             {label}

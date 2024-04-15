@@ -11,9 +11,10 @@
   width: 100%;
   padding-left: 0;
   padding-right: 0;
+  overflow: hidden;
 
   @media (min-width: 768px) {
-    padding: 92px 72px;
+    padding: 92px 52px;
   }
   @media (max-width: 1044px) {
     width: 528px;
