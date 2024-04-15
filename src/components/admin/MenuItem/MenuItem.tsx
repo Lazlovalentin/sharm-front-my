@@ -125,17 +125,17 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   const isInputValueRepeated = (inputValue: string, _: keyof FormData) => {
     return Object.values(watchedInputs).filter((value) => value === inputValue).length > 1;
   };
-
+  const title = menu && menu.translations ? (menu.translations[0]?.name ? `"${menu.translations[0]?.name.charAt(0).toUpperCase() + menu.translations[0]?.name.slice(1)}"` : "***This value was erased due to a bug on the backend***") : '';
   return (
     <div className="container-menu-item">
       <h2>
         {menu && menu.translations ? t("change_menu") : t("change_menu_btn")}{' '}
-        {menu && menu.translations ? (<span>{menu.translations[0]?.name ? `"${menu.translations[0]?.name}"` : "Bug!!!!!!"}</span>) : ''}
+        {title}
       </h2>
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          defaultValue={menu ? menu.translations[0]?.name : "Bug!!!!!!!!"}
+          defaultValue={menu ? menu.translations[0]?.name : "***This value was erased due to a bug on the backend***"}
           label={`${inputFields[0].placeholder[locale as keyof InputField["placeholder"]]
             } (${locale})`}
           placeholder={
@@ -151,7 +151,7 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
         {errors.name_input && <p className="error-message">{errors.name_input.message}</p>}
         <MyInput
           type="text"
-          defaultValue={menu ? menu.translations[0]?.url : "Bug!!!!!!!!"}
+          defaultValue={menu ? menu.translations[0]?.url : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[1].placeholder[locale as keyof InputField["placeholder"]]
           }

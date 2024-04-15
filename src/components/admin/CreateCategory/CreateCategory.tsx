@@ -139,13 +139,13 @@ const CreateCategory: FC<CreateCategoryProps> = ({ parent, setVisible }) => {
   const isInputValueRepeated = (_: keyof FormData, inputValue: string) => {
     return Object.values(watchedInputs).filter((value) => value === inputValue).length > 1;
   };
-
+  const title = parent && parent.translations ? (parent.translations[0]?.name ? `"${parent.translations[0]?.name.charAt(0).toUpperCase() + parent.translations[0]?.name.slice(1)}"` : "***This value was erased due to a bug on the backend***") : '';
   return (
     <>
       <div className="container-create-category">
         <h2>
           {parent && parent.translations ? t("create_category") : t("create_category_btn")}{' '}
-          {parent && parent.translations ? (<span>{parent.translations[0]?.name ? `"${parent.translations[0]?.name }"` : "Bug!!!!!!"}</span>) : ''}
+          {title}
         </h2>
         <form onSubmit={handleSubmit(handleError)}>
           {inputFields.map((field, index) => (

@@ -136,17 +136,17 @@ const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible })
   const isInputValueRepeated = (inputValue: string, _: keyof FormData) => {
     return Object.values(watchedInputs).filter((value) => value === inputValue).length > 1;
   };
-
+  const title = category && category.translations ? (category.translations[0]?.name ? `"${category.translations[0]?.name.charAt(0).toUpperCase() + category.translations[0]?.name.slice(1)}"` : "***This value was erased due to a bug on the backend***") : '';
   return (
     <div className="container-category-item">
       <h2>
         {category && category.translations ? t("change_category") : t("change_category_btn")}{' '}
-        {category && category.translations ? (<span>{category.translations[0]?.name ? `"${category.translations[0]?.name }"` : "Bug!!!!!!"}</span>) : ''}
+        {title}
       </h2>
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          defaultValue={category? category.translations[0]?.name : "Bug!!!!!!!"}
+          defaultValue={category? category.translations[0]?.name : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[0].placeholder[locale as keyof InputField["placeholder"]]
           }
@@ -161,7 +161,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible })
         {errors.name_input && <p className="error-message">{errors.name_input.message}</p>}
         <MyInput
           type="text"
-          defaultValue={category ? category.translations[0]?.description : "Bug!!!!!!!"}
+          defaultValue={category ? category.translations[0]?.description : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[1].placeholder[locale as keyof InputField["placeholder"]]
           }
@@ -179,7 +179,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible })
         )}
         <MyInput
           type="text"
-          defaultValue={category ? category.translations[0]?.metaTitle : "Bug!!!!!!!"}
+          defaultValue={category ? category.translations[0]?.metaTitle : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[2].placeholder[locale as keyof InputField["placeholder"]]
           }
@@ -197,7 +197,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible })
         )}
         <MyInput
           type="text"
-          defaultValue={category ? category.translations[0]?.metaKeywords : "Bug!!!!!!!"}
+          defaultValue={category ? category.translations[0]?.metaKeywords : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[3].placeholder[locale as keyof InputField["placeholder"]]
           }
@@ -215,7 +215,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible })
         )}
         <MyInput
           type="text"
-          defaultValue={category ? category.translations[0]?.metaDescription : "Bug!!!!!!!"}
+          defaultValue={category ? category.translations[0]?.metaDescription : "***This value was erased due to a bug on the backend***"}
           placeholder={
             inputFields[4].placeholder[locale as keyof InputField["placeholder"]]
           }

@@ -13,6 +13,7 @@ import CreateMenu from "@/components/admin/CreateMenu/CreateMenu";
 import CreateCategory from "../CreateCategory/CreateCategory";
 
 import "./WrapperTreeList.scss";
+import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
 
 interface WrapperProps {
   data: any;
@@ -29,7 +30,7 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL;
 const WrapperTreeList: FC<WrapperProps> = ({ data, type, children }) => {
   const router = useRouter();
   const t = useTranslations("Menu");
-  const {request, error, clearError} = useHttp();
+  const {request, loading, error, clearError} = useHttp();
 
   const [selectedToEditItem, setSelectedToEditItem] = useState<any>(null);
   const [selectedToAddItem, setSelectedToAddItem] = useState<any>(null);
@@ -153,7 +154,7 @@ const WrapperTreeList: FC<WrapperProps> = ({ data, type, children }) => {
               </div>
           </div>
         </MyModal>}
-
+        {loading && <SpinnerFullScreen2 />}
       </div>
     </div>
   );

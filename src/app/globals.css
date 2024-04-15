@@ -54,11 +54,7 @@ a {
 
 .container-admin-main {
     display: flex;
-    flex-direction: row;
-    /* min-height: 100svh; */
-    /* height: 100svh; */
-    align-items: stretch;
-}
+  }
 
 .main-container {
     padding-left: 20px;

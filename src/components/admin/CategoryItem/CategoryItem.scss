@@ -6,11 +6,8 @@
     align-items: center;
     gap: 20px;
     color: var(--text-color);
-    h2 > span {
-        display: inline-block;
-        &::first-letter {
-            text-transform: uppercase;
-        }
+    h2 {
+        text-align: center;
     }
     form {
         width: 70%;

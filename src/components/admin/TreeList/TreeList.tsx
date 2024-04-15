@@ -105,7 +105,7 @@ const TreeList: FC<TreeListProps> = ({ data, onEditClick, onAddClick, onMoveItem
           <div className={`name-tree`} onClick={toggle}>
             {data.translations &&
               data.translations.length > 0 &&
-              data.translations[0].name}
+              data.translations[0].name || '***This value was erased due to a bug on the backend***'}
           </div>
           <div className="edit-block">
             <button className="add-children-btn" onClick={handleEdit}>

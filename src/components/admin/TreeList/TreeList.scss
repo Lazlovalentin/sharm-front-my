@@ -1,6 +1,7 @@
 .container-tree-list {
-    flex: 0 1 50%;
-    transition: flex-grow 0.5s;
+    flex-shrink: 1;
+    // max-width: 50%;
+    min-width: calc(34% - 20px);
     color: var(--text-color);
     .wrapper-tree-list {
         display: flex;
@@ -65,7 +66,6 @@
         border-radius: 10px;
         padding-inline: 5px;
         cursor: pointer;
-
         .open-tree {
             font-size: 20px;
             padding-inline: 5px;
@@ -75,13 +75,11 @@
 
         .name-tree {
             flex-grow: 1;
+            // max-width: 100%;
             text-transform: uppercase;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            &:hover {
-                font-weight: bold;
-            }
         }
         .edit-block {
             display: flex;
