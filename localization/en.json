@@ -6,8 +6,17 @@
     "confirmation_message": "Are you sure?",
     "required_field_error": "This field is required",
     "input_value_repeat_error": "This value is already taken",
-    "create_menu": "Create menu",
-    "create_category": "Create category",
-    "nothing_here": "There is nothing here yet."
+    "create_menu_btn": "Create menu",
+    "create_category_btn": "Create category",
+    "create_menu": "Create menu item in",
+    "create_category": "Create category item in",
+    "change_menu": "Change menu item",
+    "change_category": "Change category item",
+    "nothing_here": "There is nothing here yet.",
+    "close": "Close",
+    "delete": "Delete",
+    "change": "Change",
+    "create": "Create",
+    "yes": "yes"
   }
 }

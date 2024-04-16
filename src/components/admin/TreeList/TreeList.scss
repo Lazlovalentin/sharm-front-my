@@ -1,42 +1,140 @@
 .container-tree-list {
-  padding: 10px;
-  width: auto;
-  max-width: 200px;
-  height: 100%;
-  max-height: 100vw;
+    flex-shrink: 1;
+    // max-width: 50%;
+    min-width: calc(34% - 20px);
+    color: var(--text-color);
+    .wrapper-tree-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-  .wrapper-tree-list {
-    display: flex;
-    flex-direction: column;
-  }
-  .wrapper-tree-list.hovered {
-    color: rgb(235, 7, 7);
-  }
-  .wrapper-resuly-tree-list {
-    display: flex;
-    gap: 5px;
-    margin: 5px;
+        &.dragged {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            opacity: 0.5;
+            border: 2px dotted black;
+        }
+        &.hovered {
+            background-color: #a5dd9b;
+            opacity: 0.5;
+            border-radius: 10px;
+            border: 2px dotted black;
+            // gap: 28px;
+        }
+        &.hovered-root:has( .hovered), &.hovered-root.hovered {
+            padding-bottom: 40px;
+        }
+        &.expanded {
+            & > .wrapper-result-tree-list {
+                background-color: var(--background-color-dark);
 
-    .open-tree {
-      cursor: pointer;
+                box-shadow: inset 5px 5px 10px #bbbaba, inset -5px -5px 8px rgb(227, 224, 224),
+                    var(--input-shadow);
+                .open-tree {
+                    transform: rotate(90deg);
+                }
+                .name-tree {
+                    font-weight: bold;
+                    font-style: italic;
+                }
+            }
+        }
+        &.empty {
+            gap: 0px;
+            .wrapper-result-tree-list {
+                cursor: auto;
+
+                .name-tree {
+                    text-transform: unset;
+                    &::first-letter {
+                        text-transform: capitalize;
+                    }
+                    font-weight: normal;
+                    pointer-events: none;
+                }
+                .open-tree {
+                    visibility: hidden;
+                }
+            }
+        }
     }
 
-    .name-tree {
-      cursor: pointer;
-      margin-left: 5px;
+    .wrapper-result-tree-list {
+        line-height: 38px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        padding-inline: 5px;
+        cursor: pointer;
+        .open-tree {
+            font-size: 20px;
+            padding-inline: 5px;
+            padding-bottom: 5px;
+            transition: all 0.2s;
+        }
+
+        .name-tree {
+            flex-grow: 1;
+            // max-width: 100%;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .edit-block {
+            display: flex;
+            flex-wrap: nowrap;
+            visibility: hidden;
+            button {
+                padding: 5px;
+                color: #828282;
+                font-style: italic;
+                border-radius: 10px;
+                &:hover {
+                    font-weight: bold;
+                    cursor: pointer;
+                    color: currentColor;
+                }
+            }
+        }
+        &:hover {
+            box-shadow: var(--input-shadow);
+            .edit-block {
+                visibility: visible;
+            }
+        }
     }
-    .name-tree:hover {
-      color: rgb(33, 243, 33);
+
+    .tree-children {
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
     }
-    .add-children-btn {
-      margin-left: 10px;
-      color: darkgreen;
+}
+.wrapper-tree-list.expanded {
+    background-color: #f9f9f9;
+    box-shadow: var(--input-shadow);
+    padding: 8px;
+    border-radius: 10px;
+}
+
+[data-theme='dark'] {
+    .wrapper-tree-list.expanded:not(.container-tree-list > div > .wrapper-tree-list) {
+        background-color: #9db2bf;
+        box-shadow: var(--input-shadow);
     }
-    .add-children-btn:hover {
-      color: rgb(33, 243, 33);
+    .container-tree-list .wrapper-result-tree-list {
+        background-color: #9db2bf;
     }
-  }
-  .tree-children {
-    padding-left: 10px;
-  }
+    .tree-children {
+        color: var(--background-color);
+    }
+    .wrapper-tree-list.expanded {
+        color: white;
+        & > .wrapper-result-tree-list {
+            box-shadow: inset 7px 7px 14px #1f1717, inset -7px -7px 14px #614949,
+                var(--input-shadow);
+        }
+    }
 }

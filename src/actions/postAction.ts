@@ -12,19 +12,26 @@ export const postAction = async (
   const requestURL = id
     ? `${baseURL}/api/${url}/${lang}/${id}`
     : `${baseURL}/api/${url}`;
-  return fetch(requestURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => data)
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+  try {
+    const response = await fetch(requestURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
     });
+    
+    if (!response.ok) {
+      if (response.status >= 400) {
+        const error = await response.json();
+        throw new Error(
+          `Couldn't fetch data, response status: ${response.status}, reason: ${error.message}`
+        );
+      }
+    }
+    return await response.json();
+  } catch (e) {
+    throw e;
+  }
 };

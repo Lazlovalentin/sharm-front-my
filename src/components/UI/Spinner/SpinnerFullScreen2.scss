@@ -1,0 +1,30 @@
+.spinner-modal {
+    position: fixed;
+    z-index: 300;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background-modal);
+    overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    transition: 0.3s linear;
+    .loader {
+        width: 5vmin;
+        height: 5vmin;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        color: #fff;
+        animation: loader 1s linear infinite;
+    }
+}
+@keyframes loader {
+    0% {box-shadow: 5.5vmin 0 0 -3px, 16vmin 0 0 3px, -5.5vmin 0 0 -3px, -16vmin 0 0 -3px}   
+    25% {box-shadow: 5.5vmin 0 0 -3px, 16vmin 0 0 -3px, -5.5vmin 0 0 -3px, -16vmin 0 0 3px}    
+    50% {box-shadow: 5.5vmin 0 0 -3px, 16vmin 0 0 -3px, -5.5vmin 0 0 3px, -16vmin 0 0 -3px}  
+    75% {box-shadow: 5.5vmin 0 0 3px, 16vmin 0 0 -3px, -5.5vmin 0 0 -3px, -16vmin 0 0 -3px}  
+    100% {box-shadow: 5.5vmin 0 0 -3px, 16vmin 0 0 3px, -5.5vmin 0 0 -3px, -16vmin 0 0 -3px}   
+}

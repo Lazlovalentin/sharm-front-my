@@ -1,14 +1,17 @@
 "use client";
-import React, { FC, useState } from "react";
-import "./CategoryItem.scss";
+import React, { FC, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+import useHttp from "@/actions/useHttp";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
-import { deleteAction } from "@/actions/deleteAction";
-import { useRouter } from "next/navigation";
-import { postAction } from "@/actions/postAction";
 import MyModal from "@/components/UI/MyModal/MyModal";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useLocale, useTranslations } from "next-intl";
+import { InputField, inputFields } from "../CreateCategory/CreateCategory";
+import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
+
+import "./CategoryItem.scss";
 
 interface CategoryItemProps {
   parentId: string;
@@ -24,32 +27,45 @@ type FormData = {
   mDescr_input: string;
 };
 
-const CategoryItem: FC<CategoryItemProps> = ({
-  parentId,
-  category,
-  setVisible,
-}) => {
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+const CategoryItem: FC<CategoryItemProps> = ({ parentId, category, setVisible }) => {
   const router = useRouter();
   const locale = useLocale();
-  const [confirmationModalVisible, setConfirmationModalVisible] =
-    useState(false);
-  const [operationType, setOperationType] = useState<"delete" | "submit">(
-    "submit"
-  );
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+  const [operationType, setOperationType] = useState<"delete" | "submit">("submit");
   const t = useTranslations("Menu");
+
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
     watch,
+    reset,
   } = useForm<FormData>();
+
+  const {request, loading, error, clearError} = useHttp();
+
+  useEffect(() => {
+    reset();
+  }, [category, parentId]);
+
   if (!setVisible) {
     return null;
   }
+
   const deleteHandler = () => {
-    deleteAction("categories", category.id).then((_) => router.refresh());
-    setVisible(false);
-    router.refresh();
+    request({
+      url: `${baseURL}/api/categories/${category.id}`, 
+      method: "DELETE", 
+    })
+    .then(()=> {
+        setVisible(false);
+    })
+    .catch((e) => {
+        setConfirmationModalVisible(true);
+    })
+    .finally(() => router.refresh());
   };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -66,16 +82,22 @@ const CategoryItem: FC<CategoryItemProps> = ({
         },
       ],
     };
-    postAction("categories", updatedCategory, locale, category.id)
-      .then(() => {
-        router.refresh();
-      })
-      .catch((error) => {
-        console.error("Error updating menu:", error);
-      });
-    setVisible(false);
-    router.refresh();
-  };
+
+    const requestURL =`${baseURL}/api/categories/${locale}/${category.id}`;
+       
+    request({
+      url: requestURL, 
+      method: "POST", 
+      body: JSON.stringify(updatedCategory), 
+    })
+    .then((data) => {
+      setVisible({...data, translations: data.translations.filter((item: any) => item.lang === locale)});
+    })
+    .then(() => router.refresh())
+    .catch((e) => {
+        setConfirmationModalVisible(true);
+    });
+};
 
   const handleConfirmation = () => {
     if (operationType === "delete") {
@@ -86,8 +108,14 @@ const CategoryItem: FC<CategoryItemProps> = ({
     setConfirmationModalVisible(false);
   };
 
-  const handleCloseConfirmation = () => {
-    setConfirmationModalVisible(false);
+  const handleCloseConfirmation = (res: boolean = false ) => {
+    if(error) {
+      clearError();
+      setConfirmationModalVisible(res);
+      reset();
+    } else {
+      setConfirmationModalVisible(res);
+    }
   };
 
   const handleError = () => {
@@ -106,18 +134,23 @@ const CategoryItem: FC<CategoryItemProps> = ({
   ]);
 
   const isInputValueRepeated = (inputValue: string, _: keyof FormData) => {
-    return (
-      Object.values(watchedInputs).filter((value) => value === inputValue)
-        .length > 1
-    );
+    return Object.values(watchedInputs).filter((value) => value === inputValue).length > 1;
   };
-
+  const title = category && category.translations ? (category.translations[0]?.name ? `"${category.translations[0]?.name.charAt(0).toUpperCase() + category.translations[0]?.name.slice(1)}"` : "***This value was erased due to a bug on the backend***") : '';
   return (
     <div className="container-category-item">
+      <h2>
+        {category && category.translations ? t("change_category") : t("change_category_btn")}{' '}
+        {title}
+      </h2>
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          placeholder={category && category.translations[0].name}
+          defaultValue={category? category.translations[0]?.name : "***This value was erased due to a bug on the backend***"}
+          placeholder={
+            inputFields[0].placeholder[locale as keyof InputField["placeholder"]]
+          }
+          label={`${inputFields[0].placeholder[locale as keyof InputField["placeholder"]]} (${locale})`}
           {...register("name_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -125,12 +158,15 @@ const CategoryItem: FC<CategoryItemProps> = ({
               t("input_value_repeat_error"),
           })}
         />
-        {errors.name_input && (
-          <p className="error-message">{errors.name_input.message}</p>
-        )}
+        {errors.name_input && <p className="error-message">{errors.name_input.message}</p>}
         <MyInput
           type="text"
-          placeholder={category && category.translations[0].description}
+          defaultValue={category ? category.translations[0]?.description : "***This value was erased due to a bug on the backend***"}
+          placeholder={
+            inputFields[1].placeholder[locale as keyof InputField["placeholder"]]
+          }
+          label={`${inputFields[1].placeholder[locale as keyof InputField["placeholder"]]
+            } (${locale})`}
           {...register("descr_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -143,7 +179,12 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category && category.translations[0].metaTitle}
+          defaultValue={category ? category.translations[0]?.metaTitle : "***This value was erased due to a bug on the backend***"}
+          placeholder={
+            inputFields[2].placeholder[locale as keyof InputField["placeholder"]]
+          }
+          label={`${inputFields[2].placeholder[locale as keyof InputField["placeholder"]]
+            } (${locale})`}
           {...register("mTitle_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -156,7 +197,12 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category && category.translations[0].metaKeywords}
+          defaultValue={category ? category.translations[0]?.metaKeywords : "***This value was erased due to a bug on the backend***"}
+          placeholder={
+            inputFields[3].placeholder[locale as keyof InputField["placeholder"]]
+          }
+          label={`${inputFields[3].placeholder[locale as keyof InputField["placeholder"]]
+            } (${locale})`}
           {...register("mDescr_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -169,7 +215,12 @@ const CategoryItem: FC<CategoryItemProps> = ({
         )}
         <MyInput
           type="text"
-          placeholder={category && category.translations[0].metaDescription}
+          defaultValue={category ? category.translations[0]?.metaDescription : "***This value was erased due to a bug on the backend***"}
+          placeholder={
+            inputFields[4].placeholder[locale as keyof InputField["placeholder"]]
+          }
+          label={`${inputFields[4].placeholder[locale as keyof InputField["placeholder"]]
+            } (${locale})`}
           {...register("mKey_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -177,36 +228,50 @@ const CategoryItem: FC<CategoryItemProps> = ({
               t("input_value_repeat_error"),
           })}
         />
-        {errors.mKey_input && (
-          <p className="error-message">{errors.mKey_input.message}</p>
-        )}
-        <MyBtn text="submit" color="primary" type="submit" />
-        <MyBtn
-          text="delete"
-          color="attention"
-          type="button"
-          click={() => {
-            setOperationType("delete");
-            setConfirmationModalVisible(true);
-          }}
-        />
-        <MyBtn
-          text="close"
-          color="primary"
-          type="button"
-          click={() => setVisible(false)}
-        />
+        {errors.mKey_input && <p className="error-message">{errors.mKey_input.message}</p>}
+        <div className="category-item-actions">
+          <MyBtn text={t("change")} color="primary" type="submit" />
+          <MyBtn
+            text={t("delete")}
+            color="attention"
+            type="button"
+            click={() => {
+              setOperationType("delete");
+              setConfirmationModalVisible(true);
+            }}
+          />
+          <MyBtn
+            text={t("close")}
+            color="primary"
+            type="button"
+            click={() => setVisible(false)}
+          />
+        </div>
       </form>
-      <MyModal
+      {confirmationModalVisible && <MyModal
         visible={confirmationModalVisible}
         setVisible={setConfirmationModalVisible}
-        positionStyle={{ justifyContent: "center", alignItems: "center" }}>
-        <div>
-          <p>{t("confirmation_message")}</p>{" "}
-          <MyBtn text="Yes" color="primary" click={handleConfirmation} />
-          <MyBtn text="No" color="attention" click={handleCloseConfirmation} />
+        positionStyle={{ justifyContent: "center", alignItems: "center" }}
+      >
+        <div className="category-item-confirmation">
+          <p>{error || t("confirmation_message")}</p>{" "}
+          <div className="category-item-actions">
+          {error ? (<MyBtn
+              text={t("close")}
+              color="attention"
+              click={() => handleCloseConfirmation()}
+            />) : (<>
+              <MyBtn text={t("yes")} color="primary" click={handleConfirmation} />
+              <MyBtn
+                text={t("close")}
+                color="attention"
+                click={() => handleCloseConfirmation()}
+              />
+            </>)}
+          </div>
         </div>
-      </MyModal>
+      </MyModal>}
+      {loading && <SpinnerFullScreen2 />}
     </div>
   );
 };

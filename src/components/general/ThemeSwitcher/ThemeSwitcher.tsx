@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import {useTheme} from "next-themes";
 import {useGSAP} from "@gsap/react";
 import {gsap} from 'gsap';
@@ -8,6 +8,14 @@ const ThemeSwitcher = () => {
     const {theme, setTheme} = useTheme()
     const svgRef = useRef(null);
     const {contextSafe} = useGSAP();
+    
+    //Prevent errors during hydration 
+    // https://nextjs.org/docs/messages/react-hydration-error#solution-1-using-useeffect-to-run-on-the-client-only
+    const [isClient, setIsClient] = useState(false)
+    useEffect(() => {
+        setIsClient(true)
+    }, []);
+    if (!isClient) return;
 
     const changeTheme = contextSafe(() => {
         setTheme(theme === "dark" ? "light" : "dark")

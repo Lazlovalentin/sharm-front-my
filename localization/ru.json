@@ -3,12 +3,20 @@
     "title": "привет мир"
   },
   "Menu": {
-    "confirmation_message": "Вы уверенны?",
+    "confirmation_message": "Вы уверены?",
     "required_field_error": "Это поле обязательно для заполнения",
     "input_value_repeat_error": "Это значение уже используется",
-
-    "create_menu": "Создать меню",
-    "create_category": "Создать категорию",
-    "nothing_here": "Здесь еще ничего нет."
+    "create_menu_btn": "Создать меню",
+    "create_category_btn": "Создать категорию",
+    "create_menu": "Создать меню в",
+    "create_category": "Создать категорию в",
+    "change_menu": "Изменить меню",
+    "change_category": "Изменить категорию",
+    "nothing_here": "Здесь еще ничего нет.",
+    "close": "Закрыть",
+    "delete": "Удалить",
+    "change": "Изменить",
+    "create": "Создать",
+    "yes": "Да"
   }
 }

@@ -12,7 +12,7 @@ export default function RootLayout({
   const messages = useMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -21,7 +21,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
+      {/* "extra attributes from the server" error fix https://www.reddit.com/r/nextjs/comments/138smpm/how_to_fix_extra_attributes_from_the_server_error/?rdt=36192 */}
+      <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <MyThemeProvider>{children}</MyThemeProvider>
         </NextIntlClientProvider>
