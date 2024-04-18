@@ -15,5 +15,5 @@ jobs:
         uses: sudo docker/build-push-action@v5
         with:
           file: Dockerfile
-          push: true
+          push: false
           tags: sudo user/app:latest
