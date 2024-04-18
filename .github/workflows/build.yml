@@ -4,7 +4,7 @@ on:
     branches: [master]
 jobs:
   build:
-    runs-on: self-hostede
+    runs-on: self-hosted
     steps:
       - name: Set up QEMU
         uses: sudo docker/setup-qemu-action@v2
