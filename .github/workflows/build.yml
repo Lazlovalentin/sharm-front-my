@@ -2,7 +2,6 @@ name: build
 on:
   push:
     branches: [master]
-
 jobs:
   build:
     runs-on: self-hosted
@@ -16,4 +15,4 @@ jobs:
         with:
           file: Dockerfile
           push: false
-          tags: sudo user/app:latest
+          tags: user/app:latest
