@@ -4,14 +4,14 @@ on:
     branches: [master]
 jobs:
   build:
-    runs-on: ubunto-latest
+    runs-on: self-hostede
     steps:
       - name: Set up QEMU
-        uses: sudo docker/setup-qemu-action@v3
+        uses: sudo docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
-        uses: sudo docker/setup-buildx-action@v3
+        uses: sudo docker/setup-buildx-action@v2
       - name: Build and push
-        uses: sudo docker/build-push-action@v5
+        uses: sudo docker/build-push-action@v3
         with:
           file: Dockerfile
           push: false
