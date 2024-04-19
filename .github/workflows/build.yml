@@ -1,10 +1,10 @@
 name: build
 on:
   push:
-    branches: [master]
+    branches: [master] 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: vva-Aspire-E5-576
     steps:
       - name: Set up QEMU
         uses: sudo docker/setup-qemu-action@v3
