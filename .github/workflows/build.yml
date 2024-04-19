@@ -4,7 +4,7 @@ on:
     branches: [master] 
 jobs:
   build:
-    runs-on: vva-Aspire-E5-576
+    runs-on: ubunto:latest
     steps:
       - name: Set up QEMU
         uses: sudo docker/setup-qemu-action@v3
