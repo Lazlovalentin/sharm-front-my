@@ -4,7 +4,7 @@ on:
     branches: [master] 
 jobs:
   build:
-    runs-on: ubunto:latest
+    runs-on: self-hosted
     steps:
       - name: Set up QEMU
         uses: sudo docker/setup-qemu-action@v3
