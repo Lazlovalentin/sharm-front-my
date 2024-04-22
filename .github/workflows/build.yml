@@ -3,8 +3,8 @@ on:
   push:
     branches: [master] 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build: self-hosted
+    runs-on: 
     steps:
       - name: Set up QEMU
         uses: sudo docker/setup-qemu-action@v3

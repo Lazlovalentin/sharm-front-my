@@ -1,0 +1,14 @@
+name: test
+on: push
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: install dep
+        uses: npm ci
+      - name: lint
+        uses: npm run lint
+      
+
